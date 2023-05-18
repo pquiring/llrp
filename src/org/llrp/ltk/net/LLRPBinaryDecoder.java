@@ -20,8 +20,8 @@ package org.llrp.ltk.net;
 import java.math.BigInteger;
 
 import org.apache.log4j.Logger;
-import org.apache.mina.common.ByteBuffer;
-import org.apache.mina.common.IoSession;
+import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.llrp.ltk.generated.LLRPMessageFactory;
@@ -38,9 +38,9 @@ public class LLRPBinaryDecoder extends CumulativeProtocolDecoder {
 	private static final String MESSAGE_LENGTH_KEY = "MessageLength";
 	private Logger log = Logger.getLogger(LLRPBinaryDecoder.class);
 
-	
+
 	@Override
-	protected boolean doDecode(IoSession session, ByteBuffer in,
+	protected boolean doDecode(IoSession session, IoBuffer in,
 			ProtocolDecoderOutput out) throws Exception {
 		// if 6 bytes in the buffer we can determine the next length to see
 		// if buffer contains a completely delivered message.

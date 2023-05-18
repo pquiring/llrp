@@ -18,8 +18,8 @@
 package org.llrp.ltk.net;
 
 import org.apache.log4j.Logger;
-import org.apache.mina.common.ByteBuffer;
-import org.apache.mina.common.IoSession;
+import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import org.llrp.ltk.exceptions.InvalidLLRPMessageException;
@@ -40,7 +40,7 @@ public class LLRPBinaryEncoder implements ProtocolEncoder {
 	/**
 	 * convert LLRPMessage object to binary format
 	*/
-	
+
 	public void encode(IoSession session, Object message,
 			ProtocolEncoderOutput out) throws Exception {
 		LLRPMessage llrp = (LLRPMessage) message;
@@ -54,7 +54,7 @@ public class LLRPBinaryEncoder implements ProtocolEncoder {
 			return;
 		}
 		// Note: ByteBuffer is renamed in MINA to IOBuffer
-		ByteBuffer buffer = ByteBuffer.allocate(byteMsg.length, false);
+		IoBuffer buffer = IoBuffer.allocate(byteMsg.length, false);
 		buffer.put(byteMsg);
 		buffer.flip();
 		out.write(buffer);

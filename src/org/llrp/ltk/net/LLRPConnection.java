@@ -22,34 +22,34 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
-import org.apache.mina.common.IoSession;
-import org.apache.mina.common.WriteFuture;
+import org.apache.mina.core.session.IoSession;
+import org.apache.mina.core.future.WriteFuture;
 import org.llrp.ltk.generated.enumerations.ConnectionAttemptStatusType;
 import org.llrp.ltk.generated.parameters.ConnectionAttemptEvent;
 import org.llrp.ltk.types.LLRPMessage;
 
 /**
- * LLRPConnection represents an abstract interface for an LLRP connection at a LLRP reader or client. 
- * The actual implementation differ depending on whether it is a self-initiated connection 
+ * LLRPConnection represents an abstract interface for an LLRP connection at a LLRP reader or client.
+ * The actual implementation differ depending on whether it is a self-initiated connection
  * or a remotely initiated connection.
  */
 
 public abstract class LLRPConnection {
 	public static final int CONNECT_TIMEOUT = 10000;
-	public static final String SYNC_MESSAGE_ANSWER = "synchronousMessageAnswer";	
+	public static final String SYNC_MESSAGE_ANSWER = "synchronousMessageAnswer";
 	protected LLRPEndpoint endpoint;
 	protected LLRPIoHandlerAdapter handler;
 	protected IoSession session;
 	private Logger log = Logger.getLogger(LLRPConnection.class);
-	
+
 	public LLRPConnection(){
 		handler = new LLRPIoHandlerAdapterImpl(this);
 	}
-	
+
 	/**
 	 * check whether ConnectionAttemptStatus in READER_NOTIFICATION message was set by reader
-	 * to 'Success'. 
-	 * 
+	 * to 'Success'.
+	 *
 	 * @param timeout	the wait time before reader replies with a status report
 	 * @throws LLRPConnectionAttemptFailedException
 	 */
@@ -76,14 +76,14 @@ public abstract class LLRPConnection {
 
 	/**
 	 * reconnect to existing connection
-	 * 
+	 *
 	 * @return boolean indicating failure (false) or success (true)
 	 */
 	public abstract boolean reconnect();
-	
+
 	/**
 	 * sends an LLRP message without waiting for a response message.
-	 * 
+	 *
 	 * @param message LLRP message to be sent
 	 */
 	public void send(LLRPMessage message){
@@ -92,7 +92,7 @@ public abstract class LLRPConnection {
 			endpoint.errorOccured("session is not yet established");
 			return;
 		}
-		
+
 		if(!session.isConnected()){
 			if(reconnect()){
 				session.write(message);
@@ -103,13 +103,13 @@ public abstract class LLRPConnection {
 		}else{
 			session.write(message);
 		}
-		
+
 	}
-	
+
 	/**
-	 * sends an LLRP message and returns the response message as defined in the 
-	 * LLRP specification. 
-	 * 
+	 * sends an LLRP message and returns the response message as defined in the
+	 * LLRP specification.
+	 *
 	 * @param message LLRP message to be sent
 	 * @return message LLRP response message
 	 */
@@ -117,9 +117,9 @@ public abstract class LLRPConnection {
 		return transact(message,0);
 	}
 	/**
-	 * sends an LLRP message and returns the response message as defined in the 
+	 * sends an LLRP message and returns the response message as defined in the
 	 * LLRP specification timing out after the time interval specified.
-	 * 
+	 *
 	 * @param message LLRP message to be sent
 	 * @param transactionTimeout  timeout
 	 * @return message LLRP response message
@@ -135,7 +135,7 @@ public abstract class LLRPConnection {
 			endpoint.errorOccured("session is not yet established");
 			return null;
 		}
-		
+
 		LLRPMessage returnMessage = null;
 		if (!session.isConnected()){
 			if(!reconnect()){//reconnect failed
@@ -147,12 +147,12 @@ public abstract class LLRPConnection {
 
 		// move setAttribute here from above block to avoid the risk of overwriting session where SYNC_MESSAGE_ANSWER is already set
 		session.setAttribute(SYNC_MESSAGE_ANSWER, returnMessageType);
-		
+
 		WriteFuture writeFuture = session.write(message);
 		log.info(message.getName() + " transact ....");
 		writeFuture.join();
-		
-		
+
+
 		// Wait until a message is received.
 		try {
 			BlockingQueue<LLRPMessage> synMessageQueue = handler.getSynMessageQueue();
@@ -170,10 +170,10 @@ public abstract class LLRPConnection {
 		}
 		return returnMessage;
 	}
-	
+
 	/**
 	 * returns the endpoint which receives incoming LLRPMessages
-	 * 
+	 *
 	 * @return the endpoint
 	 */
 	public LLRPEndpoint getEndpoint() {
@@ -182,16 +182,16 @@ public abstract class LLRPConnection {
 
 	/**
 	 * sets the endpoint which receives incoming LLRPMessages
-	 * 
+	 *
 	 * @param endpoint the endpoint to set
 	 */
 	public void setEndpoint(LLRPEndpoint endpoint) {
 		this.endpoint = endpoint;
 	}
-	
+
 	/**
 	 * returns the handler that handles incoming LLRPMessages and forwards them to LLRPEndpoint registered.
-	 * 
+	 *
 	 * @return the handler
 	 */
 	public LLRPIoHandlerAdapter getHandler() {
@@ -200,12 +200,12 @@ public abstract class LLRPConnection {
 
 	/**
 	 * sets the handler that handles incoming LLRPMessages and forwards them to LLRPEndpoint registered.
-	 * 
+	 *
 	 * @param handler the handler to set
 	 */
 	public void setHandler(LLRPIoHandlerAdapter handler) {
 		this.handler = handler;
 	}
-	
-	
+
+
 }

@@ -19,14 +19,14 @@ package org.llrp.ltk.net;
 
 import java.util.concurrent.BlockingQueue;
 
-import org.apache.mina.common.IoHandlerAdapter;
+import org.apache.mina.core.service.IoHandlerAdapter;
 import org.llrp.ltk.generated.parameters.ConnectionAttemptEvent;
 import org.llrp.ltk.types.LLRPMessage;
 
 
 /**
  * LLRPIoHandlerAdapter defines abstract methods that need to be implemented by any LLRPIoHandlerAdaptor implementation in addition to
- * the methods defined by the Apache MINA IoHandler interface. 
+ * the methods defined by the Apache MINA IoHandler interface.
  *
  */
 
@@ -35,73 +35,73 @@ public abstract class LLRPIoHandlerAdapter extends IoHandlerAdapter{
 	/**
 	 * returns true if incoming KEEP_ALIVE messages are being acknowledged.
 	 */
-	
+
 	public abstract boolean isKeepAliveAck();
-	
+
 	/**
-	 * set whether incoming KEEP_ALIVE messages should be acknowledged. Default case is that 
+	 * set whether incoming KEEP_ALIVE messages should be acknowledged. Default case is that
 	 * KEEP_ALIVE messages are acknowledged.
-	 * 
+	 *
 	 * @param keepAliveAck true if KEEP_ALIVE messages are to be acknowledged
 	 */
-	
+
 	public abstract void setKeepAliveAck(boolean keepAliveAck);
-	
+
 	/**
 	 * returns true if incoming KEEP_ALIVE messages are being forwarded to the LLRPEndpoint.
-	 * 
-	 * 
+	 *
+	 *
 	 * @return keepAliveForward true if KEEP_ALIVE messages are forwarded, false otherwise
 	 */
-	
+
 	public abstract boolean isKeepAliveForward();
-	
-	
+
+
 	/**
 	 * set whether incoming KEEP_ALIVE messages are being forwarded to the LLRPEndpoint.
 	 * Default is with forwarding off.
-	 * 
+	 *
 	 * @param keepAliveForward true if KEEP_ALIVE messages are to be forwarded
 	 */
-	
+
 	public abstract void setKeepAliveForward(boolean keepAliveForward);
-	
+
 	/**
-	 * returns queue of all incoming messages where the messages type is equal to the one specified 
+	 * returns queue of all incoming messages where the messages type is equal to the one specified
 	 * in the IoSession parameter LLRPConnection.SYNC_MESSAGE_ANSWER. This method is required by
-	 * the transact (synchronous message sending) of the LLRP connections. 
+	 * the transact (synchronous message sending) of the LLRP connections.
 	 **/
 
 	public abstract BlockingQueue<LLRPMessage> getSynMessageQueue();
 
-	/** 
-	 * returns queue with all incoming ConnectionAttemptEvent parameters which were embedded in 
-	 * READER_NOTIFICATION messages. 
+	/**
+	 * returns queue with all incoming ConnectionAttemptEvent parameters which were embedded in
+	 * READER_NOTIFICATION messages.
 	 * The getConnectionAttemptEventQueue method is used
-	 * to fetch any ConnectionAttemptEvent that arrived in READER_NOTIFICATION messages. 
+	 * to fetch any ConnectionAttemptEvent that arrived in READER_NOTIFICATION messages.
 	 * These events are used by LLRPConnection objects
-	 * to check whether the connection could be established successfully. 
-	 **/ 
-	
+	 * to check whether the connection could be established successfully.
+	 **/
+
 	public abstract BlockingQueue<ConnectionAttemptEvent> getConnectionAttemptEventQueue();
 
-	/** 
+	/**
 	 * gets connection on which handler is operating
-	 * 
+	 *
 	 * @return connection
-	 **/ 
-	
+	 **/
+
 	public abstract LLRPConnection getConnection();
-	
-	/** 
+
+	/**
 	 * sets connection on which handler is operating
-	 * 
+	 *
 	 * @param connection
 	 **/
-	
+
 	public abstract void setConnection(LLRPConnection connection);
-	
-	
-	
+
+
+
 
 }

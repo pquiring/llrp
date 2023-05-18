@@ -17,7 +17,7 @@
 
 package org.llrp.ltk.net;
 
-import org.apache.mina.common.IoSession;
+import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolEncoder;
@@ -34,9 +34,9 @@ public class LLRPProtocolCodecFactory implements ProtocolCodecFactory {
 
 
 	/**
-	 * LLRPProtocolCodecFactory supports a single encoder/decoder type only: 
+	 * LLRPProtocolCodecFactory supports a single encoder/decoder type only:
 	 * The binary message binding in the LLRP specification.
-	 * 
+	 *
 	 * @param type Codec to be used (currently only LLRPProtocolCodecFactory.BINARY_ENCODING is supported)
 	 */
 
@@ -54,7 +54,7 @@ public class LLRPProtocolCodecFactory implements ProtocolCodecFactory {
 	}
 
 	/**
-	 * get protocol decoder for session specified. There is currently only a LLRPBinaryDecoder supported. 
+	 * get protocol decoder for session specified. There is currently only a LLRPBinaryDecoder supported.
 	 *
 	 * @param session
 	 * @return ProtocolDecoder
@@ -64,7 +64,7 @@ public class LLRPProtocolCodecFactory implements ProtocolCodecFactory {
 	}
 
 	/**
-	 * get protocol encoder for session specified. There is currently only a LLRPBinaryEncoder supported. 
+	 * get protocol encoder for session specified. There is currently only a LLRPBinaryEncoder supported.
 	 *
 	 * @param session
 	 * @return ProtocolEncoder
@@ -74,7 +74,7 @@ public class LLRPProtocolCodecFactory implements ProtocolCodecFactory {
 	}
 
 	/**
-	 * get protocol decoder. There is currently only a LLRPBinaryDecoder supported. 
+	 * get protocol decoder. There is currently only a LLRPBinaryDecoder supported.
 	 *
 	 * @return ProtocolDecoder
 	 */
@@ -83,13 +83,13 @@ public class LLRPProtocolCodecFactory implements ProtocolCodecFactory {
 	}
 
 	/**
-	 * get protocol encoder. There is currently only a LLRPBinaryEncoder supported. 
+	 * get protocol encoder. There is currently only a LLRPBinaryEncoder supported.
 	 *
 	 * @return ProtocolEncoder
 	 */
 	public ProtocolEncoder getEncoder() throws Exception {
 		return encoder;
 	}
-	
+
 
 }

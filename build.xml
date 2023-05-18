@@ -9,7 +9,7 @@
 
   <import file="${home}/base.xml"/>
 
-  <target name="depjars" depends="jar-mina,jar-jdom,jar-jargs,jar-log4j,jar-slf4j-api,jar-slf4j-log4j12,jar-xerces">
+  <target name="depjars" depends="jar-mina2,jar-jdom,jar-jargs,jar-log4j,jar-slf4j-api,jar-slf4j-log4j12,jar-xerces">
   </target>
 
   <target name="compile" depends="depjars" description="compile the source">
