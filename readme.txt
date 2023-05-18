@@ -1,4 +1,5 @@
-LLRP (ltkjava) Fork with fixes.
+LLRP (ltkjava) fork with fixes.
+Forked from https://sourceforge.net/projects/llrp-toolkit/
 
 Building:
   - check out javaforce
@@ -13,5 +14,8 @@ Building:
     cd llrp
     ant
 
+Major changes:
+ -0.1 : upgraded to mina 2.x
+
 Notes:
-  - JavaForce build scripts are only used to download dependancies
+  - JavaForce is only used for build scripts to download dependancies and build deployment artifacts
