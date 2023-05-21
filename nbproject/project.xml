@@ -46,11 +46,12 @@ auxiliary.show.customizer.message=<message>
                     <ide-action name="clean"/>
                 </context-menu>
             </view>
+            <subprojects/>
         </general-data>
         <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/5">
             <compilation-unit>
                 <package-root>src</package-root>
-                <classpath mode="compile">jargs.jar;jdom.jar;log4j.jar;mina.jar;slf4j-api.jar;slf4j-log4j12.jar;xerces.jar</classpath>
+                <classpath mode="compile">jargs.jar;jdom.jar;mina.jar;slf4j-api.jar;slf4j-log4j12.jar;xerces.jar;log4j-api.jar;log4j-core.jar;log4j-1.2-api.jar</classpath>
                 <source-level>11</source-level>
             </compilation-unit>
         </java-data>
