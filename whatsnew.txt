@@ -1,5 +1,9 @@
-2023/5/18 - v1.0.0.7-0.1
+2023/5/21 : 0.2
+  - replaced mina 2.x deprecated methods with proper alternatives
+  - add LLRPConnector.setReconnect(boolean) to control auto reconnecting
+
+2023/5/18 : 0.1
   - upgraded to mina 2.x
 
-2023/5/18 - v1.0.0.7
+2023/5/18 : v1.0.0.7
   - init commit with unmodified LLRP (ltkjava) v1.0.0.7

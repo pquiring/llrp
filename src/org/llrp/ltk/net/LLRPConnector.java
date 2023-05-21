@@ -51,6 +51,7 @@ public class LLRPConnector extends LLRPConnection{
 	private int port = 5084;
 	private org.apache.mina.transport.socket.SocketConnector connector;
 	private InetSocketAddress remoteAddress;
+        private boolean reconnect = true;
 
 
 	public LLRPConnector() {
@@ -131,9 +132,11 @@ public class LLRPConnector extends LLRPConnection{
 		connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new LLRPProtocolCodecFactory(LLRPProtocolCodecFactory.BINARY_ENCODING)));
 		// MINA 2.0 method
 		connector.setHandler(handler);
+                connector.setConnectTimeoutMillis(timeout);
 		remoteAddress = new InetSocketAddress(host, port);
+                System.out.println("LLRP Connect:" + host + ":" + port);
 		ConnectFuture future = connector.connect(remoteAddress);
-		future.join();// Wait until the connection attempt is finished.
+		future.awaitUninterruptibly();// Wait until the connection attempt is finished.
 
 		if(future.isConnected()){
 			session = future.getSession();
@@ -141,13 +144,10 @@ public class LLRPConnector extends LLRPConnection{
 			String msg = "failed to connect";
 			throw new LLRPConnectionAttemptFailedException(msg);
 		}
-		// MINA 2.0
-		future.awaitUninterruptibly();
 
 		//check if llrp reader reply with a status report to indicate connection success.
 		//the client shall not send any information to the reader until this status report message is received
 		checkLLRPConnectionAttemptStatus(timeout);
-
 	}
 
 
@@ -156,11 +156,16 @@ public class LLRPConnector extends LLRPConnection{
 	 */
 
 	public void disconnect(){
-		//IoSession session = future.getSession();
-		if (session != null && session.isConnected()){
-			CloseFuture future = session.close();
+                System.out.println("LLRP Disconnect:" + host + ":" + port);
+                if (connector != null) {
+//                        connector.dispose();
+                        connector = null;  //make reconnect() impossible
+                }
+		if (session != null) {
+			CloseFuture future = session.closeNow();
 			// MINA 2.0
 			future.awaitUninterruptibly();
+                        session = null;
 		}
 	}
 
@@ -174,9 +179,12 @@ public class LLRPConnector extends LLRPConnection{
 	 */
 
 	public boolean reconnect() {
-		ConnectFuture future = connector.connect(remoteAddress);
+		ConnectFuture future;
+
+                if (!reconnect) return false;
 
                 // MINA 1.0
+                //future = connector.connect(remoteAddress);
 		//future.join();		// Wait until the connection attempt is finished.
 
                 // MINA 2.0
@@ -202,6 +210,15 @@ public class LLRPConnector extends LLRPConnection{
 		return true;
 	}
 
+        /** get auto reconnecting state. */
+        public boolean getReconnect() {
+          return reconnect;
+        }
+
+        /** set auto reconnecting state. */
+        public void setReconnect(boolean state) {
+          reconnect = state;
+        }
 
 	/**
 	 * get host address of reader device.

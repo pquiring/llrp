@@ -150,7 +150,7 @@ public abstract class LLRPConnection {
 
 		WriteFuture writeFuture = session.write(message);
 		log.info(message.getName() + " transact ....");
-		writeFuture.join();
+		writeFuture.awaitUninterruptibly();
 
 
 		// Wait until a message is received.
