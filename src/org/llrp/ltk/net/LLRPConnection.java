@@ -40,6 +40,7 @@ public abstract class LLRPConnection {
 	protected LLRPEndpoint endpoint;
 	protected LLRPIoHandlerAdapter handler;
 	protected IoSession session;
+        protected long timeout;
 	private Logger log = Logger.getLogger(LLRPConnection.class);
 
 	public LLRPConnection(){
@@ -150,7 +151,7 @@ public abstract class LLRPConnection {
 
 		WriteFuture writeFuture = session.write(message);
 		log.info(message.getName() + " transact ....");
-		writeFuture.awaitUninterruptibly();
+		try {writeFuture.await(timeout);} catch (Exception e) {}
 
 
 		// Wait until a message is received.
