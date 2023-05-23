@@ -1,4 +1,4 @@
-LLRP (l4kjava) Fork with fixes.
+LLRP (l4kjava) fork "as is".
 
 Building:
   - check out javaforce
