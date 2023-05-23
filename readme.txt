@@ -1,6 +1,8 @@
 LLRP (ltkjava) fork with fixes.
 Forked from https://sourceforge.net/projects/llrp-toolkit/
 
+NOTE : There seems to be deadlock issues with mina 2.x, therefore use the org branch that uses mina 1.x
+
 Building:
   - check out javaforce
     git clone http://github.com/pquiring/javaforce
