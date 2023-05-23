@@ -1,0 +1,31 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>llrp</name>
+  <description>llrp</description>
+  <url>https://github.com/pquiring/llrp</url>
+
+  <groupId>io.github.pquiring</groupId>
+  <artifactId>llrp</artifactId>
+  <version>1.0.0.7</version>
+
+  <scm>
+    <url>https://github.com/pquiring/llrp</url>
+  </scm>
+
+  <licenses>
+    <license>
+      <name>Apache-2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Peter Quiring</name>
+      <email>pquiring@gmail.com</email>
+      <url>https://pquiring.github.io/</url>
+    </developer>
+  </developers>
+
+</project>
