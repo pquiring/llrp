@@ -127,16 +127,16 @@ public class LLRPConnector extends LLRPConnection{
 	 */
 
 	public void connect(long timeout) throws LLRPConnectionAttemptFailedException{
-                this.timeout = timeout;
+    this.timeout = timeout;
 		connector = new NioSocketConnector();
 		connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new LLRPProtocolCodecFactory(LLRPProtocolCodecFactory.BINARY_ENCODING)));
 		// MINA 2.0 method
 		connector.setHandler(handler);
-                connector.setConnectTimeoutMillis(timeout);
+    connector.setConnectTimeoutMillis(timeout);
 		remoteAddress = new InetSocketAddress(host, port);
-                System.out.println("LLRP Connect:" + host + ":" + port);
+    System.out.println("LLRP Connect:" + host + ":" + port);
 		ConnectFuture future = connector.connect(remoteAddress);
-		try {future.await(timeout);} catch (Exception e) {}  // Wait until the connection attempt is finished.
+		try {future.awaitUninterruptibly();} catch (Exception e) {}  // Wait until the connection attempt is finished.
 
 		if(future.isConnected()){
 			session = future.getSession();
@@ -187,7 +187,7 @@ public class LLRPConnector extends LLRPConnection{
 
                 // MINA 2.0
 		future = connector.connect();
-		try {future.await(timeout);} catch (Exception e) {}
+		try {future.awaitUninterruptibly();} catch (Exception e) {}
 
 		if(future.isConnected()){
 			session = future.getSession();

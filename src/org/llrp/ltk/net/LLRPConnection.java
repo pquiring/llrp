@@ -151,8 +151,7 @@ public abstract class LLRPConnection {
 
 		WriteFuture writeFuture = session.write(message);
 		log.info(message.getName() + " transact ....");
-		try {writeFuture.await(timeout);} catch (Exception e) {}
-
+		try {writeFuture.awaitUninterruptibly();} catch (Exception e) {}
 
 		// Wait until a message is received.
 		try {
