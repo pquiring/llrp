@@ -9,7 +9,7 @@
 
   <import file="${home}/base.xml"/>
 
-  <target name="depjars" depends="jar-mina2-core,jar-jdom,jar-jargs,jar-log4j-core,jar-log4j-api,jar-log4j-1.2-api,jar-slf4j-api,jar-slf4j-log4j12,jar-xerces">
+  <target name="depjars" depends="jar-mina2-core,jar-jdom,jar-jargs,jar-log4j-core,jar-log4j-api,jar-log4j-1.2-api,jar-slf4j-api,jar-slf4j-reload4j,jar-xerces">
   </target>
 
   <target name="compile" depends="depjars" description="compile the source">
@@ -25,7 +25,7 @@
         <fileset dir="." includes="log4j-api.jar"/>
         <fileset dir="." includes="log4j-1.2-api.jar"/>
         <fileset dir="." includes="slf4j-api.jar"/>
-        <fileset dir="." includes="slf4j-log4j12.jar"/>
+        <fileset dir="." includes="slf4j-reload4j.jar"/>
         <fileset dir="." includes="xerces.jar"/>
       </classpath>
     </javac>
