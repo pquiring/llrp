@@ -66,7 +66,7 @@ instantiate an LTK Java Message object from an LTK-XML file and convert it to
 the binary representation: 
 
 // build JDOM document from file<p>
-org.jdom.Document doc = new org.jdom.input.SAXBuilder().build(new
+org.jdom2.Document doc = new org.jdom2.input.SAXBuilder().build(new
                                  FileReader(filename));
 // create LTK-Java object<p>
 LLRPMessage message = LLRPMessageFactory.createLLRPMessage(doc);

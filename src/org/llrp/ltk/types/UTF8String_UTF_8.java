@@ -1,6 +1,6 @@
 package org.llrp.ltk.types;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * String in UTF8 Format

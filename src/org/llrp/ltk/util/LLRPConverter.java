@@ -32,7 +32,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
 import org.llrp.ltk.exceptions.InvalidLLRPMessageException;
 import org.llrp.ltk.types.LLRPMessage;
 

@@ -15,7 +15,7 @@
  */
 package org.llrp.ltk.types;
 
-import org.jdom.Namespace;
+import org.jdom2.Namespace;
 
 /**
  * Super Type for all numerical types!

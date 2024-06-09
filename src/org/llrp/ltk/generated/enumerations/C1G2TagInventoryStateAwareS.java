@@ -28,10 +28,10 @@ package org.llrp.ltk.generated.enumerations;
 
 import org.apache.log4j.Logger;
 
-import org.jdom.Content;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.Text;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.jdom2.Text;
 
 import org.llrp.ltk.generated.LLRPConstants;
 import org.llrp.ltk.types.Bit;

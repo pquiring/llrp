@@ -12,10 +12,10 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.jdom.Content;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.Text;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.jdom2.Text;
 
 public class UnsignedLong_DATETIME extends UnsignedLong {
 

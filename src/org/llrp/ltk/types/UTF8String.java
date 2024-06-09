@@ -17,12 +17,12 @@ package org.llrp.ltk.types;
 
 import java.math.BigInteger;
 
-import org.jdom.Content;
-import org.jdom.Element;
-import org.jdom.IllegalDataException;
-import org.jdom.Namespace;
-import org.jdom.Text;
-import org.jdom.Verifier;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.jdom2.IllegalDataException;
+import org.jdom2.Namespace;
+import org.jdom2.Text;
+import org.jdom2.Verifier;
 
 /**
  * Strig with UT8 Encoding!
@@ -156,7 +156,7 @@ public class UTF8String extends LLRPType {
   public Content encodeXML(String name, Namespace ns) {
     Element element = new Element(name, ns);
 
-    // org.jdom.Text includes a method call to org.jdom.Verifier.checkCharacterData
+    // org.jdom2.Text includes a method call to org.jdom2.Verifier.checkCharacterData
     // if this check fails, the IllegalDataException is thrown.
     // Our code then eliminates the illegal XML Character.
     try {

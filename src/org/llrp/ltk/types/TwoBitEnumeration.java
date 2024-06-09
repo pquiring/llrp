@@ -15,7 +15,7 @@
  */
 package org.llrp.ltk.types;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * Enumerations that can hold 4 values (2 bits) at most

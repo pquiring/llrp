@@ -26,8 +26,8 @@ package org.llrp.ltk.generated;
 
 import org.apache.log4j.Logger;
 
-import org.jdom.Document;
-import org.jdom.Element;
+import org.jdom2.Document;
+import org.jdom2.Element;
 
 import org.llrp.ltk.exceptions.InvalidLLRPMessageException;
 import org.llrp.ltk.generated.messages.*;
@@ -44,7 +44,7 @@ import java.util.HashMap;
  *
  * Example: Input a LLRP message in LTK XML format and output the binary representation:
  *
- * // build JDOM document from file org.jdom.Document doc = new org.jdom.input.SAXBuilder().build(new FileReader(filename)); // create LTK-Java object LLRPMessage message =
+ * // build JDOM document from file org.jdom2.Document doc = new org.jdom2.input.SAXBuilder().build(new FileReader(filename)); // create LTK-Java object LLRPMessage message =
  * LLRPMessageFactory.createLLRPMessage(doc);
  *
  * // output as a binary message byte[] output = message.encodeBinary();

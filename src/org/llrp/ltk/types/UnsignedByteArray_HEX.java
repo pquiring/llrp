@@ -3,10 +3,10 @@ package org.llrp.ltk.types;
 import java.math.BigInteger;
 import java.util.LinkedList;
 
-import org.jdom.Content;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.Text;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.jdom2.Text;
 
 /**
  * Array of unsigned bytes encoded in HEX Format. Length encoded in first 16 bits of binary encoding

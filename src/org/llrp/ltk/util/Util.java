@@ -9,10 +9,10 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import org.llrp.ltk.exceptions.InvalidLLRPMessageException;
 import org.llrp.ltk.generated.LLRPMessageFactory;
 import org.llrp.ltk.types.LLRPBitList;
@@ -112,7 +112,7 @@ public class Util {
    */
   public static LLRPMessage loadXMLLLRPMessage(File file) throws FileNotFoundException, IOException, JDOMException, InvalidLLRPMessageException {
 
-    Document doc = new org.jdom.input.SAXBuilder().build(new FileReader(file));
+    Document doc = new org.jdom2.input.SAXBuilder().build(new FileReader(file));
     XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
     LOGGER.debug("Loaded XML Message: " + outputter.outputString(doc));
     LLRPMessage message = LLRPMessageFactory.createLLRPMessage(doc);

@@ -30,9 +30,9 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.apache.log4j.Logger;
-import org.jdom.Document;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Document;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import org.llrp.ltk.exceptions.InvalidLLRPMessageException;
 import org.llrp.ltk.exceptions.MissingParameterException;
 import org.llrp.ltk.util.LLRPExternalResourceResolver;

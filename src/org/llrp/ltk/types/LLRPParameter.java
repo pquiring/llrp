@@ -15,9 +15,9 @@
  */
 package org.llrp.ltk.types;
 
-import org.jdom.Content;
-import org.jdom.Element;
-import org.jdom.Namespace;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
 import org.llrp.ltk.exceptions.InvalidLLRPMessageException;
 
 /**
