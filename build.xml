@@ -29,7 +29,9 @@
     <!-- Compile the java code from ${src} into ${build} -->
     <mkdir dir="${build}"/>
     <javac srcdir="${src}" destdir="${build}" deprecation="true" target="${jdkver}" source="${jdkver}" debug="true" includeantruntime="false">
-      <classpath path="${classpath}"/>
+      <classpath>
+        <fileset refid="classpath"/>
+      </classpath>
     </javac>
   </target>
 
