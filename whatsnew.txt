@@ -1,3 +1,7 @@
+2024/6/8 : 0.3
+  - upgraded to slf/2.x
+  - fixed connection issues
+
 2023/5/21 : 0.2
   - replaced mina 2.x deprecated methods with proper alternatives
   - add LLRPConnector.setReconnect(boolean) to control auto reconnecting
