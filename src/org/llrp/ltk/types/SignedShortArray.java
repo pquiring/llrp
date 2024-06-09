@@ -22,291 +22,280 @@ import org.jdom.Text;
 
 /**
  * Array of 16 bit signed shorts - length encoded in first 16 bits of binary encoding
- * 
+ *
  * @author gasserb
  */
 public class SignedShortArray extends LLRPType {
-	protected SignedShort[] shorts;
 
-	/**
-	 * Creates a new SignedShortArray object.
-	 * 
-	 * @param shorts
-	 *            to create array from
-	 */
-	public SignedShortArray(SignedShort[] shorts) {
-		this.shorts = shorts.clone();
-	}
+  protected SignedShort[] shorts;
 
-	/**
-	 * Creates a new SignedShortArray object.
-	 * 
-	 * @param shortString
-	 *            of shorts
-	 */
-	public SignedShortArray(String shortString) {
-		if (shortString.equals("")) {
-			shorts = new SignedShort[0];
-		} else {
-			String[] strings = shortString.split(" ");
-			shorts = new SignedShort[strings.length];
+  /**
+   * Creates a new SignedShortArray object.
+   *
+   * @param shorts to create array from
+   */
+  public SignedShortArray(SignedShort[] shorts) {
+    this.shorts = shorts.clone();
+  }
 
-			for (int i = 0; i < strings.length; i++) {
-				shorts[i] = new SignedShort(strings[i]);
-			}
-		}
-	}
+  /**
+   * Creates a new SignedShortArray object.
+   *
+   * @param shortString of shorts
+   */
+  public SignedShortArray(String shortString) {
+    if (shortString.equals("")) {
+      shorts = new SignedShort[0];
+    } else {
+      String[] strings = shortString.split(" ");
+      shorts = new SignedShort[strings.length];
 
-	public SignedShortArray(short[] data) {
-		this.shorts = new SignedShort[data.length];
-		for (int i = 0; i < data.length; i++) {
-			shorts[i] = new SignedShort(data[i]);
-		}
-	}
+      for (int i = 0; i < strings.length; i++) {
+        shorts[i] = new SignedShort(strings[i]);
+      }
+    }
+  }
 
-	/**
-	 * Creates a new SignedShortArray object from jdom element - used for xml
-	 * decoding
-	 * 
-	 * @param element
-	 *            to be decoded
-	 */
-	public SignedShortArray(Element element) {
-		decodeXML(element);
-	}
+  public SignedShortArray(short[] data) {
+    this.shorts = new SignedShort[data.length];
+    for (int i = 0; i < data.length; i++) {
+      shorts[i] = new SignedShort(data[i]);
+    }
+  }
 
-	/**
-	 * Creates a new SignedShortArray object.
-	 * 
-	 * @param length
-	 *            of array
-	 */
-	public SignedShortArray(int length) {
-		shorts = new SignedShort[length];
-	}
+  /**
+   * Creates a new SignedShortArray object from jdom element - used for xml decoding
+   *
+   * @param element to be decoded
+   */
+  public SignedShortArray(Element element) {
+    decodeXML(element);
+  }
 
-	/**
-	 * first 16 bits of LLRPBitlist must indicate number of entries that follow
-	 * 
-	 * @param bits
-	 *            to be decoded
-	 */
-	public SignedShortArray(LLRPBitList bits) {
-		decodeBinary(bits);
-	}
+  /**
+   * Creates a new SignedShortArray object.
+   *
+   * @param length of array
+   */
+  public SignedShortArray(int length) {
+    shorts = new SignedShort[length];
+  }
 
-	/**
-	 * Creates an empty SignedShortArray. Do not call method 'set' on an empty
-	 * array. Add SignedShorts by calling the add method
-	 */
-	public SignedShortArray() {
-		shorts = new SignedShort[0];
-	}
+  /**
+   * first 16 bits of LLRPBitlist must indicate number of entries that follow
+   *
+   * @param bits to be decoded
+   */
+  public SignedShortArray(LLRPBitList bits) {
+    decodeBinary(bits);
+  }
 
-	/**
-	 * first 16 bits of LLRPBitlist must indicate number of entries that follow
-	 * 
-	 * @param list
-	 *            to be decoded
-	 */
-	public void decodeBinary(LLRPBitList list) {
-		Integer length = new SignedShort(list.subList(0, SignedShort.length()))
-				.toInteger();
-		shorts = new SignedShort[length];
+  /**
+   * Creates an empty SignedShortArray. Do not call method 'set' on an empty array. Add SignedShorts by calling the add method
+   */
+  public SignedShortArray() {
+    shorts = new SignedShort[0];
+  }
 
-		for (int i = 0; i < length; i++) {
-			shorts[i] = new SignedShort(list.subList(i
-					* SignedShort.length() + SignedShort.length(),
-					SignedShort.length()));
-		}
-	}
+  /**
+   * first 16 bits of LLRPBitlist must indicate number of entries that follow
+   *
+   * @param list to be decoded
+   */
+  public void decodeBinary(LLRPBitList list) {
+    Integer length = new SignedShort(list.subList(0, SignedShort.length()))
+      .toInteger();
+    shorts = new SignedShort[length];
 
-	/**
-	 * encodes length before encoding containing values
-	 * 
-	 * @return LLRPBitList
-	 */
-	public LLRPBitList encodeBinary() {
-		LLRPBitList result = new LLRPBitList();
-		result.append(new SignedShort(shorts.length).encodeBinary());
+    for (int i = 0; i < length; i++) {
+      shorts[i] = new SignedShort(list.subList(i
+        * SignedShort.length() + SignedShort.length(),
+        SignedShort.length()));
+    }
+  }
 
-		for (int i = 0; i < shorts.length; i++) {
-			result.append(shorts[i].encodeBinary());
-		}
+  /**
+   * encodes length before encoding containing values
+   *
+   * @return LLRPBitList
+   */
+  public LLRPBitList encodeBinary() {
+    LLRPBitList result = new LLRPBitList();
+    result.append(new SignedShort(shorts.length).encodeBinary());
 
-		return result;
-	}
+    for (int i = 0; i < shorts.length; i++) {
+      result.append(shorts[i].encodeBinary());
+    }
 
-	/**
-	 * compare each element
-	 * 
-	 * @param other
-	 *            to compare
-	 * 
-	 * @return boolean
-	 */
-	public boolean equals(LLRPType other) {
-		SignedShortArray ba = (SignedShortArray) other;
+    return result;
+  }
 
-		if (ba.size() != (this.size())) {
-			return false;
-		}
+  /**
+   * compare each element
+   *
+   * @param other to compare
+   *
+   * @return boolean
+   */
+  public boolean equals(LLRPType other) {
+    SignedShortArray ba = (SignedShortArray) other;
 
-		for (int i = 0; i < shorts.length; i++) {
-			if (!ba.get(i).equals(this.get(i))) {
-				return false;
-			}
-		}
+    if (ba.size() != (this.size())) {
+      return false;
+    }
 
-		return true;
-	}
+    for (int i = 0; i < shorts.length; i++) {
+      if (!ba.get(i).equals(this.get(i))) {
+        return false;
+      }
+    }
 
-	/**
-	 * get SignedShort at specified position
-	 * 
-	 * @param i
-	 *            position
-	 * 
-	 * @return SignedShort
-	 */
-	public SignedShort get(int i) {
-		return shorts[i];
-	}
+    return true;
+  }
 
-	/**
-	 * lenght in bits
-	 * 
-	 * @return Integer
-	 */
-	public int getBitLength() {
-		return shorts.length * SignedShort.length();
-	}
+  /**
+   * get SignedShort at specified position
+   *
+   * @param i position
+   *
+   * @return SignedShort
+   */
+  public SignedShort get(int i) {
+    return shorts[i];
+  }
 
-	/**
-	 * length in bytes
-	 * 
-	 * @return Integer
-	 */
-	public int getByteLength() {
-		return shorts.length * 2;
-	}
+  /**
+   * lenght in bits
+   *
+   * @return Integer
+   */
+  public int getBitLength() {
+    return shorts.length * SignedShort.length();
+  }
 
-	/**
-	 * length of BaseType not array - for array length call size()
-	 * 
-	 * @return int
-	 */
-	public static int length() {
-		return SignedShort.length();
-	}
+  /**
+   * length in bytes
+   *
+   * @return Integer
+   */
+  public int getByteLength() {
+    return shorts.length * 2;
+  }
 
-	/**
-	 * set SignedShort at given location
-	 * 
-	 * @param i
-	 *            position
-	 * @param b
-	 *            SignedShort to be set
-	 */
-	public void set(int i, SignedShort b) {
-		if ((i < 0) || (i > shorts.length)) {
-			return;
-		} else {
-			shorts[i] = b;
-		}
-	}
+  /**
+   * length of BaseType not array - for array length call size()
+   *
+   * @return int
+   */
+  public static int length() {
+    return SignedShort.length();
+  }
 
-	/**
-	 * number of elements in array
-	 * 
-	 * @return int
-	 */
-	public int size() {
-		return shorts.length;
-	}
+  /**
+   * set SignedShort at given location
+   *
+   * @param i position
+   * @param b SignedShort to be set
+   */
+  public void set(int i, SignedShort b) {
+    if ((i < 0) || (i > shorts.length)) {
+      return;
+    } else {
+      shorts[i] = b;
+    }
+  }
 
-	@Override
-	public Content encodeXML(String name, Namespace ns) {
+  /**
+   * number of elements in array
+   *
+   * @return int
+   */
+  public int size() {
+    return shorts.length;
+  }
 
-		Element element = new Element(name, ns);
-		element.setContent(new Text(toString()));
+  @Override
+  public Content encodeXML(String name, Namespace ns) {
 
-		return element;
-	}
+    Element element = new Element(name, ns);
+    element.setContent(new Text(toString()));
 
-	@Override
-	public void decodeXML(Element element) {
-		String text = element.getText();
-		if (text == null || text.equals("")){
-			shorts = new SignedShort[0];
-			return;
-		}
-		String[] strings = text.split(" ");
-		shorts = new SignedShort[strings.length];
+    return element;
+  }
 
-		for (int i = 0; i < strings.length; i++) {
-			shorts[i] = new SignedShort(strings[i]);
-		}
-	}
+  @Override
+  public void decodeXML(Element element) {
+    String text = element.getText();
+    if (text == null || text.equals("")) {
+      shorts = new SignedShort[0];
+      return;
+    }
+    String[] strings = text.split(" ");
+    shorts = new SignedShort[strings.length];
 
-	public void add(SignedShort aShort) {
-		SignedShort[] newShorts = new SignedShort[shorts.length + 1];
-		System.arraycopy(shorts, 0, newShorts, 0, shorts.length);
-		newShorts[shorts.length] = aShort;
-		shorts = newShorts;
-	}
+    for (int i = 0; i < strings.length; i++) {
+      shorts[i] = new SignedShort(strings[i]);
+    }
+  }
 
-	public int hashCode() {
-		return shorts.hashCode();
-	}
+  public void add(SignedShort aShort) {
+    SignedShort[] newShorts = new SignedShort[shorts.length + 1];
+    System.arraycopy(shorts, 0, newShorts, 0, shorts.length);
+    newShorts[shorts.length] = aShort;
+    shorts = newShorts;
+  }
 
-	public short[] toShortArray() {
-		short[] result = new short[shorts.length];
-		for (int i = 0; i < shorts.length; i++) {
-			result[i] = shorts[i].toShort();
-		}
-		return result;
-	}
+  public int hashCode() {
+    return shorts.hashCode();
+  }
 
-	@Override
-	public String toString(int radix) {
-		String s = "";
-		for (SignedShort b : shorts) {
-			if (b != null) {
-				s += " " + b.toString(radix);
-			}
-		}
-		return s;
-	}
+  public short[] toShortArray() {
+    short[] result = new short[shorts.length];
+    for (int i = 0; i < shorts.length; i++) {
+      result[i] = shorts[i].toShort();
+    }
+    return result;
+  }
 
-	public String toString() {
-		String s = "";
+  @Override
+  public String toString(int radix) {
+    String s = "";
+    for (SignedShort b : shorts) {
+      if (b != null) {
+        s += " " + b.toString(radix);
+      }
+    }
+    return s;
+  }
 
-		for (SignedShort b : shorts) {
+  public String toString() {
+    String s = "";
 
-			if (b != null) {
-				s += " " + b.toInteger().toString();
-			}
-		}
+    for (SignedShort b : shorts) {
 
-		s = s.replaceFirst(" ", "");
-		return s;
-	}
+      if (b != null) {
+        s += " " + b.toInteger().toString();
+      }
+    }
 
-	/**
-	 * expects a string as formated for XML
-	 */
-	public boolean inRange(String valueString) {
-		String[] strings = valueString.split(" ");
-		// try do create each element. If one failes, the whole string is
-		// illegal
-		for (int i = 0; i < strings.length; i++) {
-			try {
-				new SignedShort(strings[i]);
-			} catch (IllegalArgumentException e) {
-				return false;
-			}
-		}
-		return true;
-	}
+    s = s.replaceFirst(" ", "");
+    return s;
+  }
+
+  /**
+   * expects a string as formated for XML
+   */
+  public boolean inRange(String valueString) {
+    String[] strings = valueString.split(" ");
+    // try do create each element. If one failes, the whole string is
+    // illegal
+    for (int i = 0; i < strings.length; i++) {
+      try {
+        new SignedShort(strings[i]);
+      } catch (IllegalArgumentException e) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

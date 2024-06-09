@@ -17,61 +17,61 @@ package org.llrp.ltk.types;
 
 import org.jdom.Element;
 
-
 /**
  * Enumerations that can hold 4 values (2 bits) at most
  *
  * @author Basil Gasser - ETH Zurich
  */
 public class TwoBitEnumeration extends SignedByte {
-    private static final int LENGTH = 2;
 
-    /**
-         * Creates a new TwoBitEnumeration object.
-         */
-    public TwoBitEnumeration() {
-        super(0);
+  private static final int LENGTH = 2;
+
+  /**
+   * Creates a new TwoBitEnumeration object.
+   */
+  public TwoBitEnumeration() {
+    super(0);
+  }
+
+  /**
+   * Creates a new TwoBitEnumeration object from jdom element - used for xml decoding
+   *
+   * @param element to be decoded
+   */
+  public TwoBitEnumeration(Element element) {
+    decodeXML(element);
+  }
+
+  /**
+   * Creates a new TwoBitEnumeration object.
+   *
+   * @param value to set
+   */
+  public TwoBitEnumeration(int value) {
+    super(value);
+  }
+
+  /**
+   * overwritte encode
+   *
+   * @return LLRPBitList of length 2
+   */
+  public LLRPBitList encodeBinary() {
+    LLRPBitList result = new LLRPBitList(Integer.toBinaryString(value));
+
+    if (result.length() < LENGTH) {
+      result.pad(LENGTH - result.length());
     }
 
-    /**
-     * Creates a new TwoBitEnumeration object from jdom element - used for xml decoding
-     *
-     * @param element to be decoded
-     */
-    public TwoBitEnumeration(Element element) {
-        decodeXML(element);
-    }
+    return result.subList(result.length() - LENGTH, LENGTH);
+  }
 
-    /**
-         * Creates a new TwoBitEnumeration object.
-         *
-         * @param value to set
-         */
-    public TwoBitEnumeration(int value) {
-        super(value);
-    }
-
-    /**
-     * overwritte encode
-     *
-     * @return LLRPBitList of length 2
-     */
-    public LLRPBitList encodeBinary() {
-        LLRPBitList result = new LLRPBitList(Integer.toBinaryString(value));
-
-        if (result.length() < LENGTH) {
-            result.pad(LENGTH - result.length());
-        }
-
-        return result.subList(result.length() - LENGTH, LENGTH);
-    }
-
-    /**
-     * number of bits to represent this type
-     *
-     * @return Integer
-     */
-    public static int length() {
-        return LENGTH;
-    }
+  /**
+   * number of bits to represent this type
+   *
+   * @return Integer
+   */
+  public static int length() {
+    return LENGTH;
+  }
 }

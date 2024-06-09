@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,507 +50,510 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * Describes the frequency, power, and air-protocol capabilities for the regulatory region.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=49&view=fit">LLRP Specification Section 9.2.4.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=134&view=fit">LLRP Specification Section 16.2.3.4.1</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=49&view=fit">LLRP Specification Section 9.2.4.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=134&view=fit">LLRP Specification Section 16.2.3.4.1</a>}
+ *
+ *
  */
-
 /**
  * Describes the frequency, power, and air-protocol capabilities for the regulatory region.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=49&view=fit">LLRP Specification Section 9.2.4.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=134&view=fit">LLRP Specification Section 16.2.3.4.1</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=49&view=fit">LLRP Specification Section 9.2.4.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=134&view=fit">LLRP Specification Section 16.2.3.4.1</a>}
+ *
+ * .
  */
 public class UHFBandCapabilities extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(144);
-    private static final Logger LOGGER = Logger.getLogger(UHFBandCapabilities.class);
-    protected List<TransmitPowerLevelTableEntry> transmitPowerLevelTableEntryList =
-        new LinkedList<TransmitPowerLevelTableEntry>();
-    protected FrequencyInformation frequencyInformation;
-    protected List<AirProtocolUHFRFModeTable> airProtocolUHFRFModeTableList = new LinkedList<AirProtocolUHFRFModeTable>();
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public UHFBandCapabilities() {
+  public static final SignedShort TYPENUM = new SignedShort(144);
+  private static final Logger LOGGER = Logger.getLogger(UHFBandCapabilities.class);
+  protected List<TransmitPowerLevelTableEntry> transmitPowerLevelTableEntryList
+    = new LinkedList<TransmitPowerLevelTableEntry>();
+  protected FrequencyInformation frequencyInformation;
+  protected List<AirProtocolUHFRFModeTable> airProtocolUHFRFModeTableList = new LinkedList<AirProtocolUHFRFModeTable>();
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public UHFBandCapabilities() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public UHFBandCapabilities(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public UHFBandCapabilities(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (transmitPowerLevelTableEntryList == null) {
+      LOGGER.warn(" transmitPowerLevelTableEntryList not set");
+
+      //parameter has to be set - throw exception
+      throw new MissingParameterException(
+        " transmitPowerLevelTableEntryList not set");
+    } else {
+      for (TransmitPowerLevelTableEntry field : transmitPowerLevelTableEntryList) {
+        resultBits.append(field.encodeBinary());
+      }
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public UHFBandCapabilities(LLRPBitList list) {
-        decodeBinary(list);
+    if (frequencyInformation == null) {
+      // single parameter, may not be null
+      LOGGER.warn(" frequencyInformation not set");
+      throw new MissingParameterException(" frequencyInformation not set");
+    } else {
+      resultBits.append(frequencyInformation.encodeBinary());
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public UHFBandCapabilities(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    if (airProtocolUHFRFModeTableList == null) {
+      LOGGER.warn(" airProtocolUHFRFModeTableList not set");
+
+      //parameter has to be set - throw exception
+      throw new MissingParameterException(
+        " airProtocolUHFRFModeTableList not set");
+    } else {
+      for (AirProtocolUHFRFModeTable field : airProtocolUHFRFModeTableList) {
+        resultBits.append(field.encodeBinary());
+      }
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    return resultBits;
+  }
 
-        if (transmitPowerLevelTableEntryList == null) {
-            LOGGER.warn(" transmitPowerLevelTableEntryList not set");
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-            //parameter has to be set - throw exception
-            throw new MissingParameterException(
-                " transmitPowerLevelTableEntryList not set");
-        } else {
-            for (TransmitPowerLevelTableEntry field : transmitPowerLevelTableEntryList) {
-                resultBits.append(field.encodeBinary());
-            }
-        }
-
-        if (frequencyInformation == null) {
-            // single parameter, may not be null
-            LOGGER.warn(" frequencyInformation not set");
-            throw new MissingParameterException(" frequencyInformation not set");
-        } else {
-            resultBits.append(frequencyInformation.encodeBinary());
-        }
-
-        if (airProtocolUHFRFModeTableList == null) {
-            LOGGER.warn(" airProtocolUHFRFModeTableList not set");
-
-            //parameter has to be set - throw exception
-            throw new MissingParameterException(
-                " airProtocolUHFRFModeTableList not set");
-        } else {
-            for (AirProtocolUHFRFModeTable field : airProtocolUHFRFModeTableList) {
-                resultBits.append(field.encodeBinary());
-            }
-        }
-
-        return resultBits;
+    //parameters
+    if (transmitPowerLevelTableEntryList == null) {
+      LOGGER.warn(" transmitPowerLevelTableEntryList not set");
+      throw new MissingParameterException(
+        "  transmitPowerLevelTableEntryList not set");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        //parameters
-        if (transmitPowerLevelTableEntryList == null) {
-            LOGGER.warn(" transmitPowerLevelTableEntryList not set");
-            throw new MissingParameterException(
-                "  transmitPowerLevelTableEntryList not set");
-        }
-
-        for (TransmitPowerLevelTableEntry field : transmitPowerLevelTableEntryList) {
-            element.addContent(field.encodeXML(field.getClass().getName()
-                                                    .replaceAll(field.getClass()
-                                                                     .getPackage()
-                                                                     .getName() +
-                        ".", ""), ns));
-        }
-
-        if (frequencyInformation == null) {
-            LOGGER.info("frequencyInformation not set");
-            throw new MissingParameterException("frequencyInformation not set");
-        } else {
-            element.addContent(frequencyInformation.encodeXML(
-                    frequencyInformation.getClass().getSimpleName(), ns));
-        }
-
-        if (airProtocolUHFRFModeTableList == null) {
-            LOGGER.warn(" airProtocolUHFRFModeTableList not set");
-            throw new MissingParameterException(
-                "  airProtocolUHFRFModeTableList not set");
-        }
-
-        for (AirProtocolUHFRFModeTable field : airProtocolUHFRFModeTableList) {
-            element.addContent(field.encodeXML(field.getClass().getName()
-                                                    .replaceAll(field.getClass()
-                                                                     .getPackage()
-                                                                     .getName() +
-                        ".", ""), ns));
-        }
-
-        return element;
+    for (TransmitPowerLevelTableEntry field : transmitPowerLevelTableEntryList) {
+      element.addContent(field.encodeXML(field.getClass().getName()
+        .replaceAll(field.getClass()
+          .getPackage()
+          .getName()
+          + ".", ""), ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
+    if (frequencyInformation == null) {
+      LOGGER.info("frequencyInformation not set");
+      throw new MissingParameterException("frequencyInformation not set");
+    } else {
+      element.addContent(frequencyInformation.encodeXML(
+        frequencyInformation.getClass().getSimpleName(), ns));
+    }
 
-        // list of parameters
-        transmitPowerLevelTableEntryList = new LinkedList<TransmitPowerLevelTableEntry>();
-        LOGGER.debug("decoding parameter transmitPowerLevelTableEntryList ");
+    if (airProtocolUHFRFModeTableList == null) {
+      LOGGER.warn(" airProtocolUHFRFModeTableList not set");
+      throw new MissingParameterException(
+        "  airProtocolUHFRFModeTableList not set");
+    }
 
-        while (position < binary.length()) {
-            // store if one parameter matched
-            boolean atLeastOnce = false;
+    for (AirProtocolUHFRFModeTable field : airProtocolUHFRFModeTableList) {
+      element.addContent(field.encodeXML(field.getClass().getName()
+        .replaceAll(field.getClass()
+          .getPackage()
+          .getName()
+          + ".", ""), ns));
+    }
 
-            // look ahead to see type
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
+    return element;
+  }
 
-            //add parameter to list if type number matches
-            if ((type != null) &&
-                    type.equals(TransmitPowerLevelTableEntry.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = TransmitPowerLevelTableEntry.length();
-                }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
 
-                transmitPowerLevelTableEntryList.add(new TransmitPowerLevelTableEntry(
-                        binary.subList(position, tempLength)));
-                LOGGER.debug(
-                    "adding TransmitPowerLevelTableEntry to transmitPowerLevelTableEntryList ");
-                atLeastOnce = true;
-                position += tempLength;
-            }
+    // list of parameters
+    transmitPowerLevelTableEntryList = new LinkedList<TransmitPowerLevelTableEntry>();
+    LOGGER.debug("decoding parameter transmitPowerLevelTableEntryList ");
 
-            if (!atLeastOnce) {
-                //no parameter matched therefore we jump out of the loop
-                break;
-            }
-        }
+    while (position < binary.length()) {
+      // store if one parameter matched
+      boolean atLeastOnce = false;
 
-        //if list is still empty no parameter matched
-        if (transmitPowerLevelTableEntryList.isEmpty()) {
-            LOGGER.warn(
-                "encoded message does not contain parameter for non optional transmitPowerLevelTableEntryList");
-            throw new MissingParameterException(
-                "UHFBandCapabilities misses non optional parameter of type TransmitPowerLevelTableEntry");
-        }
+      // look ahead to see type
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
 
-        // look ahead to see type
-        // may be optional or exactly once
-        type = null;
-        tempByteLength = 0;
-        tempLength = 0;
-
-        try {
-            // if first bit is one it is a TV Parameter
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-        } catch (IllegalArgumentException le) {
-            // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
-            LOGGER.warn(
-                "UHFBandCapabilities misses non optional parameter of type FrequencyInformation");
-            throw new MissingParameterException(
-                "UHFBandCapabilities misses non optional parameter of type FrequencyInformation");
-        }
-
+      //add parameter to list if type number matches
+      if ((type != null)
+        && type.equals(TransmitPowerLevelTableEntry.TYPENUM)) {
         if (binary.get(position)) {
-            // length can statically be determined for TV Parameters
-            tempLength = frequencyInformation.length();
+          // length can statically be determined for TV Parameters
+          tempLength = TransmitPowerLevelTableEntry.length();
         }
 
-        if ((type != null) && type.equals(FrequencyInformation.TYPENUM)) {
-            frequencyInformation = new FrequencyInformation(binary.subList(
-                        position, tempLength));
-            position += tempLength;
-            LOGGER.debug(
-                " frequencyInformation is instantiated with FrequencyInformation with length" +
-                tempLength);
-        } else {
-            LOGGER.warn(
-                "UHFBandCapabilities misses non optional parameter of type FrequencyInformation");
-            throw new MissingParameterException(
-                "UHFBandCapabilities misses non optional parameter of type FrequencyInformation");
+        transmitPowerLevelTableEntryList.add(new TransmitPowerLevelTableEntry(
+          binary.subList(position, tempLength)));
+        LOGGER.debug(
+          "adding TransmitPowerLevelTableEntry to transmitPowerLevelTableEntryList ");
+        atLeastOnce = true;
+        position += tempLength;
+      }
+
+      if (!atLeastOnce) {
+        //no parameter matched therefore we jump out of the loop
+        break;
+      }
+    }
+
+    //if list is still empty no parameter matched
+    if (transmitPowerLevelTableEntryList.isEmpty()) {
+      LOGGER.warn(
+        "encoded message does not contain parameter for non optional transmitPowerLevelTableEntryList");
+      throw new MissingParameterException(
+        "UHFBandCapabilities misses non optional parameter of type TransmitPowerLevelTableEntry");
+    }
+
+    // look ahead to see type
+    // may be optional or exactly once
+    type = null;
+    tempByteLength = 0;
+    tempLength = 0;
+
+    try {
+      // if first bit is one it is a TV Parameter
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+    } catch (IllegalArgumentException le) {
+      // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
+      LOGGER.warn(
+        "UHFBandCapabilities misses non optional parameter of type FrequencyInformation");
+      throw new MissingParameterException(
+        "UHFBandCapabilities misses non optional parameter of type FrequencyInformation");
+    }
+
+    if (binary.get(position)) {
+      // length can statically be determined for TV Parameters
+      tempLength = frequencyInformation.length();
+    }
+
+    if ((type != null) && type.equals(FrequencyInformation.TYPENUM)) {
+      frequencyInformation = new FrequencyInformation(binary.subList(
+        position, tempLength));
+      position += tempLength;
+      LOGGER.debug(
+        " frequencyInformation is instantiated with FrequencyInformation with length"
+        + tempLength);
+    } else {
+      LOGGER.warn(
+        "UHFBandCapabilities misses non optional parameter of type FrequencyInformation");
+      throw new MissingParameterException(
+        "UHFBandCapabilities misses non optional parameter of type FrequencyInformation");
+    }
+
+    // list of parameters
+    airProtocolUHFRFModeTableList = new LinkedList<AirProtocolUHFRFModeTable>();
+    LOGGER.debug("decoding parameter airProtocolUHFRFModeTableList ");
+
+    while (position < binary.length()) {
+      // store if one parameter matched
+      boolean atLeastOnce = false;
+
+      // look ahead to see type
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+
+      //choiceRef
+      if ((type != null) && type.equals(C1G2UHFRFModeTable.TYPENUM)) {
+        if (binary.get(position)) {
+          // length can statically be determined for TV Parameters
+          tempLength = C1G2UHFRFModeTable.length();
         }
 
-        // list of parameters
-        airProtocolUHFRFModeTableList = new LinkedList<AirProtocolUHFRFModeTable>();
-        LOGGER.debug("decoding parameter airProtocolUHFRFModeTableList ");
+        airProtocolUHFRFModeTableList.add(new C1G2UHFRFModeTable(
+          binary.subList(position, tempLength)));
+        LOGGER.debug(
+          "adding C1G2UHFRFModeTable to airProtocolUHFRFModeTableList ");
+        position += tempLength;
+        atLeastOnce = true;
+      }
 
-        while (position < binary.length()) {
-            // store if one parameter matched
-            boolean atLeastOnce = false;
-
-            // look ahead to see type
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-
-            //choiceRef
-            if ((type != null) && type.equals(C1G2UHFRFModeTable.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = C1G2UHFRFModeTable.length();
-                }
-
-                airProtocolUHFRFModeTableList.add(new C1G2UHFRFModeTable(
-                        binary.subList(position, tempLength)));
-                LOGGER.debug(
-                    "adding C1G2UHFRFModeTable to airProtocolUHFRFModeTableList ");
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            if (!atLeastOnce) {
-                //no parameter matched therefore we jump out of the loop
-                break;
-            }
-        }
-
-        //if list is still empty no parameter matched
-        if (airProtocolUHFRFModeTableList.isEmpty()) {
-            LOGGER.warn(
-                "encoded message does not contain parameter for non optional airProtocolUHFRFModeTableList");
-            throw new MissingParameterException(
-                "UHFBandCapabilities misses non optional parameter of type AirProtocolUHFRFModeTable");
-        }
+      if (!atLeastOnce) {
+        //no parameter matched therefore we jump out of the loop
+        break;
+      }
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    //if list is still empty no parameter matched
+    if (airProtocolUHFRFModeTableList.isEmpty()) {
+      LOGGER.warn(
+        "encoded message does not contain parameter for non optional airProtocolUHFRFModeTableList");
+      throw new MissingParameterException(
+        "UHFBandCapabilities misses non optional parameter of type AirProtocolUHFRFModeTable");
+    }
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+    Element temp = null;
 
-        //parameter - not choices - no special actions needed
-        //we expect a list of parameters
-        transmitPowerLevelTableEntryList = new LinkedList<TransmitPowerLevelTableEntry>();
-        tempList = element.getChildren("TransmitPowerLevelTableEntry", ns);
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
 
-        if ((tempList == null) || tempList.isEmpty()) {
-            LOGGER.warn(
-                "UHFBandCapabilities misses non optional parameter of type transmitPowerLevelTableEntryList");
-            throw new MissingParameterException(
-                "UHFBandCapabilities misses non optional parameter of type transmitPowerLevelTableEntryList");
-        } else {
-            for (Element e : tempList) {
-                transmitPowerLevelTableEntryList.add(new TransmitPowerLevelTableEntry(
-                        e));
-                LOGGER.debug(
-                    "adding TransmitPowerLevelTableEntry to transmitPowerLevelTableEntryList ");
-            }
-        }
+    //parameter - not choices - no special actions needed
+    //we expect a list of parameters
+    transmitPowerLevelTableEntryList = new LinkedList<TransmitPowerLevelTableEntry>();
+    tempList = element.getChildren("TransmitPowerLevelTableEntry", ns);
 
-        element.removeChildren("TransmitPowerLevelTableEntry", ns);
-        //parameter - not choices - no special actions needed
-        temp = element.getChild("FrequencyInformation", ns);
-
-        if (temp != null) {
-            frequencyInformation = new FrequencyInformation(temp);
-            LOGGER.info(
-                "setting parameter frequencyInformation for parameter UHFBandCapabilities");
-        }
-
-        if (temp == null) {
-            LOGGER.warn(
-                "UHFBandCapabilities misses non optional parameter of type frequencyInformation");
-            throw new MissingParameterException(
-                "UHFBandCapabilities misses non optional parameter of type frequencyInformation");
-        }
-
-        element.removeChild("FrequencyInformation", ns);
-        //choices - must check all possible subtypes
-        //list of Choice Type Parameter
-        airProtocolUHFRFModeTableList = new LinkedList<AirProtocolUHFRFModeTable>();
-        // for each possible subtype get all childs
-        tempList = element.getChildren("C1G2UHFRFModeTable", ns);
-
-        for (Element e : tempList) {
-            airProtocolUHFRFModeTableList.add(new C1G2UHFRFModeTable(e));
-            LOGGER.debug(
-                "adding C1G2UHFRFModeTable to airProtocolUHFRFModeTableList ");
-            atLeastOnce = true;
-        }
-
-        element.removeChildren("C1G2UHFRFModeTable", ns);
-
-        if (!atLeastOnce) {
-            LOGGER.warn(
-                "UHFBandCapabilities misses non optional parameter of type airProtocolUHFRFModeTableList");
-            throw new MissingParameterException(
-                "UHFBandCapabilities misses non optional parameter of type airProtocolUHFRFModeTableList");
-        }
-
-        atLeastOnce = false;
-
-        if (element.getChildren().size() > 0) {
-            String message = "UHFBandCapabilities has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if ((tempList == null) || tempList.isEmpty()) {
+      LOGGER.warn(
+        "UHFBandCapabilities misses non optional parameter of type transmitPowerLevelTableEntryList");
+      throw new MissingParameterException(
+        "UHFBandCapabilities misses non optional parameter of type transmitPowerLevelTableEntryList");
+    } else {
+      for (Element e : tempList) {
+        transmitPowerLevelTableEntryList.add(new TransmitPowerLevelTableEntry(
+          e));
+        LOGGER.debug(
+          "adding TransmitPowerLevelTableEntry to transmitPowerLevelTableEntryList ");
+      }
     }
 
-    //setters
+    element.removeChildren("TransmitPowerLevelTableEntry", ns);
+    //parameter - not choices - no special actions needed
+    temp = element.getChild("FrequencyInformation", ns);
 
-    /**
-    * set transmitPowerLevelTableEntryList of type  List &lt;TransmitPowerLevelTableEntry>.
-    * @param  transmitPowerLevelTableEntryList to be set
-    */
-    public void setTransmitPowerLevelTableEntryList(
-        final List<TransmitPowerLevelTableEntry> transmitPowerLevelTableEntryList) {
-        this.transmitPowerLevelTableEntryList = transmitPowerLevelTableEntryList;
+    if (temp != null) {
+      frequencyInformation = new FrequencyInformation(temp);
+      LOGGER.info(
+        "setting parameter frequencyInformation for parameter UHFBandCapabilities");
     }
 
-    /**
-    * set frequencyInformation of type FrequencyInformation.
-    * @param  frequencyInformation to be set
-    */
-    public void setFrequencyInformation(
-        final FrequencyInformation frequencyInformation) {
-        this.frequencyInformation = frequencyInformation;
+    if (temp == null) {
+      LOGGER.warn(
+        "UHFBandCapabilities misses non optional parameter of type frequencyInformation");
+      throw new MissingParameterException(
+        "UHFBandCapabilities misses non optional parameter of type frequencyInformation");
     }
 
-    /**
-    * set airProtocolUHFRFModeTableList of type  List &lt;AirProtocolUHFRFModeTable>.
-    * @param  airProtocolUHFRFModeTableList to be set
-    */
-    public void setAirProtocolUHFRFModeTableList(
-        final List<AirProtocolUHFRFModeTable> airProtocolUHFRFModeTableList) {
-        this.airProtocolUHFRFModeTableList = airProtocolUHFRFModeTableList;
+    element.removeChild("FrequencyInformation", ns);
+    //choices - must check all possible subtypes
+    //list of Choice Type Parameter
+    airProtocolUHFRFModeTableList = new LinkedList<AirProtocolUHFRFModeTable>();
+    // for each possible subtype get all childs
+    tempList = element.getChildren("C1G2UHFRFModeTable", ns);
+
+    for (Element e : tempList) {
+      airProtocolUHFRFModeTableList.add(new C1G2UHFRFModeTable(e));
+      LOGGER.debug(
+        "adding C1G2UHFRFModeTable to airProtocolUHFRFModeTableList ");
+      atLeastOnce = true;
     }
 
-    // end setter
+    element.removeChildren("C1G2UHFRFModeTable", ns);
 
-    //getters
-
-    /**
-    * get transmitPowerLevelTableEntryList of type List &lt;TransmitPowerLevelTableEntry> .
-    * @return  List &lt;TransmitPowerLevelTableEntry>
-    */
-    public List<TransmitPowerLevelTableEntry> getTransmitPowerLevelTableEntryList() {
-        return transmitPowerLevelTableEntryList;
+    if (!atLeastOnce) {
+      LOGGER.warn(
+        "UHFBandCapabilities misses non optional parameter of type airProtocolUHFRFModeTableList");
+      throw new MissingParameterException(
+        "UHFBandCapabilities misses non optional parameter of type airProtocolUHFRFModeTableList");
     }
 
-    /**
-    * get frequencyInformation of type FrequencyInformation .
-    * @return  FrequencyInformation
-    */
-    public FrequencyInformation getFrequencyInformation() {
-        return frequencyInformation;
+    atLeastOnce = false;
+
+    if (element.getChildren().size() > 0) {
+      String message = "UHFBandCapabilities has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
+    }
+  }
+
+  //setters
+  /**
+   * set transmitPowerLevelTableEntryList of type List &lt;TransmitPowerLevelTableEntry>.
+   *
+   * @param transmitPowerLevelTableEntryList to be set
+   */
+  public void setTransmitPowerLevelTableEntryList(
+    final List<TransmitPowerLevelTableEntry> transmitPowerLevelTableEntryList) {
+    this.transmitPowerLevelTableEntryList = transmitPowerLevelTableEntryList;
+  }
+
+  /**
+   * set frequencyInformation of type FrequencyInformation.
+   *
+   * @param frequencyInformation to be set
+   */
+  public void setFrequencyInformation(
+    final FrequencyInformation frequencyInformation) {
+    this.frequencyInformation = frequencyInformation;
+  }
+
+  /**
+   * set airProtocolUHFRFModeTableList of type List &lt;AirProtocolUHFRFModeTable>.
+   *
+   * @param airProtocolUHFRFModeTableList to be set
+   */
+  public void setAirProtocolUHFRFModeTableList(
+    final List<AirProtocolUHFRFModeTable> airProtocolUHFRFModeTableList) {
+    this.airProtocolUHFRFModeTableList = airProtocolUHFRFModeTableList;
+  }
+
+  // end setter
+  //getters
+  /**
+   * get transmitPowerLevelTableEntryList of type List &lt;TransmitPowerLevelTableEntry> .
+   *
+   * @return List &lt;TransmitPowerLevelTableEntry>
+   */
+  public List<TransmitPowerLevelTableEntry> getTransmitPowerLevelTableEntryList() {
+    return transmitPowerLevelTableEntryList;
+  }
+
+  /**
+   * get frequencyInformation of type FrequencyInformation .
+   *
+   * @return FrequencyInformation
+   */
+  public FrequencyInformation getFrequencyInformation() {
+    return frequencyInformation;
+  }
+
+  /**
+   * get airProtocolUHFRFModeTableList of type List &lt;AirProtocolUHFRFModeTable> .
+   *
+   * @return List &lt;AirProtocolUHFRFModeTable>
+   */
+  public List<AirProtocolUHFRFModeTable> getAirProtocolUHFRFModeTableList() {
+    return airProtocolUHFRFModeTableList;
+  }
+
+  // end getters
+  //add methods
+  /**
+   * add element transmitPowerLevelTableEntry of type TransmitPowerLevelTableEntry .
+   *
+   * @param transmitPowerLevelTableEntry of type TransmitPowerLevelTableEntry
+   */
+  public void addToTransmitPowerLevelTableEntryList(
+    TransmitPowerLevelTableEntry transmitPowerLevelTableEntry) {
+    if (this.transmitPowerLevelTableEntryList == null) {
+      this.transmitPowerLevelTableEntryList = new LinkedList<TransmitPowerLevelTableEntry>();
     }
 
-    /**
-    * get airProtocolUHFRFModeTableList of type List &lt;AirProtocolUHFRFModeTable> .
-    * @return  List &lt;AirProtocolUHFRFModeTable>
-    */
-    public List<AirProtocolUHFRFModeTable> getAirProtocolUHFRFModeTableList() {
-        return airProtocolUHFRFModeTableList;
+    this.transmitPowerLevelTableEntryList.add(transmitPowerLevelTableEntry);
+  }
+
+  /**
+   * add element airProtocolUHFRFModeTable of type AirProtocolUHFRFModeTable .
+   *
+   * @param airProtocolUHFRFModeTable of type AirProtocolUHFRFModeTable
+   */
+  public void addToAirProtocolUHFRFModeTableList(
+    AirProtocolUHFRFModeTable airProtocolUHFRFModeTable) {
+    if (this.airProtocolUHFRFModeTableList == null) {
+      this.airProtocolUHFRFModeTableList = new LinkedList<AirProtocolUHFRFModeTable>();
     }
 
-    // end getters
+    this.airProtocolUHFRFModeTableList.add(airProtocolUHFRFModeTable);
+  }
 
-    //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * add element transmitPowerLevelTableEntry of type TransmitPowerLevelTableEntry .
-    * @param  transmitPowerLevelTableEntry of type TransmitPowerLevelTableEntry
-    */
-    public void addToTransmitPowerLevelTableEntryList(
-        TransmitPowerLevelTableEntry transmitPowerLevelTableEntry) {
-        if (this.transmitPowerLevelTableEntryList == null) {
-            this.transmitPowerLevelTableEntryList = new LinkedList<TransmitPowerLevelTableEntry>();
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-        this.transmitPowerLevelTableEntryList.add(transmitPowerLevelTableEntry);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "UHFBandCapabilities";
+  }
 
-    /**
-    * add element airProtocolUHFRFModeTable of type AirProtocolUHFRFModeTable .
-    * @param  airProtocolUHFRFModeTable of type AirProtocolUHFRFModeTable
-    */
-    public void addToAirProtocolUHFRFModeTableList(
-        AirProtocolUHFRFModeTable airProtocolUHFRFModeTable) {
-        if (this.airProtocolUHFRFModeTableList == null) {
-            this.airProtocolUHFRFModeTableList = new LinkedList<AirProtocolUHFRFModeTable>();
-        }
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "UHFBandCapabilities: ";
+    result = result.replaceFirst(", ", "");
 
-        this.airProtocolUHFRFModeTableList.add(airProtocolUHFRFModeTable);
-    }
-
-    // end add
-
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "UHFBandCapabilities";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "UHFBandCapabilities: ";
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

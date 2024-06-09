@@ -16,21 +16,20 @@
  */
 package org.llrp.ltk.exceptions;
 
-
 /**
- * MissingParameter Exception is thrown during decoding
- * whenever a mandatory LLRP parameter is missing in an LLRP message
+ * MissingParameter Exception is thrown during decoding whenever a mandatory LLRP parameter is missing in an LLRP message
  *
  * @author Basil Gasser - ETH Zurich
  * @author Christian Floerkemeier - MIT
  */
 public class MissingParameterException extends RuntimeException {
-    /**
-         * Creates a new MissingParameterException object.
-         *
-         * @param message with information
-         */
-    public MissingParameterException(final String message) {
-        super(message);
-    }
+
+  /**
+   * Creates a new MissingParameterException object.
+   *
+   * @param message with information
+   */
+  public MissingParameterException(final String message) {
+    super(message);
+  }
 }

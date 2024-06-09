@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,325 +48,334 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * Periodic trigger is specified using UTC time, offset and period.For one-shot inventory, period is set to 0, and for periodic inventory operation period > 0.If UTC time is not specified, the first start time is determined as (time of message receipt + offset), else, the first start time is determined as (UTC time + offset). Subsequent start times  = first start time + k * period (where, k > 0).If the Reader does not support UTC clock (as indicated by HasUTCClockCapability), and it receives the UTC time as part of the PeriodicTriggerValue parameter from the Client, the Reader SHALL return an error.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=56&view=fit">LLRP Specification Section 10.2.1.1.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=136&view=fit">LLRP Specification Section 16.2.4.1.1.1.1</a>}
-
-
+ * Periodic trigger is specified using UTC time, offset and period.For one-shot inventory, period is set to 0, and for periodic inventory operation period > 0.If UTC time is not
+ * specified, the first start time is determined as (time of message receipt + offset), else, the first start time is determined as (UTC time + offset). Subsequent start times =
+ * first start time + k * period (where, k > 0).If the Reader does not support UTC clock (as indicated by HasUTCClockCapability), and it receives the UTC time as part of the
+ * PeriodicTriggerValue parameter from the Client, the Reader SHALL return an error.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=56&view=fit">LLRP Specification Section 10.2.1.1.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=136&view=fit">LLRP Specification Section 16.2.4.1.1.1.1</a>}
+ *
+ *
  */
-
 /**
- * Periodic trigger is specified using UTC time, offset and period.For one-shot inventory, period is set to 0, and for periodic inventory operation period > 0.If UTC time is not specified, the first start time is determined as (time of message receipt + offset), else, the first start time is determined as (UTC time + offset). Subsequent start times  = first start time + k * period (where, k > 0).If the Reader does not support UTC clock (as indicated by HasUTCClockCapability), and it receives the UTC time as part of the PeriodicTriggerValue parameter from the Client, the Reader SHALL return an error.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=56&view=fit">LLRP Specification Section 10.2.1.1.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=136&view=fit">LLRP Specification Section 16.2.4.1.1.1.1</a>}
-
-      .
+ * Periodic trigger is specified using UTC time, offset and period.For one-shot inventory, period is set to 0, and for periodic inventory operation period > 0.If UTC time is not
+ * specified, the first start time is determined as (time of message receipt + offset), else, the first start time is determined as (UTC time + offset). Subsequent start times =
+ * first start time + k * period (where, k > 0).If the Reader does not support UTC clock (as indicated by HasUTCClockCapability), and it receives the UTC time as part of the
+ * PeriodicTriggerValue parameter from the Client, the Reader SHALL return an error.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=56&view=fit">LLRP Specification Section 10.2.1.1.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=136&view=fit">LLRP Specification Section 16.2.4.1.1.1.1</a>}
+ *
+ * .
  */
 public class PeriodicTriggerValue extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(180);
-    private static final Logger LOGGER = Logger.getLogger(PeriodicTriggerValue.class);
-    protected UnsignedInteger offset;
-    protected UnsignedInteger period;
-    protected UTCTimestamp uTCTimestamp;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public PeriodicTriggerValue() {
+  public static final SignedShort TYPENUM = new SignedShort(180);
+  private static final Logger LOGGER = Logger.getLogger(PeriodicTriggerValue.class);
+  protected UnsignedInteger offset;
+  protected UnsignedInteger period;
+  protected UTCTimestamp uTCTimestamp;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public PeriodicTriggerValue() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public PeriodicTriggerValue(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public PeriodicTriggerValue(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (offset == null) {
+      LOGGER.warn(" offset not set");
+      throw new MissingParameterException(
+        " offset not set  for Parameter of Type PeriodicTriggerValue");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public PeriodicTriggerValue(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(offset.encodeBinary());
+
+    if (period == null) {
+      LOGGER.warn(" period not set");
+      throw new MissingParameterException(
+        " period not set  for Parameter of Type PeriodicTriggerValue");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public PeriodicTriggerValue(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(period.encodeBinary());
+
+    if (uTCTimestamp == null) {
+      // optional parameter, may be null
+      LOGGER.info(" uTCTimestamp not set");
+    } else {
+      resultBits.append(uTCTimestamp.encodeBinary());
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    return resultBits;
+  }
 
-        if (offset == null) {
-            LOGGER.warn(" offset not set");
-            throw new MissingParameterException(
-                " offset not set  for Parameter of Type PeriodicTriggerValue");
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        resultBits.append(offset.encodeBinary());
-
-        if (period == null) {
-            LOGGER.warn(" period not set");
-            throw new MissingParameterException(
-                " period not set  for Parameter of Type PeriodicTriggerValue");
-        }
-
-        resultBits.append(period.encodeBinary());
-
-        if (uTCTimestamp == null) {
-            // optional parameter, may be null
-            LOGGER.info(" uTCTimestamp not set");
-        } else {
-            resultBits.append(uTCTimestamp.encodeBinary());
-        }
-
-        return resultBits;
+    if (offset == null) {
+      LOGGER.warn(" offset not set");
+      throw new MissingParameterException(" offset not set");
+    } else {
+      element.addContent(offset.encodeXML("Offset", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        if (offset == null) {
-            LOGGER.warn(" offset not set");
-            throw new MissingParameterException(" offset not set");
-        } else {
-            element.addContent(offset.encodeXML("Offset", ns));
-        }
-
-        if (period == null) {
-            LOGGER.warn(" period not set");
-            throw new MissingParameterException(" period not set");
-        } else {
-            element.addContent(period.encodeXML("Period", ns));
-        }
-
-        //parameters
-        if (uTCTimestamp == null) {
-            LOGGER.info("uTCTimestamp not set");
-        } else {
-            element.addContent(uTCTimestamp.encodeXML(
-                    uTCTimestamp.getClass().getSimpleName(), ns));
-        }
-
-        return element;
+    if (period == null) {
+      LOGGER.warn(" period not set");
+      throw new MissingParameterException(" period not set");
+    } else {
+      element.addContent(period.encodeXML("Period", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        offset = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        period = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-
-        // look ahead to see type
-        // may be optional or exactly once
-        type = null;
-        tempByteLength = 0;
-        tempLength = 0;
-
-        try {
-            // if first bit is one it is a TV Parameter
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-        } catch (IllegalArgumentException le) {
-            // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
-            LOGGER.info(
-                "PeriodicTriggerValue misses optional parameter of type UTCTimestamp");
-        }
-
-        if (binary.get(position)) {
-            // length can statically be determined for TV Parameters
-            tempLength = uTCTimestamp.length();
-        }
-
-        if ((type != null) && type.equals(UTCTimestamp.TYPENUM)) {
-            uTCTimestamp = new UTCTimestamp(binary.subList(position, tempLength));
-            position += tempLength;
-            LOGGER.debug(
-                " uTCTimestamp is instantiated with UTCTimestamp with length" +
-                tempLength);
-        } else {
-            LOGGER.info(
-                "PeriodicTriggerValue misses optional parameter of type UTCTimestamp");
-        }
+    //parameters
+    if (uTCTimestamp == null) {
+      LOGGER.info("uTCTimestamp not set");
+    } else {
+      element.addContent(uTCTimestamp.encodeXML(
+        uTCTimestamp.getClass().getSimpleName(), ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    return element;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    offset = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    period = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+    // look ahead to see type
+    // may be optional or exactly once
+    type = null;
+    tempByteLength = 0;
+    tempLength = 0;
 
-        temp = element.getChild("Offset", ns);
-
-        if (temp != null) {
-            offset = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("Offset", ns);
-        temp = element.getChild("Period", ns);
-
-        if (temp != null) {
-            period = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("Period", ns);
-
-        //parameter - not choices - no special actions needed
-        temp = element.getChild("UTCTimestamp", ns);
-
-        if (temp != null) {
-            uTCTimestamp = new UTCTimestamp(temp);
-            LOGGER.info(
-                "setting parameter uTCTimestamp for parameter PeriodicTriggerValue");
-        }
-
-        if (temp == null) {
-            LOGGER.info(
-                "PeriodicTriggerValue misses optional parameter of type uTCTimestamp");
-        }
-
-        element.removeChild("UTCTimestamp", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "PeriodicTriggerValue has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    try {
+      // if first bit is one it is a TV Parameter
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+    } catch (IllegalArgumentException le) {
+      // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
+      LOGGER.info(
+        "PeriodicTriggerValue misses optional parameter of type UTCTimestamp");
     }
 
-    //setters
-    /**
-    * set   offset of type UnsignedInteger .
-    * @param   offset to be set
-    */
-    public void setOffset(final UnsignedInteger offset) {
-        this.offset = offset;
+    if (binary.get(position)) {
+      // length can statically be determined for TV Parameters
+      tempLength = uTCTimestamp.length();
     }
 
-    /**
-    * set   period of type UnsignedInteger .
-    * @param   period to be set
-    */
-    public void setPeriod(final UnsignedInteger period) {
-        this.period = period;
+    if ((type != null) && type.equals(UTCTimestamp.TYPENUM)) {
+      uTCTimestamp = new UTCTimestamp(binary.subList(position, tempLength));
+      position += tempLength;
+      LOGGER.debug(
+        " uTCTimestamp is instantiated with UTCTimestamp with length"
+        + tempLength);
+    } else {
+      LOGGER.info(
+        "PeriodicTriggerValue misses optional parameter of type UTCTimestamp");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("Offset", ns);
+
+    if (temp != null) {
+      offset = new UnsignedInteger(temp);
     }
 
-    /**
-    * set uTCTimestamp of type UTCTimestamp.
-    * @param  uTCTimestamp to be set
-    */
-    public void setUTCTimestamp(final UTCTimestamp uTCTimestamp) {
-        this.uTCTimestamp = uTCTimestamp;
+    element.removeChild("Offset", ns);
+    temp = element.getChild("Period", ns);
+
+    if (temp != null) {
+      period = new UnsignedInteger(temp);
     }
 
-    // end setter
+    element.removeChild("Period", ns);
 
-    //getters
-    /**
-    * get   offset of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getOffset() {
-        return this.offset;
+    //parameter - not choices - no special actions needed
+    temp = element.getChild("UTCTimestamp", ns);
+
+    if (temp != null) {
+      uTCTimestamp = new UTCTimestamp(temp);
+      LOGGER.info(
+        "setting parameter uTCTimestamp for parameter PeriodicTriggerValue");
     }
 
-    /**
-    * get   period of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getPeriod() {
-        return this.period;
+    if (temp == null) {
+      LOGGER.info(
+        "PeriodicTriggerValue misses optional parameter of type uTCTimestamp");
     }
 
-    /**
-    * get uTCTimestamp of type UTCTimestamp .
-    * @return  UTCTimestamp
-    */
-    public UTCTimestamp getUTCTimestamp() {
-        return uTCTimestamp;
+    element.removeChild("UTCTimestamp", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "PeriodicTriggerValue has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    // end getters
+  //setters
+  /**
+   * set offset of type UnsignedInteger .
+   *
+   * @param offset to be set
+   */
+  public void setOffset(final UnsignedInteger offset) {
+    this.offset = offset;
+  }
 
-    //add methods
+  /**
+   * set period of type UnsignedInteger .
+   *
+   * @param period to be set
+   */
+  public void setPeriod(final UnsignedInteger period) {
+    this.period = period;
+  }
 
-    // end add
+  /**
+   * set uTCTimestamp of type UTCTimestamp.
+   *
+   * @param uTCTimestamp to be set
+   */
+  public void setUTCTimestamp(final UTCTimestamp uTCTimestamp) {
+    this.uTCTimestamp = uTCTimestamp;
+  }
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+  // end setter
+  //getters
+  /**
+   * get offset of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getOffset() {
+    return this.offset;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * get period of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getPeriod() {
+    return this.period;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "PeriodicTriggerValue";
-    }
+  /**
+   * get uTCTimestamp of type UTCTimestamp .
+   *
+   * @return UTCTimestamp
+   */
+  public UTCTimestamp getUTCTimestamp() {
+    return uTCTimestamp;
+  }
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "PeriodicTriggerValue: ";
-        result += ", offset: ";
-        result += offset;
-        result += ", period: ";
-        result += period;
-        result = result.replaceFirst(", ", "");
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-        return result;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "PeriodicTriggerValue";
+  }
+
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "PeriodicTriggerValue: ";
+    result += ", offset: ";
+    result += offset;
+    result += ", period: ";
+    result += period;
+    result = result.replaceFirst(", ", "");
+
+    return result;
+  }
 }

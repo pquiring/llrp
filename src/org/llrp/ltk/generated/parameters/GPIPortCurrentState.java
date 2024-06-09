@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,284 +49,295 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This Parameter carries the current configuration and state of a single GPI port.  In a SET_READER_CONFIG message, this parameter is used to enable or disable the GPI port using the GPIConfig field; the GPIState field is ignored by the reader.  In a GET_READER_CONFIG message, this parameter reports both the configuration and state of the GPI port.When a ROSpec or AISpec is configured on a GPI-capable reader with GPI start and/or stop triggers, those GPIs must be enabled by the client with a SET_READER_CONFIG message for the triggers to function.Readers that do not support GPIs SHALL set NumGPIs in the GPIOCapabilities to zero. If such a Reader receives a GET_READER_CONFIG with a GPIPortCurrentState Parameter, the Reader SHALL return an error message and not process any of the parameters in that message.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=75&view=fit">LLRP Specification Section 12.2.6.3</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=142&view=fit">LLRP Specification Section 16.2.6.9</a>}
-
-
+ * This Parameter carries the current configuration and state of a single GPI port. In a SET_READER_CONFIG message, this parameter is used to enable or disable the GPI port using
+ * the GPIConfig field; the GPIState field is ignored by the reader. In a GET_READER_CONFIG message, this parameter reports both the configuration and state of the GPI port.When a
+ * ROSpec or AISpec is configured on a GPI-capable reader with GPI start and/or stop triggers, those GPIs must be enabled by the client with a SET_READER_CONFIG message for the
+ * triggers to function.Readers that do not support GPIs SHALL set NumGPIs in the GPIOCapabilities to zero. If such a Reader receives a GET_READER_CONFIG with a GPIPortCurrentState
+ * Parameter, the Reader SHALL return an error message and not process any of the parameters in that message.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=75&view=fit">LLRP Specification Section 12.2.6.3</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=142&view=fit">LLRP Specification Section 16.2.6.9</a>}
+ *
+ *
  */
-
 /**
- * This Parameter carries the current configuration and state of a single GPI port.  In a SET_READER_CONFIG message, this parameter is used to enable or disable the GPI port using the GPIConfig field; the GPIState field is ignored by the reader.  In a GET_READER_CONFIG message, this parameter reports both the configuration and state of the GPI port.When a ROSpec or AISpec is configured on a GPI-capable reader with GPI start and/or stop triggers, those GPIs must be enabled by the client with a SET_READER_CONFIG message for the triggers to function.Readers that do not support GPIs SHALL set NumGPIs in the GPIOCapabilities to zero. If such a Reader receives a GET_READER_CONFIG with a GPIPortCurrentState Parameter, the Reader SHALL return an error message and not process any of the parameters in that message.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=75&view=fit">LLRP Specification Section 12.2.6.3</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=142&view=fit">LLRP Specification Section 16.2.6.9</a>}
-
-      .
+ * This Parameter carries the current configuration and state of a single GPI port. In a SET_READER_CONFIG message, this parameter is used to enable or disable the GPI port using
+ * the GPIConfig field; the GPIState field is ignored by the reader. In a GET_READER_CONFIG message, this parameter reports both the configuration and state of the GPI port.When a
+ * ROSpec or AISpec is configured on a GPI-capable reader with GPI start and/or stop triggers, those GPIs must be enabled by the client with a SET_READER_CONFIG message for the
+ * triggers to function.Readers that do not support GPIs SHALL set NumGPIs in the GPIOCapabilities to zero. If such a Reader receives a GET_READER_CONFIG with a GPIPortCurrentState
+ * Parameter, the Reader SHALL return an error message and not process any of the parameters in that message.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=75&view=fit">LLRP Specification Section 12.2.6.3</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=142&view=fit">LLRP Specification Section 16.2.6.9</a>}
+ *
+ * .
  */
 public class GPIPortCurrentState extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(225);
-    private static final Logger LOGGER = Logger.getLogger(GPIPortCurrentState.class);
-    protected UnsignedShort gPIPortNum;
-    protected Bit config;
-    protected BitList reserved0 = new BitList(7);
-    protected GPIPortState state;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public GPIPortCurrentState() {
+  public static final SignedShort TYPENUM = new SignedShort(225);
+  private static final Logger LOGGER = Logger.getLogger(GPIPortCurrentState.class);
+  protected UnsignedShort gPIPortNum;
+  protected Bit config;
+  protected BitList reserved0 = new BitList(7);
+  protected GPIPortState state;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public GPIPortCurrentState() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public GPIPortCurrentState(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public GPIPortCurrentState(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (gPIPortNum == null) {
+      LOGGER.warn(" gPIPortNum not set");
+      throw new MissingParameterException(
+        " gPIPortNum not set  for Parameter of Type GPIPortCurrentState");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public GPIPortCurrentState(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(gPIPortNum.encodeBinary());
+
+    if (config == null) {
+      LOGGER.warn(" config not set");
+      throw new MissingParameterException(
+        " config not set  for Parameter of Type GPIPortCurrentState");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public GPIPortCurrentState(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(config.encodeBinary());
+    resultBits.append(reserved0.encodeBinary());
+
+    if (state == null) {
+      LOGGER.warn(" state not set");
+      throw new MissingParameterException(
+        " state not set  for Parameter of Type GPIPortCurrentState");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(state.encodeBinary());
 
-        if (gPIPortNum == null) {
-            LOGGER.warn(" gPIPortNum not set");
-            throw new MissingParameterException(
-                " gPIPortNum not set  for Parameter of Type GPIPortCurrentState");
-        }
+    return resultBits;
+  }
 
-        resultBits.append(gPIPortNum.encodeBinary());
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        if (config == null) {
-            LOGGER.warn(" config not set");
-            throw new MissingParameterException(
-                " config not set  for Parameter of Type GPIPortCurrentState");
-        }
-
-        resultBits.append(config.encodeBinary());
-        resultBits.append(reserved0.encodeBinary());
-
-        if (state == null) {
-            LOGGER.warn(" state not set");
-            throw new MissingParameterException(
-                " state not set  for Parameter of Type GPIPortCurrentState");
-        }
-
-        resultBits.append(state.encodeBinary());
-
-        return resultBits;
+    if (gPIPortNum == null) {
+      LOGGER.warn(" gPIPortNum not set");
+      throw new MissingParameterException(" gPIPortNum not set");
+    } else {
+      element.addContent(gPIPortNum.encodeXML("GPIPortNum", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        if (gPIPortNum == null) {
-            LOGGER.warn(" gPIPortNum not set");
-            throw new MissingParameterException(" gPIPortNum not set");
-        } else {
-            element.addContent(gPIPortNum.encodeXML("GPIPortNum", ns));
-        }
-
-        if (config == null) {
-            LOGGER.warn(" config not set");
-            throw new MissingParameterException(" config not set");
-        } else {
-            element.addContent(config.encodeXML("Config", ns));
-        }
-
-        //element.addContent(reserved0.encodeXML("reserved",ns));
-        if (state == null) {
-            LOGGER.warn(" state not set");
-            throw new MissingParameterException(" state not set");
-        } else {
-            element.addContent(state.encodeXML("State", ns));
-        }
-
-        //parameters
-        return element;
+    if (config == null) {
+      LOGGER.warn(" config not set");
+      throw new MissingParameterException(" config not set");
+    } else {
+      element.addContent(config.encodeXML("Config", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        gPIPortNum = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        config = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        position += reserved0.length();
-        state = new GPIPortState(binary.subList(position, GPIPortState.length()));
-        position += GPIPortState.length();
+    //element.addContent(reserved0.encodeXML("reserved",ns));
+    if (state == null) {
+      LOGGER.warn(" state not set");
+      throw new MissingParameterException(" state not set");
+    } else {
+      element.addContent(state.encodeXML("State", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    //parameters
+    return element;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    gPIPortNum = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    config = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    position += reserved0.length();
+    state = new GPIPortState(binary.subList(position, GPIPortState.length()));
+    position += GPIPortState.length();
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        temp = element.getChild("GPIPortNum", ns);
+    Element temp = null;
 
-        if (temp != null) {
-            gPIPortNum = new UnsignedShort(temp);
-        }
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
 
-        element.removeChild("GPIPortNum", ns);
-        temp = element.getChild("Config", ns);
+    temp = element.getChild("GPIPortNum", ns);
 
-        if (temp != null) {
-            config = new Bit(temp);
-        }
-
-        element.removeChild("Config", ns);
-        temp = element.getChild("State", ns);
-
-        if (temp != null) {
-            state = new GPIPortState(temp);
-        }
-
-        element.removeChild("State", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "GPIPortCurrentState has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (temp != null) {
+      gPIPortNum = new UnsignedShort(temp);
     }
 
-    //setters
-    /**
-    * set   gPIPortNum of type UnsignedShort .
-    * @param   gPIPortNum to be set
-    */
-    public void setGPIPortNum(final UnsignedShort gPIPortNum) {
-        this.gPIPortNum = gPIPortNum;
+    element.removeChild("GPIPortNum", ns);
+    temp = element.getChild("Config", ns);
+
+    if (temp != null) {
+      config = new Bit(temp);
     }
 
-    /**
-    * set   config of type Bit .
-    * @param   config to be set
-    */
-    public void setConfig(final Bit config) {
-        this.config = config;
+    element.removeChild("Config", ns);
+    temp = element.getChild("State", ns);
+
+    if (temp != null) {
+      state = new GPIPortState(temp);
     }
 
-    /**
-    * set state of type GPIPortState .
-    * @param  state to be set
-    */
-    public void setState(final GPIPortState state) {
-        this.state = state;
+    element.removeChild("State", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "GPIPortCurrentState has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    // end setter
+  //setters
+  /**
+   * set gPIPortNum of type UnsignedShort .
+   *
+   * @param gPIPortNum to be set
+   */
+  public void setGPIPortNum(final UnsignedShort gPIPortNum) {
+    this.gPIPortNum = gPIPortNum;
+  }
 
-    //getters
-    /**
-    * get   gPIPortNum of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getGPIPortNum() {
-        return this.gPIPortNum;
-    }
+  /**
+   * set config of type Bit .
+   *
+   * @param config to be set
+   */
+  public void setConfig(final Bit config) {
+    this.config = config;
+  }
 
-    /**
-    * get   config of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getConfig() {
-        return this.config;
-    }
+  /**
+   * set state of type GPIPortState .
+   *
+   * @param state to be set
+   */
+  public void setState(final GPIPortState state) {
+    this.state = state;
+  }
 
-    /**
-    * get state of type GPIPortState.
-    * @return  GPIPortState
-    */
-    public GPIPortState getState() {
-        return state;
-    }
+  // end setter
+  //getters
+  /**
+   * get gPIPortNum of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getGPIPortNum() {
+    return this.gPIPortNum;
+  }
 
-    // end getters
+  /**
+   * get config of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getConfig() {
+    return this.config;
+  }
 
-    //add methods
+  /**
+   * get state of type GPIPortState.
+   *
+   * @return GPIPortState
+   */
+  public GPIPortState getState() {
+    return state;
+  }
 
-    // end add
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "GPIPortCurrentState";
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "GPIPortCurrentState";
-    }
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "GPIPortCurrentState: ";
+    result += ", gPIPortNum: ";
+    result += gPIPortNum;
+    result += ", config: ";
+    result += config;
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "GPIPortCurrentState: ";
-        result += ", gPIPortNum: ";
-        result += gPIPortNum;
-        result += ", config: ";
-        result += config;
+    result += ", state: ";
+    result += state;
+    result = result.replaceFirst(", ", "");
 
-        result += ", state: ";
-        result += state;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

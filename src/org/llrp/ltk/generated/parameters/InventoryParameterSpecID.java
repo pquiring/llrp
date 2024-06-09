@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,200 +46,199 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * This parameter carries the InventoryParameterSpecID information.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=83&view=fit">LLRP Specification Section 13.2.3.5</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.5</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=83&view=fit">LLRP Specification Section 13.2.3.5</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.5</a>}
+ *
+ *
  */
-
 /**
  * This parameter carries the InventoryParameterSpecID information.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=83&view=fit">LLRP Specification Section 13.2.3.5</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.5</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=83&view=fit">LLRP Specification Section 13.2.3.5</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.5</a>}
+ *
+ * .
  */
 public class InventoryParameterSpecID extends TVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(10);
-    private static final Logger LOGGER = Logger.getLogger(InventoryParameterSpecID.class);
-    protected UnsignedShort inventoryParameterSpecID;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public InventoryParameterSpecID() {
+  public static final SignedShort TYPENUM = new SignedShort(10);
+  private static final Logger LOGGER = Logger.getLogger(InventoryParameterSpecID.class);
+  protected UnsignedShort inventoryParameterSpecID;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public InventoryParameterSpecID() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public InventoryParameterSpecID(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public InventoryParameterSpecID(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (inventoryParameterSpecID == null) {
+      LOGGER.warn(" inventoryParameterSpecID not set");
+      throw new MissingParameterException(
+        " inventoryParameterSpecID not set  for Parameter of Type InventoryParameterSpecID");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public InventoryParameterSpecID(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(inventoryParameterSpecID.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (inventoryParameterSpecID == null) {
+      LOGGER.warn(" inventoryParameterSpecID not set");
+      throw new MissingParameterException(
+        " inventoryParameterSpecID not set");
+    } else {
+      element.addContent(inventoryParameterSpecID.encodeXML(
+        "InventoryParameterSpecID", ns));
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public InventoryParameterSpecID(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    //parameters
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    inventoryParameterSpecID = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("InventoryParameterSpecID", ns);
+
+    if (temp != null) {
+      inventoryParameterSpecID = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    element.removeChild("InventoryParameterSpecID", ns);
 
-        if (inventoryParameterSpecID == null) {
-            LOGGER.warn(" inventoryParameterSpecID not set");
-            throw new MissingParameterException(
-                " inventoryParameterSpecID not set  for Parameter of Type InventoryParameterSpecID");
-        }
-
-        resultBits.append(inventoryParameterSpecID.encodeBinary());
-
-        return resultBits;
+    if (element.getChildren().size() > 0) {
+      String message = "InventoryParameterSpecID has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+  //setters
+  /**
+   * set inventoryParameterSpecID of type UnsignedShort .
+   *
+   * @param inventoryParameterSpecID to be set
+   */
+  public void setInventoryParameterSpecID(
+    final UnsignedShort inventoryParameterSpecID) {
+    this.inventoryParameterSpecID = inventoryParameterSpecID;
+  }
 
-        if (inventoryParameterSpecID == null) {
-            LOGGER.warn(" inventoryParameterSpecID not set");
-            throw new MissingParameterException(
-                " inventoryParameterSpecID not set");
-        } else {
-            element.addContent(inventoryParameterSpecID.encodeXML(
-                    "InventoryParameterSpecID", ns));
-        }
+  // end setter
+  //getters
+  /**
+   * get inventoryParameterSpecID of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getInventoryParameterSpecID() {
+    return this.inventoryParameterSpecID;
+  }
 
-        //parameters
-        return element;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
+   *
+   * @return Integer giving length
+   */
+  public static Integer length() {
+    int tempLength = PARAMETERTYPELENGTH;
+    // the length of a TV parameter in bits is always the type
+    tempLength += UnsignedShort.length();
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        inventoryParameterSpecID = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-    }
+    return tempLength;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "InventoryParameterSpecID";
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "InventoryParameterSpecID: ";
+    result += ", inventoryParameterSpecID: ";
+    result += inventoryParameterSpecID;
+    result = result.replaceFirst(", ", "");
 
-        temp = element.getChild("InventoryParameterSpecID", ns);
-
-        if (temp != null) {
-            inventoryParameterSpecID = new UnsignedShort(temp);
-        }
-
-        element.removeChild("InventoryParameterSpecID", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "InventoryParameterSpecID has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
-    }
-
-    //setters
-    /**
-    * set   inventoryParameterSpecID of type UnsignedShort .
-    * @param   inventoryParameterSpecID to be set
-    */
-    public void setInventoryParameterSpecID(
-        final UnsignedShort inventoryParameterSpecID) {
-        this.inventoryParameterSpecID = inventoryParameterSpecID;
-    }
-
-    // end setter
-
-    //getters
-    /**
-    * get   inventoryParameterSpecID of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getInventoryParameterSpecID() {
-        return this.inventoryParameterSpecID;
-    }
-
-    // end getters
-
-    //add methods
-
-    // end add
-
-    /**
-    * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
-    * @return Integer giving length
-    */
-    public static Integer length() {
-        int tempLength = PARAMETERTYPELENGTH;
-        // the length of a TV parameter in bits is always the type 
-        tempLength += UnsignedShort.length();
-
-        return tempLength;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "InventoryParameterSpecID";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "InventoryParameterSpecID: ";
-        result += ", inventoryParameterSpecID: ";
-        result += inventoryParameterSpecID;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

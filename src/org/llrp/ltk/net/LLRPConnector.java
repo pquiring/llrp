@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions
  * and limitations under the License.
  */
-
 package org.llrp.ltk.net;
 
 import java.net.InetSocketAddress;
@@ -30,229 +29,227 @@ import org.apache.mina.transport.socket.nio.NioSocketConnector;
  *
  * Here is a simple code example:
  * <p>
- * <code> LLRPConnector c = new LLRPConnector(endpoint,ip); </code> <p>
- * <code> c.connect(); </code> <p>
- * <code> // send message asynchronously - response needs to handled via  </code> <p>
- * <code> // the message received method of the endpoint </code> <p>
- * <code> c.send(llrpmessage); </code> <p>
- * <code>  </code> <p>
- * <code> // send message synchronously </code> <p>
+ * <code> LLRPConnector c = new LLRPConnector(endpoint,ip); </code>
+ * <p>
+ * <code> c.connect(); </code>
+ * <p>
+ * <code> // send message asynchronously - response needs to handled via </code>
+ * <p>
+ * <code> // the message received method of the endpoint </code>
+ * <p>
+ * <code> c.send(llrpmessage); </code>
+ * <p>
+ * <code> </code>
+ * <p>
+ * <code> // send message synchronously </code>
+ * <p>
  * <code> LLRPMessage m = c.transact(llrpmessage); </code>
  * <p>
  *
- * The connect method checks the status of the ConnectionAttemptStatus field in
- * in the READER_EVENT_NOTIFICATION message. If the status field is not 'Success",
- * an LLRPConnectionAttemptFailedException is thrown.
+ * The connect method checks the status of the ConnectionAttemptStatus field in in the READER_EVENT_NOTIFICATION message. If the status field is not 'Success", an
+ * LLRPConnectionAttemptFailedException is thrown.
  */
+public class LLRPConnector extends LLRPConnection {
 
-public class LLRPConnector extends LLRPConnection{
-	private Logger log = Logger.getLogger(LLRPConnector.class);
-	private String host;
-	private int port = 5084;
-	private org.apache.mina.transport.socket.SocketConnector connector;
-	private InetSocketAddress remoteAddress;
-        private boolean reconnect = true;
+  private Logger log = Logger.getLogger(LLRPConnector.class);
+  private String host;
+  private int port = 5084;
+  private org.apache.mina.transport.socket.SocketConnector connector;
+  private InetSocketAddress remoteAddress;
+  private boolean reconnect = true;
 
+  public LLRPConnector() {
+    super();
+  }
 
-	public LLRPConnector() {
-		super();
-	}
+  /**
+   * LLRPConnector using parameters provided and LLRPIoAdapterHandlerImpl as default IoHandler
+   *
+   */
+  public LLRPConnector(LLRPEndpoint endpoint, String host, int port) {
+    super.endpoint = endpoint;
+    this.host = host;
+    this.port = port;
+  }
 
-	/**
-	 * LLRPConnector using parameters provided and LLRPIoAdapterHandlerImpl as default IoHandler
-	 *
-	 */
+  /**
+   * LLRPConnector using parameters provided and LLRPIoAdapterHandlerImpl as default IoHandler and default port 5084
+   *
+   */
+  public LLRPConnector(LLRPEndpoint endpoint, String host) {
+    super.endpoint = endpoint;
+    this.host = host;
+  }
 
-	public LLRPConnector(LLRPEndpoint endpoint, String host, int port) {
-		super.endpoint = endpoint;
-		this.host = host;
-		this.port = port;
-	}
+  /**
+   * LLRPConnector using parameters provided and default port 5084
+   *
+   */
+  public LLRPConnector(LLRPEndpoint endpoint, String host, LLRPIoHandlerAdapter handler) {
+    super.endpoint = endpoint;
+    super.handler = handler;
+    this.host = host;
+  }
 
-	/**
-	 * LLRPConnector using parameters provided and LLRPIoAdapterHandlerImpl as default IoHandler
-	 * and default port 5084
-	 *
-	 */
+  /**
+   * LLRPConnector using parameters provided
+   */
+  public LLRPConnector(LLRPEndpoint endpoint, String host, int port, LLRPIoHandlerAdapter handler) {
+    super.endpoint = endpoint;
+    super.handler = handler;
+    this.host = host;
+    this.port = port;
+  }
 
-	public LLRPConnector(LLRPEndpoint endpoint, String host) {
-		super.endpoint = endpoint;
-		this.host = host;
-	}
+  /**
+   * connects to a LLRP device at the host address and port specified. the connect method waits by default 10 s for a response. If the READER_NOTIFICATION does not arrive or the
+   * ConnectionAttemptEventStatus is not set to 'Success', a LLRPConnectionAttemptFailedException is thrown.
+   *
+   * @throws LLRPConnectionAttemptFailedException
+   *
+   */
+  public void connect() throws LLRPConnectionAttemptFailedException {
+    connect(CONNECT_TIMEOUT);
+  }
 
-	/**
-	 * LLRPConnector using parameters provided and default port 5084
-	 *
-	 */
-
-	public LLRPConnector(LLRPEndpoint endpoint, String host, LLRPIoHandlerAdapter handler) {
-		super.endpoint = endpoint;
-		super.handler = handler;
-		this.host = host;
-	}
-
-	/**
-	 * LLRPConnector using parameters provided
-	 */
-
-	public LLRPConnector(LLRPEndpoint endpoint, String host, int port, LLRPIoHandlerAdapter handler) {
-		super.endpoint = endpoint;
-		super.handler = handler;
-		this.host = host;
-		this.port = port;
-	}
-
-
-	/**
-	 * connects to a LLRP device at the host address and port specified. the connect method waits by default
-	 * 10 s for a response. If the READER_NOTIFICATION does not arrive or the ConnectionAttemptEventStatus
-	 * is not set to 'Success', a LLRPConnectionAttemptFailedException is thrown.
-	 *
-	 * @throws LLRPConnectionAttemptFailedException
-	 *
-	 */
-
-	public void connect() throws LLRPConnectionAttemptFailedException{
-		connect(CONNECT_TIMEOUT);
-	}
-
-	/**
-	 * connects to a LLRP device at the host address and port specified. the connect method waits
-	 * for the timeperiod specified (in ms) for a response. If the READER_NOTIFICATION does not arrive
-	 * or the ConnectionAttemptEventStatus
-	 * is not set to 'Success', a LLRPConnectionAttemptFailedException is thrown.
-	 *
-	 * @param timeout time in ms
-	 * @throws LLRPConnectionAttemptFailedException
-	 */
-
-	public void connect(long timeout) throws LLRPConnectionAttemptFailedException{
+  /**
+   * connects to a LLRP device at the host address and port specified. the connect method waits for the timeperiod specified (in ms) for a response. If the READER_NOTIFICATION does
+   * not arrive or the ConnectionAttemptEventStatus is not set to 'Success', a LLRPConnectionAttemptFailedException is thrown.
+   *
+   * @param timeout time in ms
+   * @throws LLRPConnectionAttemptFailedException
+   */
+  public void connect(long timeout) throws LLRPConnectionAttemptFailedException {
     this.timeout = timeout;
-		connector = new NioSocketConnector();
-		connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new LLRPProtocolCodecFactory(LLRPProtocolCodecFactory.BINARY_ENCODING)));
-		// MINA 2.0 method
-		connector.setHandler(handler);
+    connector = new NioSocketConnector();
+    connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new LLRPProtocolCodecFactory(LLRPProtocolCodecFactory.BINARY_ENCODING)));
+    // MINA 2.0 method
+    connector.setHandler(handler);
     connector.setConnectTimeoutMillis(timeout);
-		remoteAddress = new InetSocketAddress(host, port);
+    remoteAddress = new InetSocketAddress(host, port);
     System.out.println("LLRP Connect:" + host + ":" + port);
-		ConnectFuture future = connector.connect(remoteAddress);
-		try {future.awaitUninterruptibly();} catch (Exception e) {}  // Wait until the connection attempt is finished.
+    ConnectFuture future = connector.connect(remoteAddress);
+    try {
+      future.awaitUninterruptibly();
+    } catch (Exception e) {
+    }  // Wait until the connection attempt is finished.
 
-		if(future.isConnected()){
-			session = future.getSession();
-		}else{
-			String msg = "failed to connect";
-			throw new LLRPConnectionAttemptFailedException(msg);
-		}
+    if (future.isConnected()) {
+      session = future.getSession();
+    } else {
+      String msg = "failed to connect";
+      throw new LLRPConnectionAttemptFailedException(msg);
+    }
 
-		//check if llrp reader reply with a status report to indicate connection success.
-		//the client shall not send any information to the reader until this status report message is received
-		checkLLRPConnectionAttemptStatus(timeout);
-	}
+    //check if llrp reader reply with a status report to indicate connection success.
+    //the client shall not send any information to the reader until this status report message is received
+    checkLLRPConnectionAttemptStatus(timeout);
+  }
 
-
-	/**
-	 * disconnect existing connection to LLRP device.
-	 */
-
-	public void disconnect(){
-                System.out.println("LLRP Disconnect:" + host + ":" + port);
-                if (connector != null) {
+  /**
+   * disconnect existing connection to LLRP device.
+   */
+  public void disconnect() {
+    System.out.println("LLRP Disconnect:" + host + ":" + port);
+    if (connector != null) {
 //                        connector.dispose();
-                        connector = null;  //make reconnect() impossible
-                }
-		if (session != null) {
-			session.closeNow();
-                        session = null;
-		}
-	}
+      connector = null;  //make reconnect() impossible
+    }
+    if (session != null) {
+      session.closeNow();
+      session = null;
+    }
+  }
 
+  /**
+   * reconnect to LLRP device using host, port and handler specified.
+   *
+   * @return true if connection could be established and ConnectionAttemptEvent Status was set to 'Success', set to false otherwise
+   *
+   */
+  public boolean reconnect() {
+    ConnectFuture future;
 
-	/**
-	 * reconnect to LLRP device using host, port and handler specified.
-	 *
-	 * @return true if connection could be established
-	 * and ConnectionAttemptEvent Status was set to 'Success', set to false otherwise
-	 *
-	 */
+    if (!reconnect) {
+      return false;
+    }
 
-	public boolean reconnect() {
-		ConnectFuture future;
+    // MINA 1.0
+    //future = connector.connect(remoteAddress);
+    //future.join();		// Wait until the connection attempt is finished.
+    // MINA 2.0
+    future = connector.connect();
+    try {
+      future.awaitUninterruptibly();
+    } catch (Exception e) {
+    }
 
-                if (!reconnect) return false;
+    if (future.isConnected()) {
+      session = future.getSession();
+      log.info("new session created:" + session);
+    } else {
+      return false;
+    }
 
-                // MINA 1.0
-                //future = connector.connect(remoteAddress);
-		//future.join();		// Wait until the connection attempt is finished.
+    //check if llrp reader reply with a status report to indicate connection success.
+    //the client shall not send any information to the reader until this status report message is received
+    try {
+      checkLLRPConnectionAttemptStatus(CONNECT_TIMEOUT);
+    } catch (LLRPConnectionAttemptFailedException e) {
+      return false;
+    }
 
-                // MINA 2.0
-		future = connector.connect();
-		try {future.awaitUninterruptibly();} catch (Exception e) {}
+    return true;
+  }
 
-		if(future.isConnected()){
-			session = future.getSession();
-			log.info("new session created:" + session);
-		} else {
-			return false;
-		}
+  /**
+   * get auto reconnecting state.
+   */
+  public boolean getReconnect() {
+    return reconnect;
+  }
 
-		//check if llrp reader reply with a status report to indicate connection success.
-		//the client shall not send any information to the reader until this status report message is received
+  /**
+   * set auto reconnecting state.
+   */
+  public void setReconnect(boolean state) {
+    reconnect = state;
+  }
 
-		try {
-			checkLLRPConnectionAttemptStatus(CONNECT_TIMEOUT);
-		} catch (LLRPConnectionAttemptFailedException e) {
-			return false;
-		}
+  /**
+   * get host address of reader device.
+   *
+   * @return the host
+   */
+  public String getHost() {
+    return host;
+  }
 
-		return true;
-	}
+  /**
+   * set host address of reader device.
+   *
+   * @param host the host to set
+   */
+  public void setHost(String host) {
+    this.host = host;
+  }
 
-        /** get auto reconnecting state. */
-        public boolean getReconnect() {
-          return reconnect;
-        }
+  /**
+   * get port on which to connect to reader device.
+   *
+   * @return the port
+   */
+  public int getPort() {
+    return port;
+  }
 
-        /** set auto reconnecting state. */
-        public void setReconnect(boolean state) {
-          reconnect = state;
-        }
-
-	/**
-	 * get host address of reader device.
-	 *
-	 * @return the host
-	 */
-	public String getHost() {
-		return host;
-	}
-
-	/**
-	 * set host address of reader device.
-	 *
-	 * @param host the host to set
-	 */
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	/**
-	 * get port on which to connect to reader device.
-	 *
-	 * @return the port
-	 */
-	public int getPort() {
-		return port;
-	}
-
-	/**
-	 * set port on which to connect to reader device.
-	 *
-	 * @param port the port to set
-	 */
-	public void setPort(int port) {
-		this.port = port;
-	}
-
+  /**
+   * set port on which to connect to reader device.
+   *
+   * @param port the port to set
+   */
+  public void setPort(int port) {
+    this.port = port;
+  }
 
 }

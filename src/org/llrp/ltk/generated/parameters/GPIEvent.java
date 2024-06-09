@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,240 +48,241 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * A reader reports this event every time an enabled GPI changes GPIstate.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=88&view=fit">LLRP Specification Section 13.2.6.3</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=149&view=fit">LLRP Specification Section 16.2.7.6.2</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=88&view=fit">LLRP Specification Section 13.2.6.3</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=149&view=fit">LLRP Specification Section 16.2.7.6.2</a>}
+ *
+ *
  */
-
 /**
  * A reader reports this event every time an enabled GPI changes GPIstate.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=88&view=fit">LLRP Specification Section 13.2.6.3</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=149&view=fit">LLRP Specification Section 16.2.7.6.2</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=88&view=fit">LLRP Specification Section 13.2.6.3</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=149&view=fit">LLRP Specification Section 16.2.7.6.2</a>}
+ *
+ * .
  */
 public class GPIEvent extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(248);
-    private static final Logger LOGGER = Logger.getLogger(GPIEvent.class);
-    protected UnsignedShort gPIPortNumber;
-    protected Bit gPIEvent;
-    protected BitList reserved0 = new BitList(7);
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public GPIEvent() {
+  public static final SignedShort TYPENUM = new SignedShort(248);
+  private static final Logger LOGGER = Logger.getLogger(GPIEvent.class);
+  protected UnsignedShort gPIPortNumber;
+  protected Bit gPIEvent;
+  protected BitList reserved0 = new BitList(7);
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public GPIEvent() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public GPIEvent(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public GPIEvent(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (gPIPortNumber == null) {
+      LOGGER.warn(" gPIPortNumber not set");
+      throw new MissingParameterException(
+        " gPIPortNumber not set  for Parameter of Type GPIEvent");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public GPIEvent(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(gPIPortNumber.encodeBinary());
+
+    if (gPIEvent == null) {
+      LOGGER.warn(" gPIEvent not set");
+      throw new MissingParameterException(
+        " gPIEvent not set  for Parameter of Type GPIEvent");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public GPIEvent(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(gPIEvent.encodeBinary());
+    resultBits.append(reserved0.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (gPIPortNumber == null) {
+      LOGGER.warn(" gPIPortNumber not set");
+      throw new MissingParameterException(" gPIPortNumber not set");
+    } else {
+      element.addContent(gPIPortNumber.encodeXML("GPIPortNumber", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (gPIPortNumber == null) {
-            LOGGER.warn(" gPIPortNumber not set");
-            throw new MissingParameterException(
-                " gPIPortNumber not set  for Parameter of Type GPIEvent");
-        }
-
-        resultBits.append(gPIPortNumber.encodeBinary());
-
-        if (gPIEvent == null) {
-            LOGGER.warn(" gPIEvent not set");
-            throw new MissingParameterException(
-                " gPIEvent not set  for Parameter of Type GPIEvent");
-        }
-
-        resultBits.append(gPIEvent.encodeBinary());
-        resultBits.append(reserved0.encodeBinary());
-
-        return resultBits;
+    if (gPIEvent == null) {
+      LOGGER.warn(" gPIEvent not set");
+      throw new MissingParameterException(" gPIEvent not set");
+    } else {
+      element.addContent(gPIEvent.encodeXML("GPIEvent", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    //element.addContent(reserved0.encodeXML("reserved",ns));
+    //parameters
+    return element;
+  }
 
-        if (gPIPortNumber == null) {
-            LOGGER.warn(" gPIPortNumber not set");
-            throw new MissingParameterException(" gPIPortNumber not set");
-        } else {
-            element.addContent(gPIPortNumber.encodeXML("GPIPortNumber", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    gPIPortNumber = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    gPIEvent = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    position += reserved0.length();
+  }
 
-        if (gPIEvent == null) {
-            LOGGER.warn(" gPIEvent not set");
-            throw new MissingParameterException(" gPIEvent not set");
-        } else {
-            element.addContent(gPIEvent.encodeXML("GPIEvent", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        //element.addContent(reserved0.encodeXML("reserved",ns));
-        //parameters
-        return element;
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("GPIPortNumber", ns);
+
+    if (temp != null) {
+      gPIPortNumber = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        gPIPortNumber = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        gPIEvent = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        position += reserved0.length();
+    element.removeChild("GPIPortNumber", ns);
+    temp = element.getChild("GPIEvent", ns);
+
+    if (temp != null) {
+      gPIEvent = new Bit(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    element.removeChild("GPIEvent", ns);
 
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("GPIPortNumber", ns);
-
-        if (temp != null) {
-            gPIPortNumber = new UnsignedShort(temp);
-        }
-
-        element.removeChild("GPIPortNumber", ns);
-        temp = element.getChild("GPIEvent", ns);
-
-        if (temp != null) {
-            gPIEvent = new Bit(temp);
-        }
-
-        element.removeChild("GPIEvent", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "GPIEvent has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (element.getChildren().size() > 0) {
+      String message = "GPIEvent has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    //setters
-    /**
-    * set   gPIPortNumber of type UnsignedShort .
-    * @param   gPIPortNumber to be set
-    */
-    public void setGPIPortNumber(final UnsignedShort gPIPortNumber) {
-        this.gPIPortNumber = gPIPortNumber;
-    }
+  //setters
+  /**
+   * set gPIPortNumber of type UnsignedShort .
+   *
+   * @param gPIPortNumber to be set
+   */
+  public void setGPIPortNumber(final UnsignedShort gPIPortNumber) {
+    this.gPIPortNumber = gPIPortNumber;
+  }
 
-    /**
-    * set   gPIEvent of type Bit .
-    * @param   gPIEvent to be set
-    */
-    public void setGPIEvent(final Bit gPIEvent) {
-        this.gPIEvent = gPIEvent;
-    }
+  /**
+   * set gPIEvent of type Bit .
+   *
+   * @param gPIEvent to be set
+   */
+  public void setGPIEvent(final Bit gPIEvent) {
+    this.gPIEvent = gPIEvent;
+  }
 
-    // end setter
+  // end setter
+  //getters
+  /**
+   * get gPIPortNumber of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getGPIPortNumber() {
+    return this.gPIPortNumber;
+  }
 
-    //getters
-    /**
-    * get   gPIPortNumber of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getGPIPortNumber() {
-        return this.gPIPortNumber;
-    }
+  /**
+   * get gPIEvent of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getGPIEvent() {
+    return this.gPIEvent;
+  }
 
-    /**
-    * get   gPIEvent of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getGPIEvent() {
-        return this.gPIEvent;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    // end getters
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    //add methods
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "GPIEvent";
+  }
 
-    // end add
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "GPIEvent: ";
+    result += ", gPIPortNumber: ";
+    result += gPIPortNumber;
+    result += ", gPIEvent: ";
+    result += gPIEvent;
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "GPIEvent";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "GPIEvent: ";
-        result += ", gPIPortNumber: ";
-        result += gPIPortNumber;
-        result += ", gPIEvent: ";
-        result += gPIEvent;
-
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

@@ -19,53 +19,53 @@ import org.jdom.Namespace;
 
 /**
  * Super Type for all numerical types!
- * 
+ *
  * @author Basil Gasser - ETH Zurich
  */
 public abstract class LLRPNumberType extends LLRPType {
-	protected boolean signed;
 
-	/**
-	 * LLRPNumberType is super type of all types representing a number.
-	 * 
-	 * @return Integer!
-	 */
-	public abstract Integer toInteger();
+  protected boolean signed;
 
-	public int intValue() {
-		return toInteger().intValue();
-	}
+  /**
+   * LLRPNumberType is super type of all types representing a number.
+   *
+   * @return Integer!
+   */
+  public abstract Integer toInteger();
 
-	/**
-	 * compare two numbers.
-	 * 
-	 * @param other
-	 *            to compare
-	 * 
-	 * @return boolean
-	 */
-	public boolean equals(Object other) {
-		String b = "";
-		if (other instanceof LLRPNumberType) {
-			b = ((LLRPNumberType) other).encodeXML("value", Namespace.getNamespace("foo"))
-					.getValue();
-		} else {
-			b = other.toString();
-		}
-		String a = this.encodeXML("value", Namespace.getNamespace("foo"))
-				.getValue();
+  public int intValue() {
+    return toInteger().intValue();
+  }
 
-		return a.equalsIgnoreCase(b);
-	}
+  /**
+   * compare two numbers.
+   *
+   * @param other to compare
+   *
+   * @return boolean
+   */
+  public boolean equals(Object other) {
+    String b = "";
+    if (other instanceof LLRPNumberType) {
+      b = ((LLRPNumberType) other).encodeXML("value", Namespace.getNamespace("foo"))
+        .getValue();
+    } else {
+      b = other.toString();
+    }
+    String a = this.encodeXML("value", Namespace.getNamespace("foo"))
+      .getValue();
 
-	public int hashCode() {
-		return this.encodeXML("value", Namespace.getNamespace("foo"))
-				.getValue().hashCode();
-	}
-	
-	public String toString(){
-		return toInteger().toString();
-	}
-	
-	public abstract boolean inRange(long value);
+    return a.equalsIgnoreCase(b);
+  }
+
+  public int hashCode() {
+    return this.encodeXML("value", Namespace.getNamespace("foo"))
+      .getValue().hashCode();
+  }
+
+  public String toString() {
+    return toInteger().toString();
+  }
+
+  public abstract boolean inRange(long value);
 }

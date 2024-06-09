@@ -5,9 +5,9 @@
 * for more information
 * Generated on: $utility.getDateNTime();
 *
-*/
+ */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,18 +26,17 @@
  */
 package org.llrp.ltk.generated;
 
-
 /**
  * LLRPConstants defines constants for XSD and LLRP XML namespace and LLRP XML XSD schema path.
  *
  */
 public class LLRPConstants {
-    public static final String XMLENCODINGSCHEMA = "http://www.w3.org/2001/XMLSchema-instance";
-    public static final String EXTERNAL_LLRP_SCHEMA_PATH = "http://www.llrp.org/ltk/schema/core/encoding/xml/1.0/llrp.xsd";
-    public static final Boolean REDIRECT_EXTERNAL_RESOURCES = new Boolean(
-            "true");
 
-    // llrp
-    public static final String LLRPNAMESPACE = "http://www.llrp.org/ltk/schema/core/encoding/xml/1.0";
-    public static final String LLRPMESSAGESCHEMAPATH = "org/llrp/ltk/llrp-1x0.xsd";
+  public static final String XMLENCODINGSCHEMA = "http://www.w3.org/2001/XMLSchema-instance";
+  public static final String EXTERNAL_LLRP_SCHEMA_PATH = "http://www.llrp.org/ltk/schema/core/encoding/xml/1.0/llrp.xsd";
+  public static final Boolean REDIRECT_EXTERNAL_RESOURCES = true;
+  
+  // llrp
+  public static final String LLRPNAMESPACE = "http://www.llrp.org/ltk/schema/core/encoding/xml/1.0";
+  public static final String LLRPMESSAGESCHEMAPATH = "org/llrp/ltk/llrp-1x0.xsd";
 }

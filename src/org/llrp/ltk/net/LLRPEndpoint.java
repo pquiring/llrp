@@ -14,29 +14,26 @@
  * See the License for the specific language governing permissions
  * and limitations under the License.
  */
-
 package org.llrp.ltk.net;
 
 import org.llrp.ltk.types.LLRPMessage;
 
 /**
-	 * The LLRPEndpoint interface needs to be implemented by any class
-	 * that wants to receive LLRP messages asynchronously. 
+ * The LLRPEndpoint interface needs to be implemented by any class that wants to receive LLRP messages asynchronously.
  */
-
 public interface LLRPEndpoint {
 
-	/**
-	 * The  messageReceived.message is called by the LLRPIoHandler whenever
-	 * an LLRP message is received asynchrounly.
-	 * 
-	 * @param message LLRPmessage received
-	 */
-	public void messageReceived(LLRPMessage message);
+  /**
+   * The messageReceived.message is called by the LLRPIoHandler whenever an LLRP message is received asynchrounly.
+   *
+   * @param message LLRPmessage received
+   */
+  public void messageReceived(LLRPMessage message);
 
-	/**
-	 * The method errorOccurred is called by the LLRPIoHandler whenever an error occurred.
-	 * @param message 
-	 */
-	public void errorOccured(String message);
+  /**
+   * The method errorOccurred is called by the LLRPIoHandler whenever an error occurred.
+   *
+   * @param message
+   */
+  public void errorOccured(String message);
 }

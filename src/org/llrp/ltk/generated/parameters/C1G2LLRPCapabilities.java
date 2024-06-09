@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,290 +49,293 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * Readers MAY support BlockErase, and MAY support BlockWrite. Readers SHALL support at least one select filter per query.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=98&view=fit">LLRP Specification Section 15.2.1.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=153&view=fit">LLRP Specification Section 16.3.1.1.1</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=98&view=fit">LLRP Specification Section 15.2.1.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=153&view=fit">LLRP Specification Section 16.3.1.1.1</a>}
+ *
+ *
  */
-
 /**
  * Readers MAY support BlockErase, and MAY support BlockWrite. Readers SHALL support at least one select filter per query.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=98&view=fit">LLRP Specification Section 15.2.1.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=153&view=fit">LLRP Specification Section 16.3.1.1.1</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=98&view=fit">LLRP Specification Section 15.2.1.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=153&view=fit">LLRP Specification Section 16.3.1.1.1</a>}
+ *
+ * .
  */
 public class C1G2LLRPCapabilities extends TLVParameter
-    implements AirProtocolLLRPCapabilities {
-    public static final SignedShort TYPENUM = new SignedShort(327);
-    private static final Logger LOGGER = Logger.getLogger(C1G2LLRPCapabilities.class);
-    protected Bit canSupportBlockErase;
-    protected Bit canSupportBlockWrite;
-    protected BitList reserved0 = new BitList(6);
-    protected UnsignedShort maxNumSelectFiltersPerQuery;
+  implements AirProtocolLLRPCapabilities {
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public C1G2LLRPCapabilities() {
+  public static final SignedShort TYPENUM = new SignedShort(327);
+  private static final Logger LOGGER = Logger.getLogger(C1G2LLRPCapabilities.class);
+  protected Bit canSupportBlockErase;
+  protected Bit canSupportBlockWrite;
+  protected BitList reserved0 = new BitList(6);
+  protected UnsignedShort maxNumSelectFiltersPerQuery;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public C1G2LLRPCapabilities() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public C1G2LLRPCapabilities(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public C1G2LLRPCapabilities(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (canSupportBlockErase == null) {
+      LOGGER.warn(" canSupportBlockErase not set");
+      throw new MissingParameterException(
+        " canSupportBlockErase not set  for Parameter of Type C1G2LLRPCapabilities");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public C1G2LLRPCapabilities(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(canSupportBlockErase.encodeBinary());
+
+    if (canSupportBlockWrite == null) {
+      LOGGER.warn(" canSupportBlockWrite not set");
+      throw new MissingParameterException(
+        " canSupportBlockWrite not set  for Parameter of Type C1G2LLRPCapabilities");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public C1G2LLRPCapabilities(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(canSupportBlockWrite.encodeBinary());
+    resultBits.append(reserved0.encodeBinary());
+
+    if (maxNumSelectFiltersPerQuery == null) {
+      LOGGER.warn(" maxNumSelectFiltersPerQuery not set");
+      throw new MissingParameterException(
+        " maxNumSelectFiltersPerQuery not set  for Parameter of Type C1G2LLRPCapabilities");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(maxNumSelectFiltersPerQuery.encodeBinary());
 
-        if (canSupportBlockErase == null) {
-            LOGGER.warn(" canSupportBlockErase not set");
-            throw new MissingParameterException(
-                " canSupportBlockErase not set  for Parameter of Type C1G2LLRPCapabilities");
-        }
+    return resultBits;
+  }
 
-        resultBits.append(canSupportBlockErase.encodeBinary());
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        if (canSupportBlockWrite == null) {
-            LOGGER.warn(" canSupportBlockWrite not set");
-            throw new MissingParameterException(
-                " canSupportBlockWrite not set  for Parameter of Type C1G2LLRPCapabilities");
-        }
-
-        resultBits.append(canSupportBlockWrite.encodeBinary());
-        resultBits.append(reserved0.encodeBinary());
-
-        if (maxNumSelectFiltersPerQuery == null) {
-            LOGGER.warn(" maxNumSelectFiltersPerQuery not set");
-            throw new MissingParameterException(
-                " maxNumSelectFiltersPerQuery not set  for Parameter of Type C1G2LLRPCapabilities");
-        }
-
-        resultBits.append(maxNumSelectFiltersPerQuery.encodeBinary());
-
-        return resultBits;
+    if (canSupportBlockErase == null) {
+      LOGGER.warn(" canSupportBlockErase not set");
+      throw new MissingParameterException(" canSupportBlockErase not set");
+    } else {
+      element.addContent(canSupportBlockErase.encodeXML(
+        "CanSupportBlockErase", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        if (canSupportBlockErase == null) {
-            LOGGER.warn(" canSupportBlockErase not set");
-            throw new MissingParameterException(" canSupportBlockErase not set");
-        } else {
-            element.addContent(canSupportBlockErase.encodeXML(
-                    "CanSupportBlockErase", ns));
-        }
-
-        if (canSupportBlockWrite == null) {
-            LOGGER.warn(" canSupportBlockWrite not set");
-            throw new MissingParameterException(" canSupportBlockWrite not set");
-        } else {
-            element.addContent(canSupportBlockWrite.encodeXML(
-                    "CanSupportBlockWrite", ns));
-        }
-
-        //element.addContent(reserved0.encodeXML("reserved",ns));
-        if (maxNumSelectFiltersPerQuery == null) {
-            LOGGER.warn(" maxNumSelectFiltersPerQuery not set");
-            throw new MissingParameterException(
-                " maxNumSelectFiltersPerQuery not set");
-        } else {
-            element.addContent(maxNumSelectFiltersPerQuery.encodeXML(
-                    "MaxNumSelectFiltersPerQuery", ns));
-        }
-
-        //parameters
-        return element;
+    if (canSupportBlockWrite == null) {
+      LOGGER.warn(" canSupportBlockWrite not set");
+      throw new MissingParameterException(" canSupportBlockWrite not set");
+    } else {
+      element.addContent(canSupportBlockWrite.encodeXML(
+        "CanSupportBlockWrite", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        canSupportBlockErase = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        canSupportBlockWrite = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        position += reserved0.length();
-        maxNumSelectFiltersPerQuery = new UnsignedShort(binary.subList(
-                    position, UnsignedShort.length()));
-        position += UnsignedShort.length();
+    //element.addContent(reserved0.encodeXML("reserved",ns));
+    if (maxNumSelectFiltersPerQuery == null) {
+      LOGGER.warn(" maxNumSelectFiltersPerQuery not set");
+      throw new MissingParameterException(
+        " maxNumSelectFiltersPerQuery not set");
+    } else {
+      element.addContent(maxNumSelectFiltersPerQuery.encodeXML(
+        "MaxNumSelectFiltersPerQuery", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    //parameters
+    return element;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    canSupportBlockErase = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    canSupportBlockWrite = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    position += reserved0.length();
+    maxNumSelectFiltersPerQuery = new UnsignedShort(binary.subList(
+      position, UnsignedShort.length()));
+    position += UnsignedShort.length();
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        temp = element.getChild("CanSupportBlockErase", ns);
+    Element temp = null;
 
-        if (temp != null) {
-            canSupportBlockErase = new Bit(temp);
-        }
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
 
-        element.removeChild("CanSupportBlockErase", ns);
-        temp = element.getChild("CanSupportBlockWrite", ns);
+    temp = element.getChild("CanSupportBlockErase", ns);
 
-        if (temp != null) {
-            canSupportBlockWrite = new Bit(temp);
-        }
-
-        element.removeChild("CanSupportBlockWrite", ns);
-        temp = element.getChild("MaxNumSelectFiltersPerQuery", ns);
-
-        if (temp != null) {
-            maxNumSelectFiltersPerQuery = new UnsignedShort(temp);
-        }
-
-        element.removeChild("MaxNumSelectFiltersPerQuery", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "C1G2LLRPCapabilities has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (temp != null) {
+      canSupportBlockErase = new Bit(temp);
     }
 
-    //setters
-    /**
-    * set   canSupportBlockErase of type Bit .
-    * @param   canSupportBlockErase to be set
-    */
-    public void setCanSupportBlockErase(final Bit canSupportBlockErase) {
-        this.canSupportBlockErase = canSupportBlockErase;
+    element.removeChild("CanSupportBlockErase", ns);
+    temp = element.getChild("CanSupportBlockWrite", ns);
+
+    if (temp != null) {
+      canSupportBlockWrite = new Bit(temp);
     }
 
-    /**
-    * set   canSupportBlockWrite of type Bit .
-    * @param   canSupportBlockWrite to be set
-    */
-    public void setCanSupportBlockWrite(final Bit canSupportBlockWrite) {
-        this.canSupportBlockWrite = canSupportBlockWrite;
+    element.removeChild("CanSupportBlockWrite", ns);
+    temp = element.getChild("MaxNumSelectFiltersPerQuery", ns);
+
+    if (temp != null) {
+      maxNumSelectFiltersPerQuery = new UnsignedShort(temp);
     }
 
-    /**
-    * set   maxNumSelectFiltersPerQuery of type UnsignedShort .
-    * @param   maxNumSelectFiltersPerQuery to be set
-    */
-    public void setMaxNumSelectFiltersPerQuery(
-        final UnsignedShort maxNumSelectFiltersPerQuery) {
-        this.maxNumSelectFiltersPerQuery = maxNumSelectFiltersPerQuery;
+    element.removeChild("MaxNumSelectFiltersPerQuery", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "C1G2LLRPCapabilities has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    // end setter
+  //setters
+  /**
+   * set canSupportBlockErase of type Bit .
+   *
+   * @param canSupportBlockErase to be set
+   */
+  public void setCanSupportBlockErase(final Bit canSupportBlockErase) {
+    this.canSupportBlockErase = canSupportBlockErase;
+  }
 
-    //getters
-    /**
-    * get   canSupportBlockErase of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getCanSupportBlockErase() {
-        return this.canSupportBlockErase;
-    }
+  /**
+   * set canSupportBlockWrite of type Bit .
+   *
+   * @param canSupportBlockWrite to be set
+   */
+  public void setCanSupportBlockWrite(final Bit canSupportBlockWrite) {
+    this.canSupportBlockWrite = canSupportBlockWrite;
+  }
 
-    /**
-    * get   canSupportBlockWrite of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getCanSupportBlockWrite() {
-        return this.canSupportBlockWrite;
-    }
+  /**
+   * set maxNumSelectFiltersPerQuery of type UnsignedShort .
+   *
+   * @param maxNumSelectFiltersPerQuery to be set
+   */
+  public void setMaxNumSelectFiltersPerQuery(
+    final UnsignedShort maxNumSelectFiltersPerQuery) {
+    this.maxNumSelectFiltersPerQuery = maxNumSelectFiltersPerQuery;
+  }
 
-    /**
-    * get   maxNumSelectFiltersPerQuery of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getMaxNumSelectFiltersPerQuery() {
-        return this.maxNumSelectFiltersPerQuery;
-    }
+  // end setter
+  //getters
+  /**
+   * get canSupportBlockErase of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getCanSupportBlockErase() {
+    return this.canSupportBlockErase;
+  }
 
-    // end getters
+  /**
+   * get canSupportBlockWrite of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getCanSupportBlockWrite() {
+    return this.canSupportBlockWrite;
+  }
 
-    //add methods
+  /**
+   * get maxNumSelectFiltersPerQuery of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getMaxNumSelectFiltersPerQuery() {
+    return this.maxNumSelectFiltersPerQuery;
+  }
 
-    // end add
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "C1G2LLRPCapabilities";
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "C1G2LLRPCapabilities";
-    }
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "C1G2LLRPCapabilities: ";
+    result += ", canSupportBlockErase: ";
+    result += canSupportBlockErase;
+    result += ", canSupportBlockWrite: ";
+    result += canSupportBlockWrite;
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "C1G2LLRPCapabilities: ";
-        result += ", canSupportBlockErase: ";
-        result += canSupportBlockErase;
-        result += ", canSupportBlockWrite: ";
-        result += canSupportBlockWrite;
+    result += ", maxNumSelectFiltersPerQuery: ";
+    result += maxNumSelectFiltersPerQuery;
+    result = result.replaceFirst(", ", "");
 
-        result += ", maxNumSelectFiltersPerQuery: ";
-        result += maxNumSelectFiltersPerQuery;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

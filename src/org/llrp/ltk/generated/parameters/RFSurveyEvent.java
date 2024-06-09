@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,280 +48,283 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * ROSpecID: The identifier of the ROSpec that contains the RFSurveySpec.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=90&view=fit">LLRP Specification Section 13.2.6.8</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.7</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=90&view=fit">LLRP Specification Section 13.2.6.8</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.7</a>}
+ *
+ *
  */
-
 /**
  * ROSpecID: The identifier of the ROSpec that contains the RFSurveySpec.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=90&view=fit">LLRP Specification Section 13.2.6.8</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.7</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=90&view=fit">LLRP Specification Section 13.2.6.8</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.7</a>}
+ *
+ * .
  */
 public class RFSurveyEvent extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(253);
-    private static final Logger LOGGER = Logger.getLogger(RFSurveyEvent.class);
-    protected RFSurveyEventType eventType;
-    protected UnsignedInteger rOSpecID;
-    protected UnsignedShort specIndex;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public RFSurveyEvent() {
+  public static final SignedShort TYPENUM = new SignedShort(253);
+  private static final Logger LOGGER = Logger.getLogger(RFSurveyEvent.class);
+  protected RFSurveyEventType eventType;
+  protected UnsignedInteger rOSpecID;
+  protected UnsignedShort specIndex;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public RFSurveyEvent() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public RFSurveyEvent(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public RFSurveyEvent(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (eventType == null) {
+      LOGGER.warn(" eventType not set");
+      throw new MissingParameterException(
+        " eventType not set  for Parameter of Type RFSurveyEvent");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public RFSurveyEvent(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(eventType.encodeBinary());
+
+    if (rOSpecID == null) {
+      LOGGER.warn(" rOSpecID not set");
+      throw new MissingParameterException(
+        " rOSpecID not set  for Parameter of Type RFSurveyEvent");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public RFSurveyEvent(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(rOSpecID.encodeBinary());
+
+    if (specIndex == null) {
+      LOGGER.warn(" specIndex not set");
+      throw new MissingParameterException(
+        " specIndex not set  for Parameter of Type RFSurveyEvent");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(specIndex.encodeBinary());
 
-        if (eventType == null) {
-            LOGGER.warn(" eventType not set");
-            throw new MissingParameterException(
-                " eventType not set  for Parameter of Type RFSurveyEvent");
-        }
+    return resultBits;
+  }
 
-        resultBits.append(eventType.encodeBinary());
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        if (rOSpecID == null) {
-            LOGGER.warn(" rOSpecID not set");
-            throw new MissingParameterException(
-                " rOSpecID not set  for Parameter of Type RFSurveyEvent");
-        }
-
-        resultBits.append(rOSpecID.encodeBinary());
-
-        if (specIndex == null) {
-            LOGGER.warn(" specIndex not set");
-            throw new MissingParameterException(
-                " specIndex not set  for Parameter of Type RFSurveyEvent");
-        }
-
-        resultBits.append(specIndex.encodeBinary());
-
-        return resultBits;
+    if (eventType == null) {
+      LOGGER.warn(" eventType not set");
+      throw new MissingParameterException(" eventType not set");
+    } else {
+      element.addContent(eventType.encodeXML("EventType", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        if (eventType == null) {
-            LOGGER.warn(" eventType not set");
-            throw new MissingParameterException(" eventType not set");
-        } else {
-            element.addContent(eventType.encodeXML("EventType", ns));
-        }
-
-        if (rOSpecID == null) {
-            LOGGER.warn(" rOSpecID not set");
-            throw new MissingParameterException(" rOSpecID not set");
-        } else {
-            element.addContent(rOSpecID.encodeXML("ROSpecID", ns));
-        }
-
-        if (specIndex == null) {
-            LOGGER.warn(" specIndex not set");
-            throw new MissingParameterException(" specIndex not set");
-        } else {
-            element.addContent(specIndex.encodeXML("SpecIndex", ns));
-        }
-
-        //parameters
-        return element;
+    if (rOSpecID == null) {
+      LOGGER.warn(" rOSpecID not set");
+      throw new MissingParameterException(" rOSpecID not set");
+    } else {
+      element.addContent(rOSpecID.encodeXML("ROSpecID", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        eventType = new RFSurveyEventType(binary.subList(position,
-                    RFSurveyEventType.length()));
-        position += RFSurveyEventType.length();
-        rOSpecID = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        specIndex = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
+    if (specIndex == null) {
+      LOGGER.warn(" specIndex not set");
+      throw new MissingParameterException(" specIndex not set");
+    } else {
+      element.addContent(specIndex.encodeXML("SpecIndex", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    //parameters
+    return element;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    eventType = new RFSurveyEventType(binary.subList(position,
+      RFSurveyEventType.length()));
+    position += RFSurveyEventType.length();
+    rOSpecID = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    specIndex = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        temp = element.getChild("EventType", ns);
+    Element temp = null;
 
-        if (temp != null) {
-            eventType = new RFSurveyEventType(temp);
-        }
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
 
-        element.removeChild("EventType", ns);
-        temp = element.getChild("ROSpecID", ns);
+    temp = element.getChild("EventType", ns);
 
-        if (temp != null) {
-            rOSpecID = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("ROSpecID", ns);
-        temp = element.getChild("SpecIndex", ns);
-
-        if (temp != null) {
-            specIndex = new UnsignedShort(temp);
-        }
-
-        element.removeChild("SpecIndex", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "RFSurveyEvent has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (temp != null) {
+      eventType = new RFSurveyEventType(temp);
     }
 
-    //setters
-    /**
-    * set eventType of type RFSurveyEventType .
-    * @param  eventType to be set
-    */
-    public void setEventType(final RFSurveyEventType eventType) {
-        this.eventType = eventType;
+    element.removeChild("EventType", ns);
+    temp = element.getChild("ROSpecID", ns);
+
+    if (temp != null) {
+      rOSpecID = new UnsignedInteger(temp);
     }
 
-    /**
-    * set   rOSpecID of type UnsignedInteger .
-    * @param   rOSpecID to be set
-    */
-    public void setROSpecID(final UnsignedInteger rOSpecID) {
-        this.rOSpecID = rOSpecID;
+    element.removeChild("ROSpecID", ns);
+    temp = element.getChild("SpecIndex", ns);
+
+    if (temp != null) {
+      specIndex = new UnsignedShort(temp);
     }
 
-    /**
-    * set   specIndex of type UnsignedShort .
-    * @param   specIndex to be set
-    */
-    public void setSpecIndex(final UnsignedShort specIndex) {
-        this.specIndex = specIndex;
+    element.removeChild("SpecIndex", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "RFSurveyEvent has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    // end setter
+  //setters
+  /**
+   * set eventType of type RFSurveyEventType .
+   *
+   * @param eventType to be set
+   */
+  public void setEventType(final RFSurveyEventType eventType) {
+    this.eventType = eventType;
+  }
 
-    //getters
-    /**
-    * get eventType of type RFSurveyEventType.
-    * @return  RFSurveyEventType
-    */
-    public RFSurveyEventType getEventType() {
-        return eventType;
-    }
+  /**
+   * set rOSpecID of type UnsignedInteger .
+   *
+   * @param rOSpecID to be set
+   */
+  public void setROSpecID(final UnsignedInteger rOSpecID) {
+    this.rOSpecID = rOSpecID;
+  }
 
-    /**
-    * get   rOSpecID of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getROSpecID() {
-        return this.rOSpecID;
-    }
+  /**
+   * set specIndex of type UnsignedShort .
+   *
+   * @param specIndex to be set
+   */
+  public void setSpecIndex(final UnsignedShort specIndex) {
+    this.specIndex = specIndex;
+  }
 
-    /**
-    * get   specIndex of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getSpecIndex() {
-        return this.specIndex;
-    }
+  // end setter
+  //getters
+  /**
+   * get eventType of type RFSurveyEventType.
+   *
+   * @return RFSurveyEventType
+   */
+  public RFSurveyEventType getEventType() {
+    return eventType;
+  }
 
-    // end getters
+  /**
+   * get rOSpecID of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getROSpecID() {
+    return this.rOSpecID;
+  }
 
-    //add methods
+  /**
+   * get specIndex of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getSpecIndex() {
+    return this.specIndex;
+  }
 
-    // end add
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "RFSurveyEvent";
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "RFSurveyEvent";
-    }
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "RFSurveyEvent: ";
+    result += ", eventType: ";
+    result += eventType;
+    result += ", rOSpecID: ";
+    result += rOSpecID;
+    result += ", specIndex: ";
+    result += specIndex;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "RFSurveyEvent: ";
-        result += ", eventType: ";
-        result += eventType;
-        result += ", rOSpecID: ";
-        result += rOSpecID;
-        result += ", specIndex: ";
-        result += specIndex;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

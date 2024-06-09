@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,647 +56,658 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This parameter defines the air protocol access-specific settings. It contains a TagSpec and an OpSpec Parameter. The TagSpec specifies the tag filters in terms of air protocol specific memory capabilities (e.g., memory banks, pointer and length). The OpSpec specifies all the details of the operations required for the air protocol specific access operation commands. In case there are multiple AccessSpecs that get matched during a TagSpec lookup, the Reader SHALL only execute the first enabled AccessSpec that matches, where the ordering of the AccessSpecs is the order in which the AccessSpecs were created by the Client.The order of execution of OpSpecs within an AccessSpec is the order in which the OpSpecs were set up in the AccessSpec. If an OpSpec execution fails, the Reader SHALL stop the execution of the AccessSpec.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=65&view=fit">LLRP Specification Section 11.2.1.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=139&view=fit">LLRP Specification Section 16.2.5.1.2</a>}
-
-
+ * This parameter defines the air protocol access-specific settings. It contains a TagSpec and an OpSpec Parameter. The TagSpec specifies the tag filters in terms of air protocol
+ * specific memory capabilities (e.g., memory banks, pointer and length). The OpSpec specifies all the details of the operations required for the air protocol specific access
+ * operation commands. In case there are multiple AccessSpecs that get matched during a TagSpec lookup, the Reader SHALL only execute the first enabled AccessSpec that matches,
+ * where the ordering of the AccessSpecs is the order in which the AccessSpecs were created by the Client.The order of execution of OpSpecs within an AccessSpec is the order in
+ * which the OpSpecs were set up in the AccessSpec. If an OpSpec execution fails, the Reader SHALL stop the execution of the AccessSpec.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=65&view=fit">LLRP Specification Section 11.2.1.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=139&view=fit">LLRP Specification Section 16.2.5.1.2</a>}
+ *
+ *
  */
-
 /**
- * This parameter defines the air protocol access-specific settings. It contains a TagSpec and an OpSpec Parameter. The TagSpec specifies the tag filters in terms of air protocol specific memory capabilities (e.g., memory banks, pointer and length). The OpSpec specifies all the details of the operations required for the air protocol specific access operation commands. In case there are multiple AccessSpecs that get matched during a TagSpec lookup, the Reader SHALL only execute the first enabled AccessSpec that matches, where the ordering of the AccessSpecs is the order in which the AccessSpecs were created by the Client.The order of execution of OpSpecs within an AccessSpec is the order in which the OpSpecs were set up in the AccessSpec. If an OpSpec execution fails, the Reader SHALL stop the execution of the AccessSpec.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=65&view=fit">LLRP Specification Section 11.2.1.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=139&view=fit">LLRP Specification Section 16.2.5.1.2</a>}
-
-      .
+ * This parameter defines the air protocol access-specific settings. It contains a TagSpec and an OpSpec Parameter. The TagSpec specifies the tag filters in terms of air protocol
+ * specific memory capabilities (e.g., memory banks, pointer and length). The OpSpec specifies all the details of the operations required for the air protocol specific access
+ * operation commands. In case there are multiple AccessSpecs that get matched during a TagSpec lookup, the Reader SHALL only execute the first enabled AccessSpec that matches,
+ * where the ordering of the AccessSpecs is the order in which the AccessSpecs were created by the Client.The order of execution of OpSpecs within an AccessSpec is the order in
+ * which the OpSpecs were set up in the AccessSpec. If an OpSpec execution fails, the Reader SHALL stop the execution of the AccessSpec.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=65&view=fit">LLRP Specification Section 11.2.1.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=139&view=fit">LLRP Specification Section 16.2.5.1.2</a>}
+ *
+ * .
  */
 public class AccessCommand extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(209);
-    private static final Logger LOGGER = Logger.getLogger(AccessCommand.class);
-    protected AirProtocolTagSpec airProtocolTagSpec;
-    protected List<AccessCommandOpSpec> accessCommandOpSpecList = new LinkedList<AccessCommandOpSpec>();
-    protected List<Custom> customList = new LinkedList<Custom>();
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public AccessCommand() {
+  public static final SignedShort TYPENUM = new SignedShort(209);
+  private static final Logger LOGGER = Logger.getLogger(AccessCommand.class);
+  protected AirProtocolTagSpec airProtocolTagSpec;
+  protected List<AccessCommandOpSpec> accessCommandOpSpecList = new LinkedList<AccessCommandOpSpec>();
+  protected List<Custom> customList = new LinkedList<Custom>();
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public AccessCommand() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public AccessCommand(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public AccessCommand(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (airProtocolTagSpec == null) {
+      // single parameter, may not be null
+      LOGGER.warn(" airProtocolTagSpec not set");
+      throw new MissingParameterException(" airProtocolTagSpec not set");
+    } else {
+      resultBits.append(airProtocolTagSpec.encodeBinary());
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public AccessCommand(LLRPBitList list) {
-        decodeBinary(list);
+    if (accessCommandOpSpecList == null) {
+      LOGGER.warn(" accessCommandOpSpecList not set");
+
+      //parameter has to be set - throw exception
+      throw new MissingParameterException(
+        " accessCommandOpSpecList not set");
+    } else {
+      for (AccessCommandOpSpec field : accessCommandOpSpecList) {
+        resultBits.append(field.encodeBinary());
+      }
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public AccessCommand(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    if (customList == null) {
+      //just warn - it is optional
+      LOGGER.info(" customList not set");
+    } else {
+      for (Custom field : customList) {
+        resultBits.append(field.encodeBinary());
+      }
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    return resultBits;
+  }
 
-        if (airProtocolTagSpec == null) {
-            // single parameter, may not be null
-            LOGGER.warn(" airProtocolTagSpec not set");
-            throw new MissingParameterException(" airProtocolTagSpec not set");
-        } else {
-            resultBits.append(airProtocolTagSpec.encodeBinary());
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        if (accessCommandOpSpecList == null) {
-            LOGGER.warn(" accessCommandOpSpecList not set");
-
-            //parameter has to be set - throw exception
-            throw new MissingParameterException(
-                " accessCommandOpSpecList not set");
-        } else {
-            for (AccessCommandOpSpec field : accessCommandOpSpecList) {
-                resultBits.append(field.encodeBinary());
-            }
-        }
-
-        if (customList == null) {
-            //just warn - it is optional 
-            LOGGER.info(" customList not set");
-        } else {
-            for (Custom field : customList) {
-                resultBits.append(field.encodeBinary());
-            }
-        }
-
-        return resultBits;
+    //parameters
+    if (airProtocolTagSpec == null) {
+      LOGGER.info("airProtocolTagSpec not set");
+      throw new MissingParameterException("airProtocolTagSpec not set");
+    } else {
+      element.addContent(airProtocolTagSpec.encodeXML(
+        airProtocolTagSpec.getClass().getSimpleName(), ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        //parameters
-        if (airProtocolTagSpec == null) {
-            LOGGER.info("airProtocolTagSpec not set");
-            throw new MissingParameterException("airProtocolTagSpec not set");
-        } else {
-            element.addContent(airProtocolTagSpec.encodeXML(
-                    airProtocolTagSpec.getClass().getSimpleName(), ns));
-        }
-
-        if (accessCommandOpSpecList == null) {
-            LOGGER.warn(" accessCommandOpSpecList not set");
-            throw new MissingParameterException(
-                "  accessCommandOpSpecList not set");
-        }
-
-        for (AccessCommandOpSpec field : accessCommandOpSpecList) {
-            element.addContent(field.encodeXML(field.getClass().getName()
-                                                    .replaceAll(field.getClass()
-                                                                     .getPackage()
-                                                                     .getName() +
-                        ".", ""), ns));
-        }
-
-        if (customList == null) {
-            LOGGER.info("customList not set");
-        } else {
-            for (Custom field : customList) {
-                element.addContent(field.encodeXML(field.getClass().getName()
-                                                        .replaceAll(field.getClass()
-                                                                         .getPackage()
-                                                                         .getName() +
-                            ".", ""), ns));
-            }
-        }
-
-        return element;
+    if (accessCommandOpSpecList == null) {
+      LOGGER.warn(" accessCommandOpSpecList not set");
+      throw new MissingParameterException(
+        "  accessCommandOpSpecList not set");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
+    for (AccessCommandOpSpec field : accessCommandOpSpecList) {
+      element.addContent(field.encodeXML(field.getClass().getName()
+        .replaceAll(field.getClass()
+          .getPackage()
+          .getName()
+          + ".", ""), ns));
+    }
 
-        // look ahead to see type
-        // may be optional or exactly once
-        type = null;
-        tempByteLength = 0;
-        tempLength = 0;
+    if (customList == null) {
+      LOGGER.info("customList not set");
+    } else {
+      for (Custom field : customList) {
+        element.addContent(field.encodeXML(field.getClass().getName()
+          .replaceAll(field.getClass()
+            .getPackage()
+            .getName()
+            + ".", ""), ns));
+      }
+    }
 
-        try {
-            // if first bit is one it is a TV Parameter
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-        } catch (IllegalArgumentException le) {
-            // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
-            LOGGER.warn(
-                "AccessCommand misses non optional parameter of type AirProtocolTagSpec");
-            throw new MissingParameterException(
-                "AccessCommand misses non optional parameter of type AirProtocolTagSpec");
-        }
+    return element;
+  }
 
-        boolean found = false;
-        LOGGER.debug("decoding choice type AirProtocolTagSpec ");
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
 
-        //if first bit is 1 it is a TV Parameter
+    // look ahead to see type
+    // may be optional or exactly once
+    type = null;
+    tempByteLength = 0;
+    tempLength = 0;
+
+    try {
+      // if first bit is one it is a TV Parameter
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+    } catch (IllegalArgumentException le) {
+      // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
+      LOGGER.warn(
+        "AccessCommand misses non optional parameter of type AirProtocolTagSpec");
+      throw new MissingParameterException(
+        "AccessCommand misses non optional parameter of type AirProtocolTagSpec");
+    }
+
+    boolean found = false;
+    LOGGER.debug("decoding choice type AirProtocolTagSpec ");
+
+    //if first bit is 1 it is a TV Parameter
+    if (binary.get(position)) {
+      // length can statically be determined for TV Parameters
+      tempLength = C1G2TagSpec.length();
+    }
+
+    if ((type != null) && type.equals(C1G2TagSpec.TYPENUM)) {
+      airProtocolTagSpec = new C1G2TagSpec(binary.subList(position,
+        tempLength));
+      LOGGER.debug(
+        " airProtocolTagSpec instatiated to C1G2TagSpec with length "
+        + tempLength);
+      position += tempLength;
+      found = true;
+    }
+
+    if (!found) {
+      LOGGER.warn(
+        "encoded message misses non optional parameter airProtocolTagSpec");
+      throw new MissingParameterException(
+        "AccessCommand misses non optional parameter of type AirProtocolTagSpec");
+    }
+
+    // list of parameters
+    accessCommandOpSpecList = new LinkedList<AccessCommandOpSpec>();
+    LOGGER.debug("decoding parameter accessCommandOpSpecList ");
+
+    while (position < binary.length()) {
+      // store if one parameter matched
+      boolean atLeastOnce = false;
+
+      // look ahead to see type
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+
+      //choiceRef
+      if ((type != null) && type.equals(C1G2Read.TYPENUM)) {
         if (binary.get(position)) {
-            // length can statically be determined for TV Parameters
-            tempLength = C1G2TagSpec.length();
+          // length can statically be determined for TV Parameters
+          tempLength = C1G2Read.length();
         }
 
-        if ((type != null) && type.equals(C1G2TagSpec.TYPENUM)) {
-            airProtocolTagSpec = new C1G2TagSpec(binary.subList(position,
-                        tempLength));
-            LOGGER.debug(
-                " airProtocolTagSpec instatiated to C1G2TagSpec with length " +
-                tempLength);
-            position += tempLength;
-            found = true;
+        accessCommandOpSpecList.add(new C1G2Read(binary.subList(
+          position, tempLength)));
+        LOGGER.debug("adding C1G2Read to accessCommandOpSpecList ");
+        position += tempLength;
+        atLeastOnce = true;
+      }
+
+      if ((type != null) && type.equals(C1G2Write.TYPENUM)) {
+        if (binary.get(position)) {
+          // length can statically be determined for TV Parameters
+          tempLength = C1G2Write.length();
         }
 
-        if (!found) {
-            LOGGER.warn(
-                "encoded message misses non optional parameter airProtocolTagSpec");
-            throw new MissingParameterException(
-                "AccessCommand misses non optional parameter of type AirProtocolTagSpec");
+        accessCommandOpSpecList.add(new C1G2Write(binary.subList(
+          position, tempLength)));
+        LOGGER.debug("adding C1G2Write to accessCommandOpSpecList ");
+        position += tempLength;
+        atLeastOnce = true;
+      }
+
+      if ((type != null) && type.equals(C1G2Kill.TYPENUM)) {
+        if (binary.get(position)) {
+          // length can statically be determined for TV Parameters
+          tempLength = C1G2Kill.length();
         }
 
-        // list of parameters
-        accessCommandOpSpecList = new LinkedList<AccessCommandOpSpec>();
-        LOGGER.debug("decoding parameter accessCommandOpSpecList ");
+        accessCommandOpSpecList.add(new C1G2Kill(binary.subList(
+          position, tempLength)));
+        LOGGER.debug("adding C1G2Kill to accessCommandOpSpecList ");
+        position += tempLength;
+        atLeastOnce = true;
+      }
 
-        while (position < binary.length()) {
-            // store if one parameter matched
-            boolean atLeastOnce = false;
-
-            // look ahead to see type
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-
-            //choiceRef
-            if ((type != null) && type.equals(C1G2Read.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = C1G2Read.length();
-                }
-
-                accessCommandOpSpecList.add(new C1G2Read(binary.subList(
-                            position, tempLength)));
-                LOGGER.debug("adding C1G2Read to accessCommandOpSpecList ");
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            if ((type != null) && type.equals(C1G2Write.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = C1G2Write.length();
-                }
-
-                accessCommandOpSpecList.add(new C1G2Write(binary.subList(
-                            position, tempLength)));
-                LOGGER.debug("adding C1G2Write to accessCommandOpSpecList ");
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            if ((type != null) && type.equals(C1G2Kill.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = C1G2Kill.length();
-                }
-
-                accessCommandOpSpecList.add(new C1G2Kill(binary.subList(
-                            position, tempLength)));
-                LOGGER.debug("adding C1G2Kill to accessCommandOpSpecList ");
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            if ((type != null) && type.equals(C1G2Lock.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = C1G2Lock.length();
-                }
-
-                accessCommandOpSpecList.add(new C1G2Lock(binary.subList(
-                            position, tempLength)));
-                LOGGER.debug("adding C1G2Lock to accessCommandOpSpecList ");
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            if ((type != null) && type.equals(C1G2BlockErase.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = C1G2BlockErase.length();
-                }
-
-                accessCommandOpSpecList.add(new C1G2BlockErase(binary.subList(
-                            position, tempLength)));
-                LOGGER.debug(
-                    "adding C1G2BlockErase to accessCommandOpSpecList ");
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            if ((type != null) && type.equals(C1G2BlockWrite.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = C1G2BlockWrite.length();
-                }
-
-                accessCommandOpSpecList.add(new C1G2BlockWrite(binary.subList(
-                            position, tempLength)));
-                LOGGER.debug(
-                    "adding C1G2BlockWrite to accessCommandOpSpecList ");
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            // custom
-            if ((type != null) && type.equals(Custom.TYPENUM)) {
-                Custom cus = new Custom(binary.subList(position, tempLength));
-                // custom parameters for this parameter	
-                //end  parameters
-                //if none matched continue wasn't called and we add just cus as we found no specific vendor implementation
-                accessCommandOpSpecList.add(cus);
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            if (!atLeastOnce) {
-                //no parameter matched therefore we jump out of the loop
-                break;
-            }
+      if ((type != null) && type.equals(C1G2Lock.TYPENUM)) {
+        if (binary.get(position)) {
+          // length can statically be determined for TV Parameters
+          tempLength = C1G2Lock.length();
         }
 
-        //if list is still empty no parameter matched
-        if (accessCommandOpSpecList.isEmpty()) {
-            LOGGER.warn(
-                "encoded message does not contain parameter for non optional accessCommandOpSpecList");
-            throw new MissingParameterException(
-                "AccessCommand misses non optional parameter of type AccessCommandOpSpec");
+        accessCommandOpSpecList.add(new C1G2Lock(binary.subList(
+          position, tempLength)));
+        LOGGER.debug("adding C1G2Lock to accessCommandOpSpecList ");
+        position += tempLength;
+        atLeastOnce = true;
+      }
+
+      if ((type != null) && type.equals(C1G2BlockErase.TYPENUM)) {
+        if (binary.get(position)) {
+          // length can statically be determined for TV Parameters
+          tempLength = C1G2BlockErase.length();
         }
 
-        // list of parameters
-        customList = new LinkedList<Custom>();
-        LOGGER.debug("decoding parameter customList ");
+        accessCommandOpSpecList.add(new C1G2BlockErase(binary.subList(
+          position, tempLength)));
+        LOGGER.debug(
+          "adding C1G2BlockErase to accessCommandOpSpecList ");
+        position += tempLength;
+        atLeastOnce = true;
+      }
 
-        while (position < binary.length()) {
-            // store if one parameter matched
-            boolean atLeastOnce = false;
-
-            // look ahead to see type
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-
-            // custom
-            if ((type != null) && type.equals(Custom.TYPENUM)) {
-                Custom cus = new Custom(binary.subList(position, tempLength));
-                // custom parameters for this parameter	
-                // AccessCommand
-                //end  parameters
-                //if none matched continue wasn't called and we add just cus as we found no specific vendor implementation
-                customList.add(cus);
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            if (!atLeastOnce) {
-                //no parameter matched therefore we jump out of the loop
-                break;
-            }
+      if ((type != null) && type.equals(C1G2BlockWrite.TYPENUM)) {
+        if (binary.get(position)) {
+          // length can statically be determined for TV Parameters
+          tempLength = C1G2BlockWrite.length();
         }
 
-        //if list is still empty no parameter matched
-        if (customList.isEmpty()) {
-            LOGGER.info(
-                "encoded message does not contain parameter for optional customList");
-        }
+        accessCommandOpSpecList.add(new C1G2BlockWrite(binary.subList(
+          position, tempLength)));
+        LOGGER.debug(
+          "adding C1G2BlockWrite to accessCommandOpSpecList ");
+        position += tempLength;
+        atLeastOnce = true;
+      }
+
+      // custom
+      if ((type != null) && type.equals(Custom.TYPENUM)) {
+        Custom cus = new Custom(binary.subList(position, tempLength));
+        // custom parameters for this parameter
+        //end  parameters
+        //if none matched continue wasn't called and we add just cus as we found no specific vendor implementation
+        accessCommandOpSpecList.add(cus);
+        position += tempLength;
+        atLeastOnce = true;
+      }
+
+      if (!atLeastOnce) {
+        //no parameter matched therefore we jump out of the loop
+        break;
+      }
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
-
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        //choices - must check all possible subtypes
-        boolean found = false;
-        LOGGER.debug("decoding choice type AirProtocolTagSpec ");
-        // try to get child for each possible subtype
-        temp = element.getChild("C1G2TagSpec", ns);
-
-        if (temp != null) {
-            airProtocolTagSpec = new C1G2TagSpec(temp);
-            LOGGER.debug(" airProtocolTagSpec instatiated to C1G2TagSpec with");
-            found = true;
-        }
-
-        element.removeChild("C1G2TagSpec", ns);
-
-        if (!found) {
-            LOGGER.info(
-                "AccessCommand misses optional parameter of type airProtocolTagSpecList");
-        }
-
-        //choices - must check all possible subtypes
-        //list of Choice Type Parameter
-        accessCommandOpSpecList = new LinkedList<AccessCommandOpSpec>();
-        // for each possible subtype get all childs
-        tempList = element.getChildren("C1G2Read", ns);
-
-        for (Element e : tempList) {
-            accessCommandOpSpecList.add(new C1G2Read(e));
-            LOGGER.debug("adding C1G2Read to accessCommandOpSpecList ");
-            atLeastOnce = true;
-        }
-
-        element.removeChildren("C1G2Read", ns);
-
-        tempList = element.getChildren("C1G2Write", ns);
-
-        for (Element e : tempList) {
-            accessCommandOpSpecList.add(new C1G2Write(e));
-            LOGGER.debug("adding C1G2Write to accessCommandOpSpecList ");
-            atLeastOnce = true;
-        }
-
-        element.removeChildren("C1G2Write", ns);
-
-        tempList = element.getChildren("C1G2Kill", ns);
-
-        for (Element e : tempList) {
-            accessCommandOpSpecList.add(new C1G2Kill(e));
-            LOGGER.debug("adding C1G2Kill to accessCommandOpSpecList ");
-            atLeastOnce = true;
-        }
-
-        element.removeChildren("C1G2Kill", ns);
-
-        tempList = element.getChildren("C1G2Lock", ns);
-
-        for (Element e : tempList) {
-            accessCommandOpSpecList.add(new C1G2Lock(e));
-            LOGGER.debug("adding C1G2Lock to accessCommandOpSpecList ");
-            atLeastOnce = true;
-        }
-
-        element.removeChildren("C1G2Lock", ns);
-
-        tempList = element.getChildren("C1G2BlockErase", ns);
-
-        for (Element e : tempList) {
-            accessCommandOpSpecList.add(new C1G2BlockErase(e));
-            LOGGER.debug("adding C1G2BlockErase to accessCommandOpSpecList ");
-            atLeastOnce = true;
-        }
-
-        element.removeChildren("C1G2BlockErase", ns);
-
-        tempList = element.getChildren("C1G2BlockWrite", ns);
-
-        for (Element e : tempList) {
-            accessCommandOpSpecList.add(new C1G2BlockWrite(e));
-            LOGGER.debug("adding C1G2BlockWrite to accessCommandOpSpecList ");
-            atLeastOnce = true;
-        }
-
-        element.removeChildren("C1G2BlockWrite", ns);
-
-        // check for all custom parameters  for this parameter 
-        // check for regular custom parameter
-        tempList = element.getChildren("Custom", ns);
-
-        for (Element e : tempList) {
-            accessCommandOpSpecList.add(new Custom(e));
-            LOGGER.debug(
-                "adding AccessCommandOpSpec to accessCommandOpSpecList ");
-        }
-
-        element.removeChildren("Custom", ns);
-
-        //end allowed parameters
-        if (!atLeastOnce) {
-            LOGGER.warn(
-                "AccessCommand misses non optional parameter of type accessCommandOpSpecList");
-            throw new MissingParameterException(
-                "AccessCommand misses non optional parameter of type accessCommandOpSpecList");
-        }
-
-        atLeastOnce = false;
-        //parameter - not choices - no special actions needed
-        //we expect a list of parameters
-        customList = new LinkedList<Custom>();
-        tempList = element.getChildren("Custom", ns);
-
-        if ((tempList == null) || tempList.isEmpty()) {
-            LOGGER.info(
-                "AccessCommand misses optional parameter of type customList");
-        } else {
-            for (Element e : tempList) {
-                customList.add(new Custom(e));
-                LOGGER.debug("adding Custom to customList ");
-            }
-        }
-
-        element.removeChildren("Custom", ns);
-        //custom parameter
-        tempList = element.getChildren("Custom", ns);
-
-        for (Element e : tempList) {
-            customList.add(new Custom(e));
-            atLeastOnce = true;
-            LOGGER.debug("adding custom parameter");
-        }
-
-        element.removeChildren("Custom", ns);
-
-        //end custom
-        if (element.getChildren().size() > 0) {
-            String message = "AccessCommand has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    //if list is still empty no parameter matched
+    if (accessCommandOpSpecList.isEmpty()) {
+      LOGGER.warn(
+        "encoded message does not contain parameter for non optional accessCommandOpSpecList");
+      throw new MissingParameterException(
+        "AccessCommand misses non optional parameter of type AccessCommandOpSpec");
     }
 
-    //setters
+    // list of parameters
+    customList = new LinkedList<Custom>();
+    LOGGER.debug("decoding parameter customList ");
 
-    /**
-    * set airProtocolTagSpec of type AirProtocolTagSpec.
-    * @param  airProtocolTagSpec to be set
-    */
-    public void setAirProtocolTagSpec(
-        final AirProtocolTagSpec airProtocolTagSpec) {
-        this.airProtocolTagSpec = airProtocolTagSpec;
+    while (position < binary.length()) {
+      // store if one parameter matched
+      boolean atLeastOnce = false;
+
+      // look ahead to see type
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+
+      // custom
+      if ((type != null) && type.equals(Custom.TYPENUM)) {
+        Custom cus = new Custom(binary.subList(position, tempLength));
+        // custom parameters for this parameter
+        // AccessCommand
+        //end  parameters
+        //if none matched continue wasn't called and we add just cus as we found no specific vendor implementation
+        customList.add(cus);
+        position += tempLength;
+        atLeastOnce = true;
+      }
+
+      if (!atLeastOnce) {
+        //no parameter matched therefore we jump out of the loop
+        break;
+      }
     }
 
-    /**
-    * set accessCommandOpSpecList of type  List &lt;AccessCommandOpSpec>.
-    * @param  accessCommandOpSpecList to be set
-    */
-    public void setAccessCommandOpSpecList(
-        final List<AccessCommandOpSpec> accessCommandOpSpecList) {
-        this.accessCommandOpSpecList = accessCommandOpSpecList;
+    //if list is still empty no parameter matched
+    if (customList.isEmpty()) {
+      LOGGER.info(
+        "encoded message does not contain parameter for optional customList");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    //choices - must check all possible subtypes
+    boolean found = false;
+    LOGGER.debug("decoding choice type AirProtocolTagSpec ");
+    // try to get child for each possible subtype
+    temp = element.getChild("C1G2TagSpec", ns);
+
+    if (temp != null) {
+      airProtocolTagSpec = new C1G2TagSpec(temp);
+      LOGGER.debug(" airProtocolTagSpec instatiated to C1G2TagSpec with");
+      found = true;
     }
 
-    /**
-    * set customList of type  List &lt;Custom>.
-    * @param  customList to be set
-    */
-    public void setCustomList(final List<Custom> customList) {
-        this.customList = customList;
+    element.removeChild("C1G2TagSpec", ns);
+
+    if (!found) {
+      LOGGER.info(
+        "AccessCommand misses optional parameter of type airProtocolTagSpecList");
     }
 
-    // end setter
+    //choices - must check all possible subtypes
+    //list of Choice Type Parameter
+    accessCommandOpSpecList = new LinkedList<AccessCommandOpSpec>();
+    // for each possible subtype get all childs
+    tempList = element.getChildren("C1G2Read", ns);
 
-    //getters
-
-    /**
-    * get airProtocolTagSpec of type AirProtocolTagSpec .
-    * @return  AirProtocolTagSpec
-    */
-    public AirProtocolTagSpec getAirProtocolTagSpec() {
-        return airProtocolTagSpec;
+    for (Element e : tempList) {
+      accessCommandOpSpecList.add(new C1G2Read(e));
+      LOGGER.debug("adding C1G2Read to accessCommandOpSpecList ");
+      atLeastOnce = true;
     }
 
-    /**
-    * get accessCommandOpSpecList of type List &lt;AccessCommandOpSpec> .
-    * @return  List &lt;AccessCommandOpSpec>
-    */
-    public List<AccessCommandOpSpec> getAccessCommandOpSpecList() {
-        return accessCommandOpSpecList;
+    element.removeChildren("C1G2Read", ns);
+
+    tempList = element.getChildren("C1G2Write", ns);
+
+    for (Element e : tempList) {
+      accessCommandOpSpecList.add(new C1G2Write(e));
+      LOGGER.debug("adding C1G2Write to accessCommandOpSpecList ");
+      atLeastOnce = true;
     }
 
-    /**
-    * get customList of type List &lt;Custom> .
-    * @return  List &lt;Custom>
-    */
-    public List<Custom> getCustomList() {
-        return customList;
+    element.removeChildren("C1G2Write", ns);
+
+    tempList = element.getChildren("C1G2Kill", ns);
+
+    for (Element e : tempList) {
+      accessCommandOpSpecList.add(new C1G2Kill(e));
+      LOGGER.debug("adding C1G2Kill to accessCommandOpSpecList ");
+      atLeastOnce = true;
     }
 
-    // end getters
+    element.removeChildren("C1G2Kill", ns);
 
-    //add methods
+    tempList = element.getChildren("C1G2Lock", ns);
 
-    /**
-    * add element accessCommandOpSpec of type AccessCommandOpSpec .
-    * @param  accessCommandOpSpec of type AccessCommandOpSpec
-    */
-    public void addToAccessCommandOpSpecList(
-        AccessCommandOpSpec accessCommandOpSpec) {
-        if (this.accessCommandOpSpecList == null) {
-            this.accessCommandOpSpecList = new LinkedList<AccessCommandOpSpec>();
-        }
-
-        this.accessCommandOpSpecList.add(accessCommandOpSpec);
+    for (Element e : tempList) {
+      accessCommandOpSpecList.add(new C1G2Lock(e));
+      LOGGER.debug("adding C1G2Lock to accessCommandOpSpecList ");
+      atLeastOnce = true;
     }
 
-    /**
-    * add element custom of type Custom .
-    * @param  custom of type Custom
-    */
-    public void addToCustomList(Custom custom) {
-        if (this.customList == null) {
-            this.customList = new LinkedList<Custom>();
-        }
+    element.removeChildren("C1G2Lock", ns);
 
-        this.customList.add(custom);
+    tempList = element.getChildren("C1G2BlockErase", ns);
+
+    for (Element e : tempList) {
+      accessCommandOpSpecList.add(new C1G2BlockErase(e));
+      LOGGER.debug("adding C1G2BlockErase to accessCommandOpSpecList ");
+      atLeastOnce = true;
     }
 
-    // end add
+    element.removeChildren("C1G2BlockErase", ns);
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
+    tempList = element.getChildren("C1G2BlockWrite", ns);
+
+    for (Element e : tempList) {
+      accessCommandOpSpecList.add(new C1G2BlockWrite(e));
+      LOGGER.debug("adding C1G2BlockWrite to accessCommandOpSpecList ");
+      atLeastOnce = true;
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
+    element.removeChildren("C1G2BlockWrite", ns);
+
+    // check for all custom parameters  for this parameter
+    // check for regular custom parameter
+    tempList = element.getChildren("Custom", ns);
+
+    for (Element e : tempList) {
+      accessCommandOpSpecList.add(new Custom(e));
+      LOGGER.debug(
+        "adding AccessCommandOpSpec to accessCommandOpSpecList ");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "AccessCommand";
+    element.removeChildren("Custom", ns);
+
+    //end allowed parameters
+    if (!atLeastOnce) {
+      LOGGER.warn(
+        "AccessCommand misses non optional parameter of type accessCommandOpSpecList");
+      throw new MissingParameterException(
+        "AccessCommand misses non optional parameter of type accessCommandOpSpecList");
     }
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "AccessCommand: ";
-        result = result.replaceFirst(", ", "");
+    atLeastOnce = false;
+    //parameter - not choices - no special actions needed
+    //we expect a list of parameters
+    customList = new LinkedList<Custom>();
+    tempList = element.getChildren("Custom", ns);
 
-        return result;
+    if ((tempList == null) || tempList.isEmpty()) {
+      LOGGER.info(
+        "AccessCommand misses optional parameter of type customList");
+    } else {
+      for (Element e : tempList) {
+        customList.add(new Custom(e));
+        LOGGER.debug("adding Custom to customList ");
+      }
     }
+
+    element.removeChildren("Custom", ns);
+    //custom parameter
+    tempList = element.getChildren("Custom", ns);
+
+    for (Element e : tempList) {
+      customList.add(new Custom(e));
+      atLeastOnce = true;
+      LOGGER.debug("adding custom parameter");
+    }
+
+    element.removeChildren("Custom", ns);
+
+    //end custom
+    if (element.getChildren().size() > 0) {
+      String message = "AccessCommand has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
+    }
+  }
+
+  //setters
+  /**
+   * set airProtocolTagSpec of type AirProtocolTagSpec.
+   *
+   * @param airProtocolTagSpec to be set
+   */
+  public void setAirProtocolTagSpec(
+    final AirProtocolTagSpec airProtocolTagSpec) {
+    this.airProtocolTagSpec = airProtocolTagSpec;
+  }
+
+  /**
+   * set accessCommandOpSpecList of type List &lt;AccessCommandOpSpec>.
+   *
+   * @param accessCommandOpSpecList to be set
+   */
+  public void setAccessCommandOpSpecList(
+    final List<AccessCommandOpSpec> accessCommandOpSpecList) {
+    this.accessCommandOpSpecList = accessCommandOpSpecList;
+  }
+
+  /**
+   * set customList of type List &lt;Custom>.
+   *
+   * @param customList to be set
+   */
+  public void setCustomList(final List<Custom> customList) {
+    this.customList = customList;
+  }
+
+  // end setter
+  //getters
+  /**
+   * get airProtocolTagSpec of type AirProtocolTagSpec .
+   *
+   * @return AirProtocolTagSpec
+   */
+  public AirProtocolTagSpec getAirProtocolTagSpec() {
+    return airProtocolTagSpec;
+  }
+
+  /**
+   * get accessCommandOpSpecList of type List &lt;AccessCommandOpSpec> .
+   *
+   * @return List &lt;AccessCommandOpSpec>
+   */
+  public List<AccessCommandOpSpec> getAccessCommandOpSpecList() {
+    return accessCommandOpSpecList;
+  }
+
+  /**
+   * get customList of type List &lt;Custom> .
+   *
+   * @return List &lt;Custom>
+   */
+  public List<Custom> getCustomList() {
+    return customList;
+  }
+
+  // end getters
+  //add methods
+  /**
+   * add element accessCommandOpSpec of type AccessCommandOpSpec .
+   *
+   * @param accessCommandOpSpec of type AccessCommandOpSpec
+   */
+  public void addToAccessCommandOpSpecList(
+    AccessCommandOpSpec accessCommandOpSpec) {
+    if (this.accessCommandOpSpecList == null) {
+      this.accessCommandOpSpecList = new LinkedList<AccessCommandOpSpec>();
+    }
+
+    this.accessCommandOpSpecList.add(accessCommandOpSpec);
+  }
+
+  /**
+   * add element custom of type Custom .
+   *
+   * @param custom of type Custom
+   */
+  public void addToCustomList(Custom custom) {
+    if (this.customList == null) {
+      this.customList = new LinkedList<Custom>();
+    }
+
+    this.customList.add(custom);
+  }
+
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "AccessCommand";
+  }
+
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "AccessCommand: ";
+    result = result.replaceFirst(", ", "");
+
+    return result;
+  }
 }

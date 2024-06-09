@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,236 +46,239 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * A Reader reports this event every time it hops frequency.NextChannelIndex: This is the one-based ChannelIindex of the next channel to which the Reader is going to hop change to. The channel Ids are listed in the Frequency Hop Table.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=88&view=fit">LLRP Specification Section 13.2.6.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=148&view=fit">LLRP Specification Section 16.2.7.6.1</a>}
-
-
+ * A Reader reports this event every time it hops frequency.NextChannelIndex: This is the one-based ChannelIindex of the next channel to which the Reader is going to hop change to.
+ * The channel Ids are listed in the Frequency Hop Table.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=88&view=fit">LLRP Specification Section 13.2.6.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=148&view=fit">LLRP Specification Section 16.2.7.6.1</a>}
+ *
+ *
  */
-
 /**
- * A Reader reports this event every time it hops frequency.NextChannelIndex: This is the one-based ChannelIindex of the next channel to which the Reader is going to hop change to. The channel Ids are listed in the Frequency Hop Table.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=88&view=fit">LLRP Specification Section 13.2.6.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=148&view=fit">LLRP Specification Section 16.2.7.6.1</a>}
-
-      .
+ * A Reader reports this event every time it hops frequency.NextChannelIndex: This is the one-based ChannelIindex of the next channel to which the Reader is going to hop change to.
+ * The channel Ids are listed in the Frequency Hop Table.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=88&view=fit">LLRP Specification Section 13.2.6.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=148&view=fit">LLRP Specification Section 16.2.7.6.1</a>}
+ *
+ * .
  */
 public class HoppingEvent extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(247);
-    private static final Logger LOGGER = Logger.getLogger(HoppingEvent.class);
-    protected UnsignedShort hopTableID;
-    protected UnsignedShort nextChannelIndex;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public HoppingEvent() {
+  public static final SignedShort TYPENUM = new SignedShort(247);
+  private static final Logger LOGGER = Logger.getLogger(HoppingEvent.class);
+  protected UnsignedShort hopTableID;
+  protected UnsignedShort nextChannelIndex;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public HoppingEvent() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public HoppingEvent(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public HoppingEvent(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (hopTableID == null) {
+      LOGGER.warn(" hopTableID not set");
+      throw new MissingParameterException(
+        " hopTableID not set  for Parameter of Type HoppingEvent");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public HoppingEvent(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(hopTableID.encodeBinary());
+
+    if (nextChannelIndex == null) {
+      LOGGER.warn(" nextChannelIndex not set");
+      throw new MissingParameterException(
+        " nextChannelIndex not set  for Parameter of Type HoppingEvent");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public HoppingEvent(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(nextChannelIndex.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (hopTableID == null) {
+      LOGGER.warn(" hopTableID not set");
+      throw new MissingParameterException(" hopTableID not set");
+    } else {
+      element.addContent(hopTableID.encodeXML("HopTableID", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (hopTableID == null) {
-            LOGGER.warn(" hopTableID not set");
-            throw new MissingParameterException(
-                " hopTableID not set  for Parameter of Type HoppingEvent");
-        }
-
-        resultBits.append(hopTableID.encodeBinary());
-
-        if (nextChannelIndex == null) {
-            LOGGER.warn(" nextChannelIndex not set");
-            throw new MissingParameterException(
-                " nextChannelIndex not set  for Parameter of Type HoppingEvent");
-        }
-
-        resultBits.append(nextChannelIndex.encodeBinary());
-
-        return resultBits;
+    if (nextChannelIndex == null) {
+      LOGGER.warn(" nextChannelIndex not set");
+      throw new MissingParameterException(" nextChannelIndex not set");
+    } else {
+      element.addContent(nextChannelIndex.encodeXML("NextChannelIndex", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    //parameters
+    return element;
+  }
 
-        if (hopTableID == null) {
-            LOGGER.warn(" hopTableID not set");
-            throw new MissingParameterException(" hopTableID not set");
-        } else {
-            element.addContent(hopTableID.encodeXML("HopTableID", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    hopTableID = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    nextChannelIndex = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+  }
 
-        if (nextChannelIndex == null) {
-            LOGGER.warn(" nextChannelIndex not set");
-            throw new MissingParameterException(" nextChannelIndex not set");
-        } else {
-            element.addContent(nextChannelIndex.encodeXML("NextChannelIndex", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        //parameters
-        return element;
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("HopTableID", ns);
+
+    if (temp != null) {
+      hopTableID = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        hopTableID = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        nextChannelIndex = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
+    element.removeChild("HopTableID", ns);
+    temp = element.getChild("NextChannelIndex", ns);
+
+    if (temp != null) {
+      nextChannelIndex = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    element.removeChild("NextChannelIndex", ns);
 
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("HopTableID", ns);
-
-        if (temp != null) {
-            hopTableID = new UnsignedShort(temp);
-        }
-
-        element.removeChild("HopTableID", ns);
-        temp = element.getChild("NextChannelIndex", ns);
-
-        if (temp != null) {
-            nextChannelIndex = new UnsignedShort(temp);
-        }
-
-        element.removeChild("NextChannelIndex", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "HoppingEvent has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (element.getChildren().size() > 0) {
+      String message = "HoppingEvent has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    //setters
-    /**
-    * set   hopTableID of type UnsignedShort .
-    * @param   hopTableID to be set
-    */
-    public void setHopTableID(final UnsignedShort hopTableID) {
-        this.hopTableID = hopTableID;
-    }
+  //setters
+  /**
+   * set hopTableID of type UnsignedShort .
+   *
+   * @param hopTableID to be set
+   */
+  public void setHopTableID(final UnsignedShort hopTableID) {
+    this.hopTableID = hopTableID;
+  }
 
-    /**
-    * set   nextChannelIndex of type UnsignedShort .
-    * @param   nextChannelIndex to be set
-    */
-    public void setNextChannelIndex(final UnsignedShort nextChannelIndex) {
-        this.nextChannelIndex = nextChannelIndex;
-    }
+  /**
+   * set nextChannelIndex of type UnsignedShort .
+   *
+   * @param nextChannelIndex to be set
+   */
+  public void setNextChannelIndex(final UnsignedShort nextChannelIndex) {
+    this.nextChannelIndex = nextChannelIndex;
+  }
 
-    // end setter
+  // end setter
+  //getters
+  /**
+   * get hopTableID of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getHopTableID() {
+    return this.hopTableID;
+  }
 
-    //getters
-    /**
-    * get   hopTableID of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getHopTableID() {
-        return this.hopTableID;
-    }
+  /**
+   * get nextChannelIndex of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getNextChannelIndex() {
+    return this.nextChannelIndex;
+  }
 
-    /**
-    * get   nextChannelIndex of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getNextChannelIndex() {
-        return this.nextChannelIndex;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    // end getters
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    //add methods
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "HoppingEvent";
+  }
 
-    // end add
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "HoppingEvent: ";
+    result += ", hopTableID: ";
+    result += hopTableID;
+    result += ", nextChannelIndex: ";
+    result += nextChannelIndex;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "HoppingEvent";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "HoppingEvent: ";
-        result += ", hopTableID: ";
-        result += hopTableID;
-        result += ", nextChannelIndex: ";
-        result += nextChannelIndex;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

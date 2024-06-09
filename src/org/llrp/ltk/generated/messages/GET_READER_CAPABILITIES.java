@@ -5,9 +5,9 @@
 * for more information
 * Generated on: Sun Apr 08 14:14:08 EDT 2012;
 *
-*/
+ */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,353 +47,355 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * This message is sent from the Client to the Reader. The Client is able to request only a subset or all the capabilities from the Reader.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=44&view=fit">LLRP Specification Section 9.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=117&view=fit">LLRP Specification Section 16.1.1</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=44&view=fit">LLRP Specification Section 9.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=117&view=fit">LLRP Specification Section 16.1.1</a>}
+ *
+ *
  */
 public class GET_READER_CAPABILITIES extends LLRPMessage {
-    public static final SignedShort TYPENUM = new SignedShort(1);
-    private static final Logger LOGGER = Logger.getLogger(GET_READER_CAPABILITIES.class);
-    public static final String RESPONSETYPE = "GET_READER_CAPABILITIES_RESPONSE";
-    protected GetReaderCapabilitiesRequestedData requestedData;
-    protected List<Custom> customList = new LinkedList<Custom>();
 
-    /**
-     * empty constructor to create new message
-     * with LLRP version set to 1.0 (0x1).
-     */
-    public GET_READER_CAPABILITIES() {
-        setVersion(new BitList(0, 0, 1));
+  public static final SignedShort TYPENUM = new SignedShort(1);
+  private static final Logger LOGGER = Logger.getLogger(GET_READER_CAPABILITIES.class);
+  public static final String RESPONSETYPE = "GET_READER_CAPABILITIES_RESPONSE";
+  protected GetReaderCapabilitiesRequestedData requestedData;
+  protected List<Custom> customList = new LinkedList<Custom>();
+
+  /**
+   * empty constructor to create new message with LLRP version set to 1.0 (0x1).
+   */
+  public GET_READER_CAPABILITIES() {
+    setVersion(new BitList(0, 0, 1));
+  }
+
+  /**
+   * Constructor to create message from binary encoded message calls decodeBinary to decode message.
+   *
+   * @param list to be decoded
+   */
+  public GET_READER_CAPABILITIES(final LLRPBitList list)
+    throws InvalidLLRPMessageException {
+    decodeBinary(list.toByteArray());
+  }
+
+  /**
+   * Constructor to create message from binary encoded message calls decodeBinary to decode message.
+   *
+   * @param byteArray representing message
+   */
+  public GET_READER_CAPABILITIES(final byte[] byteArray)
+    throws InvalidLLRPMessageException {
+    decodeBinary(byteArray);
+  }
+
+  /**
+   * Constructor to create message from xml encoded message calls decodeXML to decode message.
+   *
+   * @param document to be decoded
+   */
+  public GET_READER_CAPABILITIES(final Document document)
+    throws InvalidLLRPMessageException {
+    decodeXML(document);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected LLRPBitList encodeBinarySpecific()
+    throws InvalidLLRPMessageException {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (requestedData == null) {
+      LOGGER.warn(" requestedData not set");
+      throw new InvalidLLRPMessageException(
+        " requestedData not set  for Parameter of Type GET_READER_CAPABILITIES");
     }
 
-    /**
-     * Constructor to create message from binary encoded message
-     * calls decodeBinary to decode message.
-     * @param list to be decoded
-     */
-    public GET_READER_CAPABILITIES(final LLRPBitList list)
-        throws InvalidLLRPMessageException {
-        decodeBinary(list.toByteArray());
+    resultBits.append(requestedData.encodeBinary());
+
+    if (customList == null) {
+      //just warn - it is optional
+      LOGGER.info(" customList not set");
+    } else {
+      for (Custom field : customList) {
+        resultBits.append(field.encodeBinary());
+      }
     }
 
-    /**
-     * Constructor to create message from binary encoded message
-     * calls decodeBinary to decode message.
-     * @param byteArray representing message
-     */
-    public GET_READER_CAPABILITIES(final byte[] byteArray)
-        throws InvalidLLRPMessageException {
-        decodeBinary(byteArray);
-    }
+    return resultBits;
+  }
 
-    /**
-    * Constructor to create message from xml encoded message
-    * calls decodeXML to decode message.
-    * @param document to be decoded
-    */
-    public GET_READER_CAPABILITIES(final Document document)
-        throws InvalidLLRPMessageException {
-        decodeXML(document);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public Document encodeXML() throws InvalidLLRPMessageException {
+    try {
+      Namespace ns = Namespace.getNamespace("llrp",
+        LLRPConstants.LLRPNAMESPACE);
 
-    /**
-    * {@inheritDoc}
-    */
-    protected LLRPBitList encodeBinarySpecific()
-        throws InvalidLLRPMessageException {
-        LLRPBitList resultBits = new LLRPBitList();
+      Element root = new Element("GET_READER_CAPABILITIES", ns);
+      //	Element root = new Element("GET_READER_CAPABILITIES");
+      root.addNamespaceDeclaration(Namespace.getNamespace("llrp",
+        LLRPConstants.LLRPNAMESPACE));
 
-        if (requestedData == null) {
-            LOGGER.warn(" requestedData not set");
-            throw new InvalidLLRPMessageException(
-                " requestedData not set  for Parameter of Type GET_READER_CAPABILITIES");
+      if (version == null) {
+        throw new InvalidLLRPMessageException("Version not set");
+      } else {
+        root.setAttribute("Version", version.toInteger().toString());
+      }
+
+      if (messageID == null) {
+        throw new InvalidLLRPMessageException("MessageID not set");
+      } else {
+        root.setAttribute("MessageID", messageID.toString(10));
+      }
+
+      if (requestedData == null) {
+        LOGGER.warn(" requestedData not set");
+        throw new MissingParameterException(" requestedData not set");
+      } else {
+        root.addContent(requestedData.encodeXML("RequestedData", ns));
+      }
+
+      //parameters
+      if (customList == null) {
+        LOGGER.info("customList not set");
+      } else {
+        for (Custom field : customList) {
+          root.addContent(field.encodeXML(field.getClass().getName()
+            .replaceAll(field.getClass()
+              .getPackage()
+              .getName()
+              + ".", ""), ns));
         }
+      }
 
-        resultBits.append(requestedData.encodeBinary());
+      Document doc = new Document(root);
 
-        if (customList == null) {
-            //just warn - it is optional 
-            LOGGER.info(" customList not set");
-        } else {
-            for (Custom field : customList) {
-                resultBits.append(field.encodeBinary());
-            }
+      if (isValidXMLMessage(doc, LLRPConstants.LLRPMESSAGESCHEMAPATH)) {
+        return doc;
+      } else {
+        return null;
+      }
+    } catch (IllegalArgumentException e) {
+      throw new InvalidLLRPMessageException(e.getMessage());
+    } catch (MissingParameterException e) {
+      throw new InvalidLLRPMessageException(e.getMessage());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary)
+    throws InvalidLLRPMessageException {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    requestedData = new GetReaderCapabilitiesRequestedData(binary.subList(
+      position, GetReaderCapabilitiesRequestedData.length()));
+    position += GetReaderCapabilitiesRequestedData.length();
+
+    // list of parameters
+    customList = new LinkedList<Custom>();
+    LOGGER.debug("decoding parameter customList ");
+
+    while (position < binary.length()) {
+      // store if one parameter matched
+      boolean atLeastOnce = false;
+
+      // look ahead to see type
+      // if first bit is one it is a TV Parameter
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+
+      // custom
+      if ((type != null) && type.equals(Custom.TYPENUM)) {
+        Custom cus = new Custom(binary.subList(position, tempLength));
+        //allowed custom parameters for this parameter
+        //end allowed parameters
+        //if none matched continue wasn't called and we add just cus as we found no specific vendor implementation
+        customList.add(cus);
+        position += tempLength;
+        atLeastOnce = true;
+      }
+
+      if (!atLeastOnce) {
+        //no parameter matched therefore we jump out of the loop
+        break;
+      }
+    }
+
+    //if list is still empty no parameter matched
+    if (customList.isEmpty()) {
+      LOGGER.info(
+        "encoded message does not contain parameter for optional customList");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(final Document document)
+    throws InvalidLLRPMessageException {
+    Element temp = null;
+    Custom custom;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    try {
+      isValidXMLMessage(document, LLRPConstants.LLRPMESSAGESCHEMAPATH);
+
+      Element root = (Element) document.getRootElement().clone();
+      List<Element> tempList = null;
+
+      // the version field is always 3 bit long
+      // if the version attribute is not set in the LTK-XML message,
+      // it is set to version 001
+      String versionAttribute = root.getAttributeValue("Version");
+
+      if (versionAttribute != null) {
+        version = new BitList(3);
+        version.setValue(Integer.valueOf(versionAttribute));
+      } else {
+        version = new BitList(0, 0, 1);
+      }
+
+      messageID = new UnsignedInteger(root.getAttributeValue("MessageID"));
+      temp = root.getChild("RequestedData", root.getNamespace());
+
+      //check if this element exist
+      if (temp != null) {
+        requestedData = new GetReaderCapabilitiesRequestedData(temp);
+      } else {
+        LOGGER.warn(
+          "Element requestedData not provided in xml as child of "
+          + root.getName());
+        throw new MissingParameterException(
+          "Element requestedData not provided");
+      }
+
+      root.removeChild("RequestedData", root.getNamespace());
+
+      //parameter - not choices - no special actions needed
+      //we expect a list of parameters
+      customList = new LinkedList<Custom>();
+      tempList = root.getChildren("Custom", ns);
+
+      if ((tempList == null) || tempList.isEmpty()) {
+        LOGGER.info(
+          "GET_READER_CAPABILITIES misses optional parameter of type customList");
+      } else {
+        for (Element e : tempList) {
+          customList.add(new Custom(e));
+          LOGGER.debug("adding Custom to customList ");
         }
+      }
 
-        return resultBits;
+      root.removeChildren("Custom", ns);
+
+      //custom parameter
+      //end custom
+      if (root.getChildren().size() > 0) {
+        String message = "GET_READER_CAPABILITIES has unknown element "
+          + ((Element) root.getChildren().get(0)).getName();
+        throw new InvalidLLRPMessageException(message);
+      }
+    } catch (IllegalArgumentException e) {
+      throw new InvalidLLRPMessageException(e.getMessage());
+    } catch (MissingParameterException e) {
+      throw new InvalidLLRPMessageException(e.getMessage());
+    }
+  }
+
+  //setters
+  /**
+   * set requestedData of type GetReaderCapabilitiesRequestedData .
+   *
+   * @param requestedData to be set
+   */
+  public void setRequestedData(
+    final GetReaderCapabilitiesRequestedData requestedData) {
+    this.requestedData = requestedData;
+  }
+
+  /**
+   * set customList of type List &lt;Custom>.
+   *
+   * @param customList to be set
+   */
+  public void setCustomList(final List<Custom> customList) {
+    this.customList = customList;
+  }
+
+  // end setter
+  //getters
+  /**
+   * get requestedData of type GetReaderCapabilitiesRequestedData.
+   *
+   * @return GetReaderCapabilitiesRequestedData
+   */
+  public GetReaderCapabilitiesRequestedData getRequestedData() {
+    return requestedData;
+  }
+
+  /**
+   * get customList of type List &lt;Custom> .
+   *
+   * @return List &lt;Custom>
+   */
+  public List<Custom> getCustomList() {
+    return customList;
+  }
+
+  // end getters
+  //add methods
+  /**
+   * add element custom of type Custom .
+   *
+   * @param custom of type Custom
+   */
+  public void addToCustomList(Custom custom) {
+    if (this.customList == null) {
+      this.customList = new LinkedList<Custom>();
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Document encodeXML() throws InvalidLLRPMessageException {
-        try {
-            Namespace ns = Namespace.getNamespace("llrp",
-                    LLRPConstants.LLRPNAMESPACE);
+    this.customList.add(custom);
+  }
 
-            Element root = new Element("GET_READER_CAPABILITIES", ns);
-            //	Element root = new Element("GET_READER_CAPABILITIES");
-            root.addNamespaceDeclaration(Namespace.getNamespace("llrp",
-                    LLRPConstants.LLRPNAMESPACE));
+  // end add
+  @Override
+  public String getResponseType() {
+    return RESPONSETYPE;
+  }
 
-            if (version == null) {
-                throw new InvalidLLRPMessageException("Version not set");
-            } else {
-                root.setAttribute("Version", version.toInteger().toString());
-            }
+  @Override
+  public String getName() {
+    return "GET_READER_CAPABILITIES";
+  }
 
-            if (messageID == null) {
-                throw new InvalidLLRPMessageException("MessageID not set");
-            } else {
-                root.setAttribute("MessageID", messageID.toString(10));
-            }
-
-            if (requestedData == null) {
-                LOGGER.warn(" requestedData not set");
-                throw new MissingParameterException(" requestedData not set");
-            } else {
-                root.addContent(requestedData.encodeXML("RequestedData", ns));
-            }
-
-            //parameters
-            if (customList == null) {
-                LOGGER.info("customList not set");
-            } else {
-                for (Custom field : customList) {
-                    root.addContent(field.encodeXML(field.getClass().getName()
-                                                         .replaceAll(field.getClass()
-                                                                          .getPackage()
-                                                                          .getName() +
-                                ".", ""), ns));
-                }
-            }
-
-            Document doc = new Document(root);
-
-            if (isValidXMLMessage(doc, LLRPConstants.LLRPMESSAGESCHEMAPATH)) {
-                return doc;
-            } else {
-                return null;
-            }
-        } catch (IllegalArgumentException e) {
-            throw new InvalidLLRPMessageException(e.getMessage());
-        } catch (MissingParameterException e) {
-            throw new InvalidLLRPMessageException(e.getMessage());
-        }
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary)
-        throws InvalidLLRPMessageException {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        requestedData = new GetReaderCapabilitiesRequestedData(binary.subList(
-                    position, GetReaderCapabilitiesRequestedData.length()));
-        position += GetReaderCapabilitiesRequestedData.length();
-
-        // list of parameters
-        customList = new LinkedList<Custom>();
-        LOGGER.debug("decoding parameter customList ");
-
-        while (position < binary.length()) {
-            // store if one parameter matched
-            boolean atLeastOnce = false;
-
-            // look ahead to see type
-            // if first bit is one it is a TV Parameter
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-
-            // custom
-            if ((type != null) && type.equals(Custom.TYPENUM)) {
-                Custom cus = new Custom(binary.subList(position, tempLength));
-                //allowed custom parameters for this parameter	
-                //end allowed parameters
-                //if none matched continue wasn't called and we add just cus as we found no specific vendor implementation
-                customList.add(cus);
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            if (!atLeastOnce) {
-                //no parameter matched therefore we jump out of the loop
-                break;
-            }
-        }
-
-        //if list is still empty no parameter matched
-        if (customList.isEmpty()) {
-            LOGGER.info(
-                "encoded message does not contain parameter for optional customList");
-        }
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(final Document document)
-        throws InvalidLLRPMessageException {
-        Element temp = null;
-        Custom custom;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        try {
-            isValidXMLMessage(document, LLRPConstants.LLRPMESSAGESCHEMAPATH);
-
-            Element root = (Element) document.getRootElement().clone();
-            List<Element> tempList = null;
-
-            // the version field is always 3 bit long 
-            // if the version attribute is not set in the LTK-XML message,
-            // it is set to version 001
-            String versionAttribute = root.getAttributeValue("Version");
-
-            if (versionAttribute != null) {
-                version = new BitList(3);
-                version.setValue(new Integer(versionAttribute));
-            } else {
-                version = new BitList(0, 0, 1);
-            }
-
-            messageID = new UnsignedInteger(root.getAttributeValue("MessageID"));
-            temp = root.getChild("RequestedData", root.getNamespace());
-
-            //check if this element exist
-            if (temp != null) {
-                requestedData = new GetReaderCapabilitiesRequestedData(temp);
-            } else {
-                LOGGER.warn(
-                    "Element requestedData not provided in xml as child of " +
-                    root.getName());
-                throw new MissingParameterException(
-                    "Element requestedData not provided");
-            }
-
-            root.removeChild("RequestedData", root.getNamespace());
-
-            //parameter - not choices - no special actions needed
-            //we expect a list of parameters
-            customList = new LinkedList<Custom>();
-            tempList = root.getChildren("Custom", ns);
-
-            if ((tempList == null) || tempList.isEmpty()) {
-                LOGGER.info(
-                    "GET_READER_CAPABILITIES misses optional parameter of type customList");
-            } else {
-                for (Element e : tempList) {
-                    customList.add(new Custom(e));
-                    LOGGER.debug("adding Custom to customList ");
-                }
-            }
-
-            root.removeChildren("Custom", ns);
-
-            //custom parameter
-            //end custom
-            if (root.getChildren().size() > 0) {
-                String message = "GET_READER_CAPABILITIES has unknown element " +
-                    ((Element) root.getChildren().get(0)).getName();
-                throw new InvalidLLRPMessageException(message);
-            }
-        } catch (IllegalArgumentException e) {
-            throw new InvalidLLRPMessageException(e.getMessage());
-        } catch (MissingParameterException e) {
-            throw new InvalidLLRPMessageException(e.getMessage());
-        }
-    }
-
-    //setters
-    /**
-    * set requestedData of type GetReaderCapabilitiesRequestedData .
-    * @param  requestedData to be set
-    */
-    public void setRequestedData(
-        final GetReaderCapabilitiesRequestedData requestedData) {
-        this.requestedData = requestedData;
-    }
-
-    /**
-    * set customList of type  List &lt;Custom>.
-    * @param  customList to be set
-    */
-    public void setCustomList(final List<Custom> customList) {
-        this.customList = customList;
-    }
-
-    // end setter
-
-    //getters
-    /**
-    * get requestedData of type GetReaderCapabilitiesRequestedData.
-    * @return  GetReaderCapabilitiesRequestedData
-    */
-    public GetReaderCapabilitiesRequestedData getRequestedData() {
-        return requestedData;
-    }
-
-    /**
-    * get customList of type List &lt;Custom> .
-    * @return  List &lt;Custom>
-    */
-    public List<Custom> getCustomList() {
-        return customList;
-    }
-
-    // end getters
-
-    //add methods
-
-    /**
-    * add element custom of type Custom .
-    * @param  custom of type Custom
-    */
-    public void addToCustomList(Custom custom) {
-        if (this.customList == null) {
-            this.customList = new LinkedList<Custom>();
-        }
-
-        this.customList.add(custom);
-    }
-
-    // end add
-    @Override
-    public String getResponseType() {
-        return RESPONSETYPE;
-    }
-
-    @Override
-    public String getName() {
-        return "GET_READER_CAPABILITIES";
-    }
-
-    /**
-    * return uniuque type number.
-    * @return SignedShort holding unique type number
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * return uniuque type number.
+   *
+   * @return SignedShort holding unique type number
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 }

@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,373 +49,380 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * Describes the boundary (stop) condition that is based on tag observations.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=58&view=fit">LLRP Specification Section 10.2.2.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=137&view=fit">LLRP Specification Section 16.2.4.2.1.1</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=58&view=fit">LLRP Specification Section 10.2.2.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=137&view=fit">LLRP Specification Section 16.2.4.2.1.1</a>}
+ *
+ *
  */
-
 /**
  * Describes the boundary (stop) condition that is based on tag observations.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=58&view=fit">LLRP Specification Section 10.2.2.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=137&view=fit">LLRP Specification Section 16.2.4.2.1.1</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=58&view=fit">LLRP Specification Section 10.2.2.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=137&view=fit">LLRP Specification Section 16.2.4.2.1.1</a>}
+ *
+ * .
  */
 public class TagObservationTrigger extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(185);
-    private static final Logger LOGGER = Logger.getLogger(TagObservationTrigger.class);
-    protected TagObservationTriggerType triggerType;
-    protected BitList reserved0 = new BitList(8);
-    protected UnsignedShort numberOfTags;
-    protected UnsignedShort numberOfAttempts;
-    protected UnsignedShort t;
-    protected UnsignedInteger timeout;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public TagObservationTrigger() {
+  public static final SignedShort TYPENUM = new SignedShort(185);
+  private static final Logger LOGGER = Logger.getLogger(TagObservationTrigger.class);
+  protected TagObservationTriggerType triggerType;
+  protected BitList reserved0 = new BitList(8);
+  protected UnsignedShort numberOfTags;
+  protected UnsignedShort numberOfAttempts;
+  protected UnsignedShort t;
+  protected UnsignedInteger timeout;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public TagObservationTrigger() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public TagObservationTrigger(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public TagObservationTrigger(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (triggerType == null) {
+      LOGGER.warn(" triggerType not set");
+      throw new MissingParameterException(
+        " triggerType not set  for Parameter of Type TagObservationTrigger");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public TagObservationTrigger(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(triggerType.encodeBinary());
+    resultBits.append(reserved0.encodeBinary());
+
+    if (numberOfTags == null) {
+      LOGGER.warn(" numberOfTags not set");
+      throw new MissingParameterException(
+        " numberOfTags not set  for Parameter of Type TagObservationTrigger");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public TagObservationTrigger(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(numberOfTags.encodeBinary());
+
+    if (numberOfAttempts == null) {
+      LOGGER.warn(" numberOfAttempts not set");
+      throw new MissingParameterException(
+        " numberOfAttempts not set  for Parameter of Type TagObservationTrigger");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(numberOfAttempts.encodeBinary());
 
-        if (triggerType == null) {
-            LOGGER.warn(" triggerType not set");
-            throw new MissingParameterException(
-                " triggerType not set  for Parameter of Type TagObservationTrigger");
-        }
-
-        resultBits.append(triggerType.encodeBinary());
-        resultBits.append(reserved0.encodeBinary());
-
-        if (numberOfTags == null) {
-            LOGGER.warn(" numberOfTags not set");
-            throw new MissingParameterException(
-                " numberOfTags not set  for Parameter of Type TagObservationTrigger");
-        }
-
-        resultBits.append(numberOfTags.encodeBinary());
-
-        if (numberOfAttempts == null) {
-            LOGGER.warn(" numberOfAttempts not set");
-            throw new MissingParameterException(
-                " numberOfAttempts not set  for Parameter of Type TagObservationTrigger");
-        }
-
-        resultBits.append(numberOfAttempts.encodeBinary());
-
-        if (t == null) {
-            LOGGER.warn(" t not set");
-            throw new MissingParameterException(
-                " t not set  for Parameter of Type TagObservationTrigger");
-        }
-
-        resultBits.append(t.encodeBinary());
-
-        if (timeout == null) {
-            LOGGER.warn(" timeout not set");
-            throw new MissingParameterException(
-                " timeout not set  for Parameter of Type TagObservationTrigger");
-        }
-
-        resultBits.append(timeout.encodeBinary());
-
-        return resultBits;
+    if (t == null) {
+      LOGGER.warn(" t not set");
+      throw new MissingParameterException(
+        " t not set  for Parameter of Type TagObservationTrigger");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    resultBits.append(t.encodeBinary());
 
-        if (triggerType == null) {
-            LOGGER.warn(" triggerType not set");
-            throw new MissingParameterException(" triggerType not set");
-        } else {
-            element.addContent(triggerType.encodeXML("TriggerType", ns));
-        }
-
-        //element.addContent(reserved0.encodeXML("reserved",ns));
-        if (numberOfTags == null) {
-            LOGGER.warn(" numberOfTags not set");
-            throw new MissingParameterException(" numberOfTags not set");
-        } else {
-            element.addContent(numberOfTags.encodeXML("NumberOfTags", ns));
-        }
-
-        if (numberOfAttempts == null) {
-            LOGGER.warn(" numberOfAttempts not set");
-            throw new MissingParameterException(" numberOfAttempts not set");
-        } else {
-            element.addContent(numberOfAttempts.encodeXML("NumberOfAttempts", ns));
-        }
-
-        if (t == null) {
-            LOGGER.warn(" t not set");
-            throw new MissingParameterException(" t not set");
-        } else {
-            element.addContent(t.encodeXML("T", ns));
-        }
-
-        if (timeout == null) {
-            LOGGER.warn(" timeout not set");
-            throw new MissingParameterException(" timeout not set");
-        } else {
-            element.addContent(timeout.encodeXML("Timeout", ns));
-        }
-
-        //parameters
-        return element;
+    if (timeout == null) {
+      LOGGER.warn(" timeout not set");
+      throw new MissingParameterException(
+        " timeout not set  for Parameter of Type TagObservationTrigger");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        triggerType = new TagObservationTriggerType(binary.subList(position,
-                    TagObservationTriggerType.length()));
-        position += TagObservationTriggerType.length();
-        position += reserved0.length();
-        numberOfTags = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        numberOfAttempts = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        t = new UnsignedShort(binary.subList(position, UnsignedShort.length()));
-        position += UnsignedShort.length();
-        timeout = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
+    resultBits.append(timeout.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (triggerType == null) {
+      LOGGER.warn(" triggerType not set");
+      throw new MissingParameterException(" triggerType not set");
+    } else {
+      element.addContent(triggerType.encodeXML("TriggerType", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
-
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("TriggerType", ns);
-
-        if (temp != null) {
-            triggerType = new TagObservationTriggerType(temp);
-        }
-
-        element.removeChild("TriggerType", ns);
-        temp = element.getChild("NumberOfTags", ns);
-
-        if (temp != null) {
-            numberOfTags = new UnsignedShort(temp);
-        }
-
-        element.removeChild("NumberOfTags", ns);
-        temp = element.getChild("NumberOfAttempts", ns);
-
-        if (temp != null) {
-            numberOfAttempts = new UnsignedShort(temp);
-        }
-
-        element.removeChild("NumberOfAttempts", ns);
-        temp = element.getChild("T", ns);
-
-        if (temp != null) {
-            t = new UnsignedShort(temp);
-        }
-
-        element.removeChild("T", ns);
-        temp = element.getChild("Timeout", ns);
-
-        if (temp != null) {
-            timeout = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("Timeout", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "TagObservationTrigger has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    //element.addContent(reserved0.encodeXML("reserved",ns));
+    if (numberOfTags == null) {
+      LOGGER.warn(" numberOfTags not set");
+      throw new MissingParameterException(" numberOfTags not set");
+    } else {
+      element.addContent(numberOfTags.encodeXML("NumberOfTags", ns));
     }
 
-    //setters
-    /**
-    * set triggerType of type TagObservationTriggerType .
-    * @param  triggerType to be set
-    */
-    public void setTriggerType(final TagObservationTriggerType triggerType) {
-        this.triggerType = triggerType;
+    if (numberOfAttempts == null) {
+      LOGGER.warn(" numberOfAttempts not set");
+      throw new MissingParameterException(" numberOfAttempts not set");
+    } else {
+      element.addContent(numberOfAttempts.encodeXML("NumberOfAttempts", ns));
     }
 
-    /**
-    * set   numberOfTags of type UnsignedShort .
-    * @param   numberOfTags to be set
-    */
-    public void setNumberOfTags(final UnsignedShort numberOfTags) {
-        this.numberOfTags = numberOfTags;
+    if (t == null) {
+      LOGGER.warn(" t not set");
+      throw new MissingParameterException(" t not set");
+    } else {
+      element.addContent(t.encodeXML("T", ns));
     }
 
-    /**
-    * set   numberOfAttempts of type UnsignedShort .
-    * @param   numberOfAttempts to be set
-    */
-    public void setNumberOfAttempts(final UnsignedShort numberOfAttempts) {
-        this.numberOfAttempts = numberOfAttempts;
+    if (timeout == null) {
+      LOGGER.warn(" timeout not set");
+      throw new MissingParameterException(" timeout not set");
+    } else {
+      element.addContent(timeout.encodeXML("Timeout", ns));
     }
 
-    /**
-    * set   t of type UnsignedShort .
-    * @param   t to be set
-    */
-    public void setT(final UnsignedShort t) {
-        this.t = t;
+    //parameters
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    triggerType = new TagObservationTriggerType(binary.subList(position,
+      TagObservationTriggerType.length()));
+    position += TagObservationTriggerType.length();
+    position += reserved0.length();
+    numberOfTags = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    numberOfAttempts = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    t = new UnsignedShort(binary.subList(position, UnsignedShort.length()));
+    position += UnsignedShort.length();
+    timeout = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("TriggerType", ns);
+
+    if (temp != null) {
+      triggerType = new TagObservationTriggerType(temp);
     }
 
-    /**
-    * set   timeout of type UnsignedInteger .
-    * @param   timeout to be set
-    */
-    public void setTimeout(final UnsignedInteger timeout) {
-        this.timeout = timeout;
+    element.removeChild("TriggerType", ns);
+    temp = element.getChild("NumberOfTags", ns);
+
+    if (temp != null) {
+      numberOfTags = new UnsignedShort(temp);
     }
 
-    // end setter
+    element.removeChild("NumberOfTags", ns);
+    temp = element.getChild("NumberOfAttempts", ns);
 
-    //getters
-    /**
-    * get triggerType of type TagObservationTriggerType.
-    * @return  TagObservationTriggerType
-    */
-    public TagObservationTriggerType getTriggerType() {
-        return triggerType;
+    if (temp != null) {
+      numberOfAttempts = new UnsignedShort(temp);
     }
 
-    /**
-    * get   numberOfTags of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getNumberOfTags() {
-        return this.numberOfTags;
+    element.removeChild("NumberOfAttempts", ns);
+    temp = element.getChild("T", ns);
+
+    if (temp != null) {
+      t = new UnsignedShort(temp);
     }
 
-    /**
-    * get   numberOfAttempts of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getNumberOfAttempts() {
-        return this.numberOfAttempts;
+    element.removeChild("T", ns);
+    temp = element.getChild("Timeout", ns);
+
+    if (temp != null) {
+      timeout = new UnsignedInteger(temp);
     }
 
-    /**
-    * get   t of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getT() {
-        return this.t;
+    element.removeChild("Timeout", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "TagObservationTrigger has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    /**
-    * get   timeout of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getTimeout() {
-        return this.timeout;
-    }
+  //setters
+  /**
+   * set triggerType of type TagObservationTriggerType .
+   *
+   * @param triggerType to be set
+   */
+  public void setTriggerType(final TagObservationTriggerType triggerType) {
+    this.triggerType = triggerType;
+  }
 
-    // end getters
+  /**
+   * set numberOfTags of type UnsignedShort .
+   *
+   * @param numberOfTags to be set
+   */
+  public void setNumberOfTags(final UnsignedShort numberOfTags) {
+    this.numberOfTags = numberOfTags;
+  }
 
-    //add methods
+  /**
+   * set numberOfAttempts of type UnsignedShort .
+   *
+   * @param numberOfAttempts to be set
+   */
+  public void setNumberOfAttempts(final UnsignedShort numberOfAttempts) {
+    this.numberOfAttempts = numberOfAttempts;
+  }
 
-    // end add
+  /**
+   * set t of type UnsignedShort .
+   *
+   * @param t to be set
+   */
+  public void setT(final UnsignedShort t) {
+    this.t = t;
+  }
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+  /**
+   * set timeout of type UnsignedInteger .
+   *
+   * @param timeout to be set
+   */
+  public void setTimeout(final UnsignedInteger timeout) {
+    this.timeout = timeout;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  // end setter
+  //getters
+  /**
+   * get triggerType of type TagObservationTriggerType.
+   *
+   * @return TagObservationTriggerType
+   */
+  public TagObservationTriggerType getTriggerType() {
+    return triggerType;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "TagObservationTrigger";
-    }
+  /**
+   * get numberOfTags of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getNumberOfTags() {
+    return this.numberOfTags;
+  }
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "TagObservationTrigger: ";
-        result += ", triggerType: ";
-        result += triggerType;
+  /**
+   * get numberOfAttempts of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getNumberOfAttempts() {
+    return this.numberOfAttempts;
+  }
 
-        result += ", numberOfTags: ";
-        result += numberOfTags;
-        result += ", numberOfAttempts: ";
-        result += numberOfAttempts;
-        result += ", t: ";
-        result += t;
-        result += ", timeout: ";
-        result += timeout;
-        result = result.replaceFirst(", ", "");
+  /**
+   * get t of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getT() {
+    return this.t;
+  }
 
-        return result;
-    }
+  /**
+   * get timeout of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getTimeout() {
+    return this.timeout;
+  }
+
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "TagObservationTrigger";
+  }
+
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "TagObservationTrigger: ";
+    result += ", triggerType: ";
+    result += triggerType;
+
+    result += ", numberOfTags: ";
+    result += numberOfTags;
+    result += ", numberOfAttempts: ";
+    result += numberOfAttempts;
+    result += ", t: ";
+    result += t;
+    result += ", timeout: ";
+    result += timeout;
+    result = result.replaceFirst(", ", "");
+
+    return result;
+  }
 }

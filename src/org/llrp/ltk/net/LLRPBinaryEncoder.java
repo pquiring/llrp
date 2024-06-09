@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions
  * and limitations under the License.
  */
-
 package org.llrp.ltk.net;
 
 import org.apache.log4j.Logger;
@@ -26,38 +25,36 @@ import org.llrp.ltk.exceptions.InvalidLLRPMessageException;
 import org.llrp.ltk.types.LLRPMessage;
 
 /**
-	 * LLRPBinaryEncoder encodes LLRPMessage objects to the LLRP binary format.
+ * LLRPBinaryEncoder encodes LLRPMessage objects to the LLRP binary format.
  */
-
 public class LLRPBinaryEncoder implements ProtocolEncoder {
 
-	Logger log = Logger.getLogger(LLRPBinaryEncoder.class);
+  Logger log = Logger.getLogger(LLRPBinaryEncoder.class);
 
-	public void dispose(IoSession session) throws Exception {
-		// nothing to dispose
-	}
+  public void dispose(IoSession session) throws Exception {
+    // nothing to dispose
+  }
 
-	/**
-	 * convert LLRPMessage object to binary format
-	*/
-
-	public void encode(IoSession session, Object message,
-			ProtocolEncoderOutput out) throws Exception {
-		LLRPMessage llrp = (LLRPMessage) message;
-		log.debug("encoding message " + llrp.getClass());
-		byte[] byteMsg;
-		try {
-			byteMsg = llrp.encodeBinary();
-		} catch (InvalidLLRPMessageException me) {
-			log.warn("no message written because error occured: "
-					+ me.getMessage());
-			return;
-		}
-		// Note: ByteBuffer is renamed in MINA to IOBuffer
-		IoBuffer buffer = IoBuffer.allocate(byteMsg.length, false);
-		buffer.put(byteMsg);
-		buffer.flip();
-		out.write(buffer);
-	}
+  /**
+   * convert LLRPMessage object to binary format
+   */
+  public void encode(IoSession session, Object message,
+    ProtocolEncoderOutput out) throws Exception {
+    LLRPMessage llrp = (LLRPMessage) message;
+    log.debug("encoding message " + llrp.getClass());
+    byte[] byteMsg;
+    try {
+      byteMsg = llrp.encodeBinary();
+    } catch (InvalidLLRPMessageException me) {
+      log.warn("no message written because error occured: "
+        + me.getMessage());
+      return;
+    }
+    // Note: ByteBuffer is renamed in MINA to IOBuffer
+    IoBuffer buffer = IoBuffer.allocate(byteMsg.length, false);
+    buffer.put(byteMsg);
+    buffer.flip();
+    out.write(buffer);
+  }
 
 }

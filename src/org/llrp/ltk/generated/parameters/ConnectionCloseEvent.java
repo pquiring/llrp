@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,150 +46,151 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This status report parameter informs the Client that, unsolicited by the Client, the Reader will close the connection between the Reader and Client.  Before the Reader closes a connection with the Client that is not solicited by the Client, the Reader SHALL first attempt to send a READER_EVENT_NOTIFICATION containing this parameter to the Client.Once the Reader sends this event to the Client, the Reader SHALL close the connection to the Client.  This is also to say that, once the Reader sends this event, the Reader SHALL send no additional messages to the Client and the Reader SHALL ignore any messages received from the Client until another new connection is established.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=92&view=fit">LLRP Specification Section 13.2.6.12</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=151&view=fit">LLRP Specification Section 16.2.7.6.11</a>}
-
-
+ * This status report parameter informs the Client that, unsolicited by the Client, the Reader will close the connection between the Reader and Client. Before the Reader closes a
+ * connection with the Client that is not solicited by the Client, the Reader SHALL first attempt to send a READER_EVENT_NOTIFICATION containing this parameter to the Client.Once
+ * the Reader sends this event to the Client, the Reader SHALL close the connection to the Client. This is also to say that, once the Reader sends this event, the Reader SHALL send
+ * no additional messages to the Client and the Reader SHALL ignore any messages received from the Client until another new connection is established.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=92&view=fit">LLRP Specification Section 13.2.6.12</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=151&view=fit">LLRP Specification Section 16.2.7.6.11</a>}
+ *
+ *
  */
-
 /**
- * This status report parameter informs the Client that, unsolicited by the Client, the Reader will close the connection between the Reader and Client.  Before the Reader closes a connection with the Client that is not solicited by the Client, the Reader SHALL first attempt to send a READER_EVENT_NOTIFICATION containing this parameter to the Client.Once the Reader sends this event to the Client, the Reader SHALL close the connection to the Client.  This is also to say that, once the Reader sends this event, the Reader SHALL send no additional messages to the Client and the Reader SHALL ignore any messages received from the Client until another new connection is established.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=92&view=fit">LLRP Specification Section 13.2.6.12</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=151&view=fit">LLRP Specification Section 16.2.7.6.11</a>}
-
-      .
+ * This status report parameter informs the Client that, unsolicited by the Client, the Reader will close the connection between the Reader and Client. Before the Reader closes a
+ * connection with the Client that is not solicited by the Client, the Reader SHALL first attempt to send a READER_EVENT_NOTIFICATION containing this parameter to the Client.Once
+ * the Reader sends this event to the Client, the Reader SHALL close the connection to the Client. This is also to say that, once the Reader sends this event, the Reader SHALL send
+ * no additional messages to the Client and the Reader SHALL ignore any messages received from the Client until another new connection is established.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=92&view=fit">LLRP Specification Section 13.2.6.12</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=151&view=fit">LLRP Specification Section 16.2.7.6.11</a>}
+ *
+ * .
  */
 public class ConnectionCloseEvent extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(257);
-    private static final Logger LOGGER = Logger.getLogger(ConnectionCloseEvent.class);
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public ConnectionCloseEvent() {
+  public static final SignedShort TYPENUM = new SignedShort(257);
+  private static final Logger LOGGER = Logger.getLogger(ConnectionCloseEvent.class);
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public ConnectionCloseEvent() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public ConnectionCloseEvent(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public ConnectionCloseEvent(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    //parameters
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    if (element.getChildren().size() > 0) {
+      String message = "ConnectionCloseEvent has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public ConnectionCloseEvent(LLRPBitList list) {
-        decodeBinary(list);
-    }
+  //setters
+  // end setter
+  //getters
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public ConnectionCloseEvent(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "ConnectionCloseEvent";
+  }
 
-        return resultBits;
-    }
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "ConnectionCloseEvent: ";
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        //parameters
-        return element;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
-
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        if (element.getChildren().size() > 0) {
-            String message = "ConnectionCloseEvent has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
-    }
-
-    //setters
-
-    // end setter
-
-    //getters
-
-    // end getters
-
-    //add methods
-
-    // end add
-
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "ConnectionCloseEvent";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "ConnectionCloseEvent: ";
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

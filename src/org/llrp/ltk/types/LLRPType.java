@@ -22,63 +22,66 @@ import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-
 /**
  * super type for all types in LLRP.
  *
  * @author Basil Gasser - ETH Zurich
  */
 public abstract class LLRPType {
-    /**
-     * decode
-     *
-     * @param list to be decoded
-     */
-    public abstract void decodeBinary(LLRPBitList list);
 
-    /**
-     * encode this value
-     *
-     * @return LLRPBitList
-     */
-    public abstract LLRPBitList encodeBinary();
+  /**
+   * decode
+   *
+   * @param list to be decoded
+   */
+  public abstract void decodeBinary(LLRPBitList list);
 
-    /**
-     * create xml representation of this parameter.
-     *
-     * @param name returned content should have
-     * @param ns Namespace of elements
-     */
-    public abstract Content encodeXML(String name, Namespace ns);
+  /**
+   * encode this value
+   *
+   * @return LLRPBitList
+   */
+  public abstract LLRPBitList encodeBinary();
 
-    /**
-     * create objects from xml.
-     *
-     * @param element to be decoded
-     */
-    public abstract void decodeXML(Element element);
-    
-    /**
-     * create string as found in xml encoding
-     * @return String
-     */ 
-    public String toXMLString() {
-        Content c = encodeXML(this.getClass().getName(), Namespace.getNamespace(""));
-        XMLOutputter outputter = new XMLOutputter();
-        outputter.setFormat(Format.getPrettyFormat());
-        Document d = new Document();
-        d.addContent(c);
-        return outputter.outputString(d);
-    }
-    
-    /**
-     * String representation
-     * @return String
-     */ 
-    public String toString(){
-		return toString(2);
-	}
-    public abstract String toString(int radix);
-    
-	public abstract boolean inRange(String valueString);
+  /**
+   * create xml representation of this parameter.
+   *
+   * @param name returned content should have
+   * @param ns Namespace of elements
+   */
+  public abstract Content encodeXML(String name, Namespace ns);
+
+  /**
+   * create objects from xml.
+   *
+   * @param element to be decoded
+   */
+  public abstract void decodeXML(Element element);
+
+  /**
+   * create string as found in xml encoding
+   *
+   * @return String
+   */
+  public String toXMLString() {
+    Content c = encodeXML(this.getClass().getName(), Namespace.getNamespace(""));
+    XMLOutputter outputter = new XMLOutputter();
+    outputter.setFormat(Format.getPrettyFormat());
+    Document d = new Document();
+    d.addContent(c);
+    return outputter.outputString(d);
+  }
+
+  /**
+   * String representation
+   *
+   * @return String
+   */
+  public String toString() {
+    return toString(2);
+  }
+
+  public abstract String toString(int radix);
+
+  public abstract boolean inRange(String valueString);
 }

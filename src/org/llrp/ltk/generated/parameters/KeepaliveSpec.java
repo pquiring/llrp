@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,240 +48,241 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * This parameter carries the specification for the keepalive message generation by the Reader. This includes the definition of the periodic trigger to send the keepalive message.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=73&view=fit">LLRP Specification Section 12.2.4</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=140&view=fit">LLRP Specification Section 16.2.6.4</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=73&view=fit">LLRP Specification Section 12.2.4</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=140&view=fit">LLRP Specification Section 16.2.6.4</a>}
+ *
+ *
  */
-
 /**
  * This parameter carries the specification for the keepalive message generation by the Reader. This includes the definition of the periodic trigger to send the keepalive message.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=73&view=fit">LLRP Specification Section 12.2.4</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=140&view=fit">LLRP Specification Section 16.2.6.4</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=73&view=fit">LLRP Specification Section 12.2.4</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=140&view=fit">LLRP Specification Section 16.2.6.4</a>}
+ *
+ * .
  */
 public class KeepaliveSpec extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(220);
-    private static final Logger LOGGER = Logger.getLogger(KeepaliveSpec.class);
-    protected KeepaliveTriggerType keepaliveTriggerType;
-    protected UnsignedInteger periodicTriggerValue;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public KeepaliveSpec() {
+  public static final SignedShort TYPENUM = new SignedShort(220);
+  private static final Logger LOGGER = Logger.getLogger(KeepaliveSpec.class);
+  protected KeepaliveTriggerType keepaliveTriggerType;
+  protected UnsignedInteger periodicTriggerValue;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public KeepaliveSpec() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public KeepaliveSpec(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public KeepaliveSpec(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (keepaliveTriggerType == null) {
+      LOGGER.warn(" keepaliveTriggerType not set");
+      throw new MissingParameterException(
+        " keepaliveTriggerType not set  for Parameter of Type KeepaliveSpec");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public KeepaliveSpec(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(keepaliveTriggerType.encodeBinary());
+
+    if (periodicTriggerValue == null) {
+      LOGGER.warn(" periodicTriggerValue not set");
+      throw new MissingParameterException(
+        " periodicTriggerValue not set  for Parameter of Type KeepaliveSpec");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public KeepaliveSpec(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(periodicTriggerValue.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (keepaliveTriggerType == null) {
+      LOGGER.warn(" keepaliveTriggerType not set");
+      throw new MissingParameterException(" keepaliveTriggerType not set");
+    } else {
+      element.addContent(keepaliveTriggerType.encodeXML(
+        "KeepaliveTriggerType", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (keepaliveTriggerType == null) {
-            LOGGER.warn(" keepaliveTriggerType not set");
-            throw new MissingParameterException(
-                " keepaliveTriggerType not set  for Parameter of Type KeepaliveSpec");
-        }
-
-        resultBits.append(keepaliveTriggerType.encodeBinary());
-
-        if (periodicTriggerValue == null) {
-            LOGGER.warn(" periodicTriggerValue not set");
-            throw new MissingParameterException(
-                " periodicTriggerValue not set  for Parameter of Type KeepaliveSpec");
-        }
-
-        resultBits.append(periodicTriggerValue.encodeBinary());
-
-        return resultBits;
+    if (periodicTriggerValue == null) {
+      LOGGER.warn(" periodicTriggerValue not set");
+      throw new MissingParameterException(" periodicTriggerValue not set");
+    } else {
+      element.addContent(periodicTriggerValue.encodeXML(
+        "PeriodicTriggerValue", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    //parameters
+    return element;
+  }
 
-        if (keepaliveTriggerType == null) {
-            LOGGER.warn(" keepaliveTriggerType not set");
-            throw new MissingParameterException(" keepaliveTriggerType not set");
-        } else {
-            element.addContent(keepaliveTriggerType.encodeXML(
-                    "KeepaliveTriggerType", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    keepaliveTriggerType = new KeepaliveTriggerType(binary.subList(
+      position, KeepaliveTriggerType.length()));
+    position += KeepaliveTriggerType.length();
+    periodicTriggerValue = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+  }
 
-        if (periodicTriggerValue == null) {
-            LOGGER.warn(" periodicTriggerValue not set");
-            throw new MissingParameterException(" periodicTriggerValue not set");
-        } else {
-            element.addContent(periodicTriggerValue.encodeXML(
-                    "PeriodicTriggerValue", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        //parameters
-        return element;
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("KeepaliveTriggerType", ns);
+
+    if (temp != null) {
+      keepaliveTriggerType = new KeepaliveTriggerType(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        keepaliveTriggerType = new KeepaliveTriggerType(binary.subList(
-                    position, KeepaliveTriggerType.length()));
-        position += KeepaliveTriggerType.length();
-        periodicTriggerValue = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
+    element.removeChild("KeepaliveTriggerType", ns);
+    temp = element.getChild("PeriodicTriggerValue", ns);
+
+    if (temp != null) {
+      periodicTriggerValue = new UnsignedInteger(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    element.removeChild("PeriodicTriggerValue", ns);
 
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("KeepaliveTriggerType", ns);
-
-        if (temp != null) {
-            keepaliveTriggerType = new KeepaliveTriggerType(temp);
-        }
-
-        element.removeChild("KeepaliveTriggerType", ns);
-        temp = element.getChild("PeriodicTriggerValue", ns);
-
-        if (temp != null) {
-            periodicTriggerValue = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("PeriodicTriggerValue", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "KeepaliveSpec has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (element.getChildren().size() > 0) {
+      String message = "KeepaliveSpec has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    //setters
-    /**
-    * set keepaliveTriggerType of type KeepaliveTriggerType .
-    * @param  keepaliveTriggerType to be set
-    */
-    public void setKeepaliveTriggerType(
-        final KeepaliveTriggerType keepaliveTriggerType) {
-        this.keepaliveTriggerType = keepaliveTriggerType;
-    }
+  //setters
+  /**
+   * set keepaliveTriggerType of type KeepaliveTriggerType .
+   *
+   * @param keepaliveTriggerType to be set
+   */
+  public void setKeepaliveTriggerType(
+    final KeepaliveTriggerType keepaliveTriggerType) {
+    this.keepaliveTriggerType = keepaliveTriggerType;
+  }
 
-    /**
-    * set   periodicTriggerValue of type UnsignedInteger .
-    * @param   periodicTriggerValue to be set
-    */
-    public void setPeriodicTriggerValue(
-        final UnsignedInteger periodicTriggerValue) {
-        this.periodicTriggerValue = periodicTriggerValue;
-    }
+  /**
+   * set periodicTriggerValue of type UnsignedInteger .
+   *
+   * @param periodicTriggerValue to be set
+   */
+  public void setPeriodicTriggerValue(
+    final UnsignedInteger periodicTriggerValue) {
+    this.periodicTriggerValue = periodicTriggerValue;
+  }
 
-    // end setter
+  // end setter
+  //getters
+  /**
+   * get keepaliveTriggerType of type KeepaliveTriggerType.
+   *
+   * @return KeepaliveTriggerType
+   */
+  public KeepaliveTriggerType getKeepaliveTriggerType() {
+    return keepaliveTriggerType;
+  }
 
-    //getters
-    /**
-    * get keepaliveTriggerType of type KeepaliveTriggerType.
-    * @return  KeepaliveTriggerType
-    */
-    public KeepaliveTriggerType getKeepaliveTriggerType() {
-        return keepaliveTriggerType;
-    }
+  /**
+   * get periodicTriggerValue of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getPeriodicTriggerValue() {
+    return this.periodicTriggerValue;
+  }
 
-    /**
-    * get   periodicTriggerValue of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getPeriodicTriggerValue() {
-        return this.periodicTriggerValue;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    // end getters
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    //add methods
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "KeepaliveSpec";
+  }
 
-    // end add
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "KeepaliveSpec: ";
+    result += ", keepaliveTriggerType: ";
+    result += keepaliveTriggerType;
+    result += ", periodicTriggerValue: ";
+    result += periodicTriggerValue;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "KeepaliveSpec";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "KeepaliveSpec: ";
-        result += ", keepaliveTriggerType: ";
-        result += keepaliveTriggerType;
-        result += ", periodicTriggerValue: ";
-        result += periodicTriggerValue;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

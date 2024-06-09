@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,398 +50,405 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * If Length is zero, this pattern will match all tags regardless of MB, pointer, mask and data.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=106&view=fit">LLRP Specification Section 15.2.1.3.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=156&view=fit">LLRP Specification Section 16.3.1.3.1.1</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=106&view=fit">LLRP Specification Section 15.2.1.3.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=156&view=fit">LLRP Specification Section 16.3.1.3.1.1</a>}
+ *
+ *
  */
-
 /**
  * If Length is zero, this pattern will match all tags regardless of MB, pointer, mask and data.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=106&view=fit">LLRP Specification Section 15.2.1.3.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=156&view=fit">LLRP Specification Section 16.3.1.3.1.1</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=106&view=fit">LLRP Specification Section 15.2.1.3.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=156&view=fit">LLRP Specification Section 16.3.1.3.1.1</a>}
+ *
+ * .
  */
 public class C1G2TargetTag extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(339);
-    private static final Logger LOGGER = Logger.getLogger(C1G2TargetTag.class);
-    protected TwoBitField mB;
-    protected Bit match;
-    protected BitList reserved0 = new BitList(5);
-    protected UnsignedShort pointer;
-    protected BitArray_HEX tagMask;
-    protected BitArray_HEX tagData;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public C1G2TargetTag() {
+  public static final SignedShort TYPENUM = new SignedShort(339);
+  private static final Logger LOGGER = Logger.getLogger(C1G2TargetTag.class);
+  protected TwoBitField mB;
+  protected Bit match;
+  protected BitList reserved0 = new BitList(5);
+  protected UnsignedShort pointer;
+  protected BitArray_HEX tagMask;
+  protected BitArray_HEX tagData;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public C1G2TargetTag() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public C1G2TargetTag(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public C1G2TargetTag(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (mB == null) {
+      LOGGER.warn(" mB not set");
+      throw new MissingParameterException(
+        " mB not set  for Parameter of Type C1G2TargetTag");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public C1G2TargetTag(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(mB.encodeBinary());
+
+    if (match == null) {
+      LOGGER.warn(" match not set");
+      throw new MissingParameterException(
+        " match not set  for Parameter of Type C1G2TargetTag");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public C1G2TargetTag(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(match.encodeBinary());
+    resultBits.append(reserved0.encodeBinary());
+
+    if (pointer == null) {
+      LOGGER.warn(" pointer not set");
+      throw new MissingParameterException(
+        " pointer not set  for Parameter of Type C1G2TargetTag");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(pointer.encodeBinary());
 
-        if (mB == null) {
-            LOGGER.warn(" mB not set");
-            throw new MissingParameterException(
-                " mB not set  for Parameter of Type C1G2TargetTag");
-        }
-
-        resultBits.append(mB.encodeBinary());
-
-        if (match == null) {
-            LOGGER.warn(" match not set");
-            throw new MissingParameterException(
-                " match not set  for Parameter of Type C1G2TargetTag");
-        }
-
-        resultBits.append(match.encodeBinary());
-        resultBits.append(reserved0.encodeBinary());
-
-        if (pointer == null) {
-            LOGGER.warn(" pointer not set");
-            throw new MissingParameterException(
-                " pointer not set  for Parameter of Type C1G2TargetTag");
-        }
-
-        resultBits.append(pointer.encodeBinary());
-
-        if (tagMask == null) {
-            LOGGER.warn(" tagMask not set");
-            throw new MissingParameterException(
-                " tagMask not set  for Parameter of Type C1G2TargetTag");
-        }
-
-        resultBits.append(tagMask.encodeBinary());
-
-        if (tagData == null) {
-            LOGGER.warn(" tagData not set");
-            throw new MissingParameterException(
-                " tagData not set  for Parameter of Type C1G2TargetTag");
-        }
-
-        resultBits.append(tagData.encodeBinary());
-
-        return resultBits;
+    if (tagMask == null) {
+      LOGGER.warn(" tagMask not set");
+      throw new MissingParameterException(
+        " tagMask not set  for Parameter of Type C1G2TargetTag");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    resultBits.append(tagMask.encodeBinary());
 
-        if (mB == null) {
-            LOGGER.warn(" mB not set");
-            throw new MissingParameterException(" mB not set");
-        } else {
-            element.addContent(mB.encodeXML("MB", ns));
-        }
-
-        if (match == null) {
-            LOGGER.warn(" match not set");
-            throw new MissingParameterException(" match not set");
-        } else {
-            element.addContent(match.encodeXML("Match", ns));
-        }
-
-        //element.addContent(reserved0.encodeXML("reserved",ns));
-        if (pointer == null) {
-            LOGGER.warn(" pointer not set");
-            throw new MissingParameterException(" pointer not set");
-        } else {
-            element.addContent(pointer.encodeXML("Pointer", ns));
-        }
-
-        if (tagMask == null) {
-            LOGGER.warn(" tagMask not set");
-            throw new MissingParameterException(" tagMask not set");
-        } else {
-            element.addContent(tagMask.encodeXML("TagMask", ns));
-        }
-
-        if (tagData == null) {
-            LOGGER.warn(" tagData not set");
-            throw new MissingParameterException(" tagData not set");
-        } else {
-            element.addContent(tagData.encodeXML("TagData", ns));
-        }
-
-        //parameters
-        return element;
+    if (tagData == null) {
+      LOGGER.warn(" tagData not set");
+      throw new MissingParameterException(
+        " tagData not set  for Parameter of Type C1G2TargetTag");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        mB = new TwoBitField(binary.subList(position, TwoBitField.length()));
-        position += TwoBitField.length();
-        match = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        position += reserved0.length();
-        pointer = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        // array. first 16 bits indicate length of array
-        fieldCount = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length())).toShort();
-        tempLength = (BitArray_HEX.length() * fieldCount) +
-            UnsignedShort.length();
-        tagMask = new BitArray_HEX(binary.subList(position, tempLength));
-        position += tempLength;
-        LOGGER.debug("decoding array of type: BitArray_HEX with " + tempLength +
-            " length");
+    resultBits.append(tagData.encodeBinary());
 
-        //might need padding
-        // must always be blocks of 8 bites, if it is a bitlist, this might not be automatically the case
-        if ((tempLength % 8) > 0) {
-            position += (8 - (tempLength % 8));
-            LOGGER.info("padding needed for tagMask ");
-        }
+    return resultBits;
+  }
 
-        // array. first 16 bits indicate length of array
-        fieldCount = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length())).toShort();
-        tempLength = (BitArray_HEX.length() * fieldCount) +
-            UnsignedShort.length();
-        tagData = new BitArray_HEX(binary.subList(position, tempLength));
-        position += tempLength;
-        LOGGER.debug("decoding array of type: BitArray_HEX with " + tempLength +
-            " length");
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        //might need padding
-        // must always be blocks of 8 bites, if it is a bitlist, this might not be automatically the case
-        if ((tempLength % 8) > 0) {
-            position += (8 - (tempLength % 8));
-            LOGGER.info("padding needed for tagData ");
-        }
+    if (mB == null) {
+      LOGGER.warn(" mB not set");
+      throw new MissingParameterException(" mB not set");
+    } else {
+      element.addContent(mB.encodeXML("MB", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
-
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("MB", ns);
-
-        if (temp != null) {
-            mB = new TwoBitField(temp);
-        }
-
-        element.removeChild("MB", ns);
-        temp = element.getChild("Match", ns);
-
-        if (temp != null) {
-            match = new Bit(temp);
-        }
-
-        element.removeChild("Match", ns);
-        temp = element.getChild("Pointer", ns);
-
-        if (temp != null) {
-            pointer = new UnsignedShort(temp);
-        }
-
-        element.removeChild("Pointer", ns);
-        temp = element.getChild("TagMask", ns);
-
-        if (temp != null) {
-            tagMask = new BitArray_HEX(temp);
-        }
-
-        element.removeChild("TagMask", ns);
-        temp = element.getChild("TagData", ns);
-
-        if (temp != null) {
-            tagData = new BitArray_HEX(temp);
-        }
-
-        element.removeChild("TagData", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "C1G2TargetTag has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (match == null) {
+      LOGGER.warn(" match not set");
+      throw new MissingParameterException(" match not set");
+    } else {
+      element.addContent(match.encodeXML("Match", ns));
     }
 
-    //setters
-    /**
-    * set   mB of type TwoBitField .
-    * @param   mB to be set
-    */
-    public void setMB(final TwoBitField mB) {
-        this.mB = mB;
+    //element.addContent(reserved0.encodeXML("reserved",ns));
+    if (pointer == null) {
+      LOGGER.warn(" pointer not set");
+      throw new MissingParameterException(" pointer not set");
+    } else {
+      element.addContent(pointer.encodeXML("Pointer", ns));
     }
 
-    /**
-    * set   match of type Bit .
-    * @param   match to be set
-    */
-    public void setMatch(final Bit match) {
-        this.match = match;
+    if (tagMask == null) {
+      LOGGER.warn(" tagMask not set");
+      throw new MissingParameterException(" tagMask not set");
+    } else {
+      element.addContent(tagMask.encodeXML("TagMask", ns));
     }
 
-    /**
-    * set   pointer of type UnsignedShort .
-    * @param   pointer to be set
-    */
-    public void setPointer(final UnsignedShort pointer) {
-        this.pointer = pointer;
+    if (tagData == null) {
+      LOGGER.warn(" tagData not set");
+      throw new MissingParameterException(" tagData not set");
+    } else {
+      element.addContent(tagData.encodeXML("TagData", ns));
     }
 
-    /**
-    * set tagMask of type BitArray_HEX .
-    * @param  tagMask to be set
-    */
-    public void setTagMask(final BitArray_HEX tagMask) {
-        this.tagMask = tagMask;
+    //parameters
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    mB = new TwoBitField(binary.subList(position, TwoBitField.length()));
+    position += TwoBitField.length();
+    match = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    position += reserved0.length();
+    pointer = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    // array. first 16 bits indicate length of array
+    fieldCount = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length())).toShort();
+    tempLength = (BitArray_HEX.length() * fieldCount)
+      + UnsignedShort.length();
+    tagMask = new BitArray_HEX(binary.subList(position, tempLength));
+    position += tempLength;
+    LOGGER.debug("decoding array of type: BitArray_HEX with " + tempLength
+      + " length");
+
+    //might need padding
+    // must always be blocks of 8 bites, if it is a bitlist, this might not be automatically the case
+    if ((tempLength % 8) > 0) {
+      position += (8 - (tempLength % 8));
+      LOGGER.info("padding needed for tagMask ");
     }
 
-    /**
-    * set tagData of type BitArray_HEX .
-    * @param  tagData to be set
-    */
-    public void setTagData(final BitArray_HEX tagData) {
-        this.tagData = tagData;
+    // array. first 16 bits indicate length of array
+    fieldCount = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length())).toShort();
+    tempLength = (BitArray_HEX.length() * fieldCount)
+      + UnsignedShort.length();
+    tagData = new BitArray_HEX(binary.subList(position, tempLength));
+    position += tempLength;
+    LOGGER.debug("decoding array of type: BitArray_HEX with " + tempLength
+      + " length");
+
+    //might need padding
+    // must always be blocks of 8 bites, if it is a bitlist, this might not be automatically the case
+    if ((tempLength % 8) > 0) {
+      position += (8 - (tempLength % 8));
+      LOGGER.info("padding needed for tagData ");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("MB", ns);
+
+    if (temp != null) {
+      mB = new TwoBitField(temp);
     }
 
-    // end setter
+    element.removeChild("MB", ns);
+    temp = element.getChild("Match", ns);
 
-    //getters
-    /**
-    * get   mB of type TwoBitField.
-    * @return   type TwoBitField to be set
-    */
-    public TwoBitField getMB() {
-        return this.mB;
+    if (temp != null) {
+      match = new Bit(temp);
     }
 
-    /**
-    * get   match of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getMatch() {
-        return this.match;
+    element.removeChild("Match", ns);
+    temp = element.getChild("Pointer", ns);
+
+    if (temp != null) {
+      pointer = new UnsignedShort(temp);
     }
 
-    /**
-    * get   pointer of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getPointer() {
-        return this.pointer;
+    element.removeChild("Pointer", ns);
+    temp = element.getChild("TagMask", ns);
+
+    if (temp != null) {
+      tagMask = new BitArray_HEX(temp);
     }
 
-    /**
-    * get tagMask of type  BitArray_HEX.
-    * @return  BitArray_HEX
-    */
-    public BitArray_HEX getTagMask() {
-        return tagMask;
+    element.removeChild("TagMask", ns);
+    temp = element.getChild("TagData", ns);
+
+    if (temp != null) {
+      tagData = new BitArray_HEX(temp);
     }
 
-    /**
-    * get tagData of type  BitArray_HEX.
-    * @return  BitArray_HEX
-    */
-    public BitArray_HEX getTagData() {
-        return tagData;
+    element.removeChild("TagData", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "C1G2TargetTag has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    // end getters
+  //setters
+  /**
+   * set mB of type TwoBitField .
+   *
+   * @param mB to be set
+   */
+  public void setMB(final TwoBitField mB) {
+    this.mB = mB;
+  }
 
-    //add methods
+  /**
+   * set match of type Bit .
+   *
+   * @param match to be set
+   */
+  public void setMatch(final Bit match) {
+    this.match = match;
+  }
 
-    // end add
+  /**
+   * set pointer of type UnsignedShort .
+   *
+   * @param pointer to be set
+   */
+  public void setPointer(final UnsignedShort pointer) {
+    this.pointer = pointer;
+  }
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+  /**
+   * set tagMask of type BitArray_HEX .
+   *
+   * @param tagMask to be set
+   */
+  public void setTagMask(final BitArray_HEX tagMask) {
+    this.tagMask = tagMask;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * set tagData of type BitArray_HEX .
+   *
+   * @param tagData to be set
+   */
+  public void setTagData(final BitArray_HEX tagData) {
+    this.tagData = tagData;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "C1G2TargetTag";
-    }
+  // end setter
+  //getters
+  /**
+   * get mB of type TwoBitField.
+   *
+   * @return type TwoBitField to be set
+   */
+  public TwoBitField getMB() {
+    return this.mB;
+  }
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "C1G2TargetTag: ";
-        result += ", mB: ";
-        result += mB;
-        result += ", match: ";
-        result += match;
+  /**
+   * get match of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getMatch() {
+    return this.match;
+  }
 
-        result += ", pointer: ";
-        result += pointer;
-        result += ", tagMask: ";
-        result += tagMask;
-        result += ", tagData: ";
-        result += tagData;
-        result = result.replaceFirst(", ", "");
+  /**
+   * get pointer of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getPointer() {
+    return this.pointer;
+  }
 
-        return result;
-    }
+  /**
+   * get tagMask of type BitArray_HEX.
+   *
+   * @return BitArray_HEX
+   */
+  public BitArray_HEX getTagMask() {
+    return tagMask;
+  }
+
+  /**
+   * get tagData of type BitArray_HEX.
+   *
+   * @return BitArray_HEX
+   */
+  public BitArray_HEX getTagData() {
+    return tagData;
+  }
+
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "C1G2TargetTag";
+  }
+
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "C1G2TargetTag: ";
+    result += ", mB: ";
+    result += mB;
+    result += ", match: ";
+    result += match;
+
+    result += ", pointer: ";
+    result += pointer;
+    result += ", tagMask: ";
+    result += tagMask;
+    result += ", tagData: ";
+    result += tagData;
+    result = result.replaceFirst(", ", "");
+
+    return result;
+  }
 }

@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,343 +48,342 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * This parameter carries the lifetime of the command, ROStartTrigger and ROStopTrigger parameters.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=55&view=fit">LLRP Specification Section 10.2.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=135&view=fit">LLRP Specification Section 16.2.4.1.1</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=55&view=fit">LLRP Specification Section 10.2.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=135&view=fit">LLRP Specification Section 16.2.4.1.1</a>}
+ *
+ *
  */
-
 /**
  * This parameter carries the lifetime of the command, ROStartTrigger and ROStopTrigger parameters.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=55&view=fit">LLRP Specification Section 10.2.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=135&view=fit">LLRP Specification Section 16.2.4.1.1</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=55&view=fit">LLRP Specification Section 10.2.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=135&view=fit">LLRP Specification Section 16.2.4.1.1</a>}
+ *
+ * .
  */
 public class ROBoundarySpec extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(178);
-    private static final Logger LOGGER = Logger.getLogger(ROBoundarySpec.class);
-    protected ROSpecStartTrigger rOSpecStartTrigger;
-    protected ROSpecStopTrigger rOSpecStopTrigger;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public ROBoundarySpec() {
+  public static final SignedShort TYPENUM = new SignedShort(178);
+  private static final Logger LOGGER = Logger.getLogger(ROBoundarySpec.class);
+  protected ROSpecStartTrigger rOSpecStartTrigger;
+  protected ROSpecStopTrigger rOSpecStopTrigger;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public ROBoundarySpec() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public ROBoundarySpec(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public ROBoundarySpec(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (rOSpecStartTrigger == null) {
+      // single parameter, may not be null
+      LOGGER.warn(" rOSpecStartTrigger not set");
+      throw new MissingParameterException(" rOSpecStartTrigger not set");
+    } else {
+      resultBits.append(rOSpecStartTrigger.encodeBinary());
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public ROBoundarySpec(LLRPBitList list) {
-        decodeBinary(list);
+    if (rOSpecStopTrigger == null) {
+      // single parameter, may not be null
+      LOGGER.warn(" rOSpecStopTrigger not set");
+      throw new MissingParameterException(" rOSpecStopTrigger not set");
+    } else {
+      resultBits.append(rOSpecStopTrigger.encodeBinary());
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public ROBoundarySpec(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    //parameters
+    if (rOSpecStartTrigger == null) {
+      LOGGER.info("rOSpecStartTrigger not set");
+      throw new MissingParameterException("rOSpecStartTrigger not set");
+    } else {
+      element.addContent(rOSpecStartTrigger.encodeXML(
+        rOSpecStartTrigger.getClass().getSimpleName(), ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (rOSpecStartTrigger == null) {
-            // single parameter, may not be null
-            LOGGER.warn(" rOSpecStartTrigger not set");
-            throw new MissingParameterException(" rOSpecStartTrigger not set");
-        } else {
-            resultBits.append(rOSpecStartTrigger.encodeBinary());
-        }
-
-        if (rOSpecStopTrigger == null) {
-            // single parameter, may not be null
-            LOGGER.warn(" rOSpecStopTrigger not set");
-            throw new MissingParameterException(" rOSpecStopTrigger not set");
-        } else {
-            resultBits.append(rOSpecStopTrigger.encodeBinary());
-        }
-
-        return resultBits;
+    if (rOSpecStopTrigger == null) {
+      LOGGER.info("rOSpecStopTrigger not set");
+      throw new MissingParameterException("rOSpecStopTrigger not set");
+    } else {
+      element.addContent(rOSpecStopTrigger.encodeXML(
+        rOSpecStopTrigger.getClass().getSimpleName(), ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    return element;
+  }
 
-        //parameters
-        if (rOSpecStartTrigger == null) {
-            LOGGER.info("rOSpecStartTrigger not set");
-            throw new MissingParameterException("rOSpecStartTrigger not set");
-        } else {
-            element.addContent(rOSpecStartTrigger.encodeXML(
-                    rOSpecStartTrigger.getClass().getSimpleName(), ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
 
-        if (rOSpecStopTrigger == null) {
-            LOGGER.info("rOSpecStopTrigger not set");
-            throw new MissingParameterException("rOSpecStopTrigger not set");
-        } else {
-            element.addContent(rOSpecStopTrigger.encodeXML(
-                    rOSpecStopTrigger.getClass().getSimpleName(), ns));
-        }
+    // look ahead to see type
+    // may be optional or exactly once
+    type = null;
+    tempByteLength = 0;
+    tempLength = 0;
 
-        return element;
+    try {
+      // if first bit is one it is a TV Parameter
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+    } catch (IllegalArgumentException le) {
+      // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
+      LOGGER.warn(
+        "ROBoundarySpec misses non optional parameter of type ROSpecStartTrigger");
+      throw new MissingParameterException(
+        "ROBoundarySpec misses non optional parameter of type ROSpecStartTrigger");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-
-        // look ahead to see type
-        // may be optional or exactly once
-        type = null;
-        tempByteLength = 0;
-        tempLength = 0;
-
-        try {
-            // if first bit is one it is a TV Parameter
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-        } catch (IllegalArgumentException le) {
-            // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
-            LOGGER.warn(
-                "ROBoundarySpec misses non optional parameter of type ROSpecStartTrigger");
-            throw new MissingParameterException(
-                "ROBoundarySpec misses non optional parameter of type ROSpecStartTrigger");
-        }
-
-        if (binary.get(position)) {
-            // length can statically be determined for TV Parameters
-            tempLength = rOSpecStartTrigger.length();
-        }
-
-        if ((type != null) && type.equals(ROSpecStartTrigger.TYPENUM)) {
-            rOSpecStartTrigger = new ROSpecStartTrigger(binary.subList(
-                        position, tempLength));
-            position += tempLength;
-            LOGGER.debug(
-                " rOSpecStartTrigger is instantiated with ROSpecStartTrigger with length" +
-                tempLength);
-        } else {
-            LOGGER.warn(
-                "ROBoundarySpec misses non optional parameter of type ROSpecStartTrigger");
-            throw new MissingParameterException(
-                "ROBoundarySpec misses non optional parameter of type ROSpecStartTrigger");
-        }
-
-        // look ahead to see type
-        // may be optional or exactly once
-        type = null;
-        tempByteLength = 0;
-        tempLength = 0;
-
-        try {
-            // if first bit is one it is a TV Parameter
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-        } catch (IllegalArgumentException le) {
-            // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
-            LOGGER.warn(
-                "ROBoundarySpec misses non optional parameter of type ROSpecStopTrigger");
-            throw new MissingParameterException(
-                "ROBoundarySpec misses non optional parameter of type ROSpecStopTrigger");
-        }
-
-        if (binary.get(position)) {
-            // length can statically be determined for TV Parameters
-            tempLength = rOSpecStopTrigger.length();
-        }
-
-        if ((type != null) && type.equals(ROSpecStopTrigger.TYPENUM)) {
-            rOSpecStopTrigger = new ROSpecStopTrigger(binary.subList(position,
-                        tempLength));
-            position += tempLength;
-            LOGGER.debug(
-                " rOSpecStopTrigger is instantiated with ROSpecStopTrigger with length" +
-                tempLength);
-        } else {
-            LOGGER.warn(
-                "ROBoundarySpec misses non optional parameter of type ROSpecStopTrigger");
-            throw new MissingParameterException(
-                "ROBoundarySpec misses non optional parameter of type ROSpecStopTrigger");
-        }
+    if (binary.get(position)) {
+      // length can statically be determined for TV Parameters
+      tempLength = rOSpecStartTrigger.length();
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
-
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        //parameter - not choices - no special actions needed
-        temp = element.getChild("ROSpecStartTrigger", ns);
-
-        if (temp != null) {
-            rOSpecStartTrigger = new ROSpecStartTrigger(temp);
-            LOGGER.info(
-                "setting parameter rOSpecStartTrigger for parameter ROBoundarySpec");
-        }
-
-        if (temp == null) {
-            LOGGER.warn(
-                "ROBoundarySpec misses non optional parameter of type rOSpecStartTrigger");
-            throw new MissingParameterException(
-                "ROBoundarySpec misses non optional parameter of type rOSpecStartTrigger");
-        }
-
-        element.removeChild("ROSpecStartTrigger", ns);
-        //parameter - not choices - no special actions needed
-        temp = element.getChild("ROSpecStopTrigger", ns);
-
-        if (temp != null) {
-            rOSpecStopTrigger = new ROSpecStopTrigger(temp);
-            LOGGER.info(
-                "setting parameter rOSpecStopTrigger for parameter ROBoundarySpec");
-        }
-
-        if (temp == null) {
-            LOGGER.warn(
-                "ROBoundarySpec misses non optional parameter of type rOSpecStopTrigger");
-            throw new MissingParameterException(
-                "ROBoundarySpec misses non optional parameter of type rOSpecStopTrigger");
-        }
-
-        element.removeChild("ROSpecStopTrigger", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "ROBoundarySpec has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if ((type != null) && type.equals(ROSpecStartTrigger.TYPENUM)) {
+      rOSpecStartTrigger = new ROSpecStartTrigger(binary.subList(
+        position, tempLength));
+      position += tempLength;
+      LOGGER.debug(
+        " rOSpecStartTrigger is instantiated with ROSpecStartTrigger with length"
+        + tempLength);
+    } else {
+      LOGGER.warn(
+        "ROBoundarySpec misses non optional parameter of type ROSpecStartTrigger");
+      throw new MissingParameterException(
+        "ROBoundarySpec misses non optional parameter of type ROSpecStartTrigger");
     }
 
-    //setters
+    // look ahead to see type
+    // may be optional or exactly once
+    type = null;
+    tempByteLength = 0;
+    tempLength = 0;
 
-    /**
-    * set rOSpecStartTrigger of type ROSpecStartTrigger.
-    * @param  rOSpecStartTrigger to be set
-    */
-    public void setROSpecStartTrigger(
-        final ROSpecStartTrigger rOSpecStartTrigger) {
-        this.rOSpecStartTrigger = rOSpecStartTrigger;
+    try {
+      // if first bit is one it is a TV Parameter
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+    } catch (IllegalArgumentException le) {
+      // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
+      LOGGER.warn(
+        "ROBoundarySpec misses non optional parameter of type ROSpecStopTrigger");
+      throw new MissingParameterException(
+        "ROBoundarySpec misses non optional parameter of type ROSpecStopTrigger");
     }
 
-    /**
-    * set rOSpecStopTrigger of type ROSpecStopTrigger.
-    * @param  rOSpecStopTrigger to be set
-    */
-    public void setROSpecStopTrigger(final ROSpecStopTrigger rOSpecStopTrigger) {
-        this.rOSpecStopTrigger = rOSpecStopTrigger;
+    if (binary.get(position)) {
+      // length can statically be determined for TV Parameters
+      tempLength = rOSpecStopTrigger.length();
     }
 
-    // end setter
+    if ((type != null) && type.equals(ROSpecStopTrigger.TYPENUM)) {
+      rOSpecStopTrigger = new ROSpecStopTrigger(binary.subList(position,
+        tempLength));
+      position += tempLength;
+      LOGGER.debug(
+        " rOSpecStopTrigger is instantiated with ROSpecStopTrigger with length"
+        + tempLength);
+    } else {
+      LOGGER.warn(
+        "ROBoundarySpec misses non optional parameter of type ROSpecStopTrigger");
+      throw new MissingParameterException(
+        "ROBoundarySpec misses non optional parameter of type ROSpecStopTrigger");
+    }
+  }
 
-    //getters
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-    /**
-    * get rOSpecStartTrigger of type ROSpecStartTrigger .
-    * @return  ROSpecStartTrigger
-    */
-    public ROSpecStartTrigger getROSpecStartTrigger() {
-        return rOSpecStartTrigger;
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    //parameter - not choices - no special actions needed
+    temp = element.getChild("ROSpecStartTrigger", ns);
+
+    if (temp != null) {
+      rOSpecStartTrigger = new ROSpecStartTrigger(temp);
+      LOGGER.info(
+        "setting parameter rOSpecStartTrigger for parameter ROBoundarySpec");
     }
 
-    /**
-    * get rOSpecStopTrigger of type ROSpecStopTrigger .
-    * @return  ROSpecStopTrigger
-    */
-    public ROSpecStopTrigger getROSpecStopTrigger() {
-        return rOSpecStopTrigger;
+    if (temp == null) {
+      LOGGER.warn(
+        "ROBoundarySpec misses non optional parameter of type rOSpecStartTrigger");
+      throw new MissingParameterException(
+        "ROBoundarySpec misses non optional parameter of type rOSpecStartTrigger");
     }
 
-    // end getters
+    element.removeChild("ROSpecStartTrigger", ns);
+    //parameter - not choices - no special actions needed
+    temp = element.getChild("ROSpecStopTrigger", ns);
 
-    //add methods
-
-    // end add
-
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
+    if (temp != null) {
+      rOSpecStopTrigger = new ROSpecStopTrigger(temp);
+      LOGGER.info(
+        "setting parameter rOSpecStopTrigger for parameter ROBoundarySpec");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
+    if (temp == null) {
+      LOGGER.warn(
+        "ROBoundarySpec misses non optional parameter of type rOSpecStopTrigger");
+      throw new MissingParameterException(
+        "ROBoundarySpec misses non optional parameter of type rOSpecStopTrigger");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "ROBoundarySpec";
-    }
+    element.removeChild("ROSpecStopTrigger", ns);
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "ROBoundarySpec: ";
-        result = result.replaceFirst(", ", "");
-
-        return result;
+    if (element.getChildren().size() > 0) {
+      String message = "ROBoundarySpec has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
+
+  //setters
+  /**
+   * set rOSpecStartTrigger of type ROSpecStartTrigger.
+   *
+   * @param rOSpecStartTrigger to be set
+   */
+  public void setROSpecStartTrigger(
+    final ROSpecStartTrigger rOSpecStartTrigger) {
+    this.rOSpecStartTrigger = rOSpecStartTrigger;
+  }
+
+  /**
+   * set rOSpecStopTrigger of type ROSpecStopTrigger.
+   *
+   * @param rOSpecStopTrigger to be set
+   */
+  public void setROSpecStopTrigger(final ROSpecStopTrigger rOSpecStopTrigger) {
+    this.rOSpecStopTrigger = rOSpecStopTrigger;
+  }
+
+  // end setter
+  //getters
+  /**
+   * get rOSpecStartTrigger of type ROSpecStartTrigger .
+   *
+   * @return ROSpecStartTrigger
+   */
+  public ROSpecStartTrigger getROSpecStartTrigger() {
+    return rOSpecStartTrigger;
+  }
+
+  /**
+   * get rOSpecStopTrigger of type ROSpecStopTrigger .
+   *
+   * @return ROSpecStopTrigger
+   */
+  public ROSpecStopTrigger getROSpecStopTrigger() {
+    return rOSpecStopTrigger;
+  }
+
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "ROBoundarySpec";
+  }
+
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "ROBoundarySpec: ";
+    result = result.replaceFirst(", ", "");
+
+    return result;
+  }
 }

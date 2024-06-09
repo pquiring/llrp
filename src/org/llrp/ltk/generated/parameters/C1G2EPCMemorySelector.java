@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,241 +49,246 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This parameter is used to determine what contents are of interest in the C1G2EPC memory bank for reporting. If enableCRC and enablePC is set to false, only the EPC is returned in the RO Report. If enablePC is set to true, the PC bits and the EPC are returned in the RO Report. If enablePC and enableCRC is set to true, the EPC, PC bits and CRC are returned in the RO Report.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=110&view=fit">LLRP Specification Section 15.2.1.5.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.1</a>}
-
-
+ * This parameter is used to determine what contents are of interest in the C1G2EPC memory bank for reporting. If enableCRC and enablePC is set to false, only the EPC is returned
+ * in the RO Report. If enablePC is set to true, the PC bits and the EPC are returned in the RO Report. If enablePC and enableCRC is set to true, the EPC, PC bits and CRC are
+ * returned in the RO Report.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=110&view=fit">LLRP Specification Section 15.2.1.5.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.1</a>}
+ *
+ *
  */
-
 /**
- * This parameter is used to determine what contents are of interest in the C1G2EPC memory bank for reporting. If enableCRC and enablePC is set to false, only the EPC is returned in the RO Report. If enablePC is set to true, the PC bits and the EPC are returned in the RO Report. If enablePC and enableCRC is set to true, the EPC, PC bits and CRC are returned in the RO Report.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=110&view=fit">LLRP Specification Section 15.2.1.5.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.1</a>}
-
-      .
+ * This parameter is used to determine what contents are of interest in the C1G2EPC memory bank for reporting. If enableCRC and enablePC is set to false, only the EPC is returned
+ * in the RO Report. If enablePC is set to true, the PC bits and the EPC are returned in the RO Report. If enablePC and enableCRC is set to true, the EPC, PC bits and CRC are
+ * returned in the RO Report.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=110&view=fit">LLRP Specification Section 15.2.1.5.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.1</a>}
+ *
+ * .
  */
 public class C1G2EPCMemorySelector extends TLVParameter
-    implements AirProtocolEPCMemorySelector {
-    public static final SignedShort TYPENUM = new SignedShort(348);
-    private static final Logger LOGGER = Logger.getLogger(C1G2EPCMemorySelector.class);
-    protected Bit enableCRC;
-    protected Bit enablePCBits;
-    protected BitList reserved0 = new BitList(6);
+  implements AirProtocolEPCMemorySelector {
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public C1G2EPCMemorySelector() {
+  public static final SignedShort TYPENUM = new SignedShort(348);
+  private static final Logger LOGGER = Logger.getLogger(C1G2EPCMemorySelector.class);
+  protected Bit enableCRC;
+  protected Bit enablePCBits;
+  protected BitList reserved0 = new BitList(6);
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public C1G2EPCMemorySelector() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public C1G2EPCMemorySelector(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public C1G2EPCMemorySelector(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (enableCRC == null) {
+      LOGGER.warn(" enableCRC not set");
+      throw new MissingParameterException(
+        " enableCRC not set  for Parameter of Type C1G2EPCMemorySelector");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public C1G2EPCMemorySelector(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(enableCRC.encodeBinary());
+
+    if (enablePCBits == null) {
+      LOGGER.warn(" enablePCBits not set");
+      throw new MissingParameterException(
+        " enablePCBits not set  for Parameter of Type C1G2EPCMemorySelector");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public C1G2EPCMemorySelector(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(enablePCBits.encodeBinary());
+    resultBits.append(reserved0.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (enableCRC == null) {
+      LOGGER.warn(" enableCRC not set");
+      throw new MissingParameterException(" enableCRC not set");
+    } else {
+      element.addContent(enableCRC.encodeXML("EnableCRC", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (enableCRC == null) {
-            LOGGER.warn(" enableCRC not set");
-            throw new MissingParameterException(
-                " enableCRC not set  for Parameter of Type C1G2EPCMemorySelector");
-        }
-
-        resultBits.append(enableCRC.encodeBinary());
-
-        if (enablePCBits == null) {
-            LOGGER.warn(" enablePCBits not set");
-            throw new MissingParameterException(
-                " enablePCBits not set  for Parameter of Type C1G2EPCMemorySelector");
-        }
-
-        resultBits.append(enablePCBits.encodeBinary());
-        resultBits.append(reserved0.encodeBinary());
-
-        return resultBits;
+    if (enablePCBits == null) {
+      LOGGER.warn(" enablePCBits not set");
+      throw new MissingParameterException(" enablePCBits not set");
+    } else {
+      element.addContent(enablePCBits.encodeXML("EnablePCBits", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    //element.addContent(reserved0.encodeXML("reserved",ns));
+    //parameters
+    return element;
+  }
 
-        if (enableCRC == null) {
-            LOGGER.warn(" enableCRC not set");
-            throw new MissingParameterException(" enableCRC not set");
-        } else {
-            element.addContent(enableCRC.encodeXML("EnableCRC", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    enableCRC = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    enablePCBits = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    position += reserved0.length();
+  }
 
-        if (enablePCBits == null) {
-            LOGGER.warn(" enablePCBits not set");
-            throw new MissingParameterException(" enablePCBits not set");
-        } else {
-            element.addContent(enablePCBits.encodeXML("EnablePCBits", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        //element.addContent(reserved0.encodeXML("reserved",ns));
-        //parameters
-        return element;
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("EnableCRC", ns);
+
+    if (temp != null) {
+      enableCRC = new Bit(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        enableCRC = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        enablePCBits = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        position += reserved0.length();
+    element.removeChild("EnableCRC", ns);
+    temp = element.getChild("EnablePCBits", ns);
+
+    if (temp != null) {
+      enablePCBits = new Bit(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    element.removeChild("EnablePCBits", ns);
 
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("EnableCRC", ns);
-
-        if (temp != null) {
-            enableCRC = new Bit(temp);
-        }
-
-        element.removeChild("EnableCRC", ns);
-        temp = element.getChild("EnablePCBits", ns);
-
-        if (temp != null) {
-            enablePCBits = new Bit(temp);
-        }
-
-        element.removeChild("EnablePCBits", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "C1G2EPCMemorySelector has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (element.getChildren().size() > 0) {
+      String message = "C1G2EPCMemorySelector has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    //setters
-    /**
-    * set   enableCRC of type Bit .
-    * @param   enableCRC to be set
-    */
-    public void setEnableCRC(final Bit enableCRC) {
-        this.enableCRC = enableCRC;
-    }
+  //setters
+  /**
+   * set enableCRC of type Bit .
+   *
+   * @param enableCRC to be set
+   */
+  public void setEnableCRC(final Bit enableCRC) {
+    this.enableCRC = enableCRC;
+  }
 
-    /**
-    * set   enablePCBits of type Bit .
-    * @param   enablePCBits to be set
-    */
-    public void setEnablePCBits(final Bit enablePCBits) {
-        this.enablePCBits = enablePCBits;
-    }
+  /**
+   * set enablePCBits of type Bit .
+   *
+   * @param enablePCBits to be set
+   */
+  public void setEnablePCBits(final Bit enablePCBits) {
+    this.enablePCBits = enablePCBits;
+  }
 
-    // end setter
+  // end setter
+  //getters
+  /**
+   * get enableCRC of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getEnableCRC() {
+    return this.enableCRC;
+  }
 
-    //getters
-    /**
-    * get   enableCRC of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getEnableCRC() {
-        return this.enableCRC;
-    }
+  /**
+   * get enablePCBits of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getEnablePCBits() {
+    return this.enablePCBits;
+  }
 
-    /**
-    * get   enablePCBits of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getEnablePCBits() {
-        return this.enablePCBits;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    // end getters
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    //add methods
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "C1G2EPCMemorySelector";
+  }
 
-    // end add
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "C1G2EPCMemorySelector: ";
+    result += ", enableCRC: ";
+    result += enableCRC;
+    result += ", enablePCBits: ";
+    result += enablePCBits;
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "C1G2EPCMemorySelector";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "C1G2EPCMemorySelector: ";
-        result += ", enableCRC: ";
-        result += enableCRC;
-        result += ", enablePCBits: ";
-        result += enablePCBits;
-
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

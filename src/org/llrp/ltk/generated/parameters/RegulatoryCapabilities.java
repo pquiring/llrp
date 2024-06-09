@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,452 +49,464 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This parameter carries the RF regulation specific attributes. They include regulatory standard, frequency band information, power levels supported, frequencies supported, and any air protocol specific values that are determined based on regulatory restriction.  The regulatory standard is encoded using two Integer fields, (Country Code, Communications standard) and it specifies the current operational regulatory mode of the device.  This should not be used to reflect the ability to operate in regulatory environments which require configuration different from the current. This version of the LLRP protocol will have support for only the UHF band.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=48&view=fit">LLRP Specification Section 9.2.4</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=133&view=fit">LLRP Specification Section 16.2.3.4</a>}
-
-
+ * This parameter carries the RF regulation specific attributes. They include regulatory standard, frequency band information, power levels supported, frequencies supported, and
+ * any air protocol specific values that are determined based on regulatory restriction. The regulatory standard is encoded using two Integer fields, (Country Code, Communications
+ * standard) and it specifies the current operational regulatory mode of the device. This should not be used to reflect the ability to operate in regulatory environments which
+ * require configuration different from the current. This version of the LLRP protocol will have support for only the UHF band.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=48&view=fit">LLRP Specification Section 9.2.4</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=133&view=fit">LLRP Specification Section 16.2.3.4</a>}
+ *
+ *
  */
-
 /**
- * This parameter carries the RF regulation specific attributes. They include regulatory standard, frequency band information, power levels supported, frequencies supported, and any air protocol specific values that are determined based on regulatory restriction.  The regulatory standard is encoded using two Integer fields, (Country Code, Communications standard) and it specifies the current operational regulatory mode of the device.  This should not be used to reflect the ability to operate in regulatory environments which require configuration different from the current. This version of the LLRP protocol will have support for only the UHF band.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=48&view=fit">LLRP Specification Section 9.2.4</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=133&view=fit">LLRP Specification Section 16.2.3.4</a>}
-
-      .
+ * This parameter carries the RF regulation specific attributes. They include regulatory standard, frequency band information, power levels supported, frequencies supported, and
+ * any air protocol specific values that are determined based on regulatory restriction. The regulatory standard is encoded using two Integer fields, (Country Code, Communications
+ * standard) and it specifies the current operational regulatory mode of the device. This should not be used to reflect the ability to operate in regulatory environments which
+ * require configuration different from the current. This version of the LLRP protocol will have support for only the UHF band.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=48&view=fit">LLRP Specification Section 9.2.4</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=133&view=fit">LLRP Specification Section 16.2.3.4</a>}
+ *
+ * .
  */
 public class RegulatoryCapabilities extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(143);
-    private static final Logger LOGGER = Logger.getLogger(RegulatoryCapabilities.class);
-    protected UnsignedShort countryCode;
-    protected CommunicationsStandard communicationsStandard;
-    protected UHFBandCapabilities uHFBandCapabilities;
-    protected List<Custom> customList = new LinkedList<Custom>();
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public RegulatoryCapabilities() {
+  public static final SignedShort TYPENUM = new SignedShort(143);
+  private static final Logger LOGGER = Logger.getLogger(RegulatoryCapabilities.class);
+  protected UnsignedShort countryCode;
+  protected CommunicationsStandard communicationsStandard;
+  protected UHFBandCapabilities uHFBandCapabilities;
+  protected List<Custom> customList = new LinkedList<Custom>();
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public RegulatoryCapabilities() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public RegulatoryCapabilities(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public RegulatoryCapabilities(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (countryCode == null) {
+      LOGGER.warn(" countryCode not set");
+      throw new MissingParameterException(
+        " countryCode not set  for Parameter of Type RegulatoryCapabilities");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public RegulatoryCapabilities(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(countryCode.encodeBinary());
+
+    if (communicationsStandard == null) {
+      LOGGER.warn(" communicationsStandard not set");
+      throw new MissingParameterException(
+        " communicationsStandard not set  for Parameter of Type RegulatoryCapabilities");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public RegulatoryCapabilities(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(communicationsStandard.encodeBinary());
+
+    if (uHFBandCapabilities == null) {
+      // optional parameter, may be null
+      LOGGER.info(" uHFBandCapabilities not set");
+    } else {
+      resultBits.append(uHFBandCapabilities.encodeBinary());
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (countryCode == null) {
-            LOGGER.warn(" countryCode not set");
-            throw new MissingParameterException(
-                " countryCode not set  for Parameter of Type RegulatoryCapabilities");
-        }
-
-        resultBits.append(countryCode.encodeBinary());
-
-        if (communicationsStandard == null) {
-            LOGGER.warn(" communicationsStandard not set");
-            throw new MissingParameterException(
-                " communicationsStandard not set  for Parameter of Type RegulatoryCapabilities");
-        }
-
-        resultBits.append(communicationsStandard.encodeBinary());
-
-        if (uHFBandCapabilities == null) {
-            // optional parameter, may be null
-            LOGGER.info(" uHFBandCapabilities not set");
-        } else {
-            resultBits.append(uHFBandCapabilities.encodeBinary());
-        }
-
-        if (customList == null) {
-            //just warn - it is optional 
-            LOGGER.info(" customList not set");
-        } else {
-            for (Custom field : customList) {
-                resultBits.append(field.encodeBinary());
-            }
-        }
-
-        return resultBits;
+    if (customList == null) {
+      //just warn - it is optional
+      LOGGER.info(" customList not set");
+    } else {
+      for (Custom field : customList) {
+        resultBits.append(field.encodeBinary());
+      }
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    return resultBits;
+  }
 
-        if (countryCode == null) {
-            LOGGER.warn(" countryCode not set");
-            throw new MissingParameterException(" countryCode not set");
-        } else {
-            element.addContent(countryCode.encodeXML("CountryCode", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        if (communicationsStandard == null) {
-            LOGGER.warn(" communicationsStandard not set");
-            throw new MissingParameterException(
-                " communicationsStandard not set");
-        } else {
-            element.addContent(communicationsStandard.encodeXML(
-                    "CommunicationsStandard", ns));
-        }
-
-        //parameters
-        if (uHFBandCapabilities == null) {
-            LOGGER.info("uHFBandCapabilities not set");
-        } else {
-            element.addContent(uHFBandCapabilities.encodeXML(
-                    uHFBandCapabilities.getClass().getSimpleName(), ns));
-        }
-
-        if (customList == null) {
-            LOGGER.info("customList not set");
-        } else {
-            for (Custom field : customList) {
-                element.addContent(field.encodeXML(field.getClass().getName()
-                                                        .replaceAll(field.getClass()
-                                                                         .getPackage()
-                                                                         .getName() +
-                            ".", ""), ns));
-            }
-        }
-
-        return element;
+    if (countryCode == null) {
+      LOGGER.warn(" countryCode not set");
+      throw new MissingParameterException(" countryCode not set");
+    } else {
+      element.addContent(countryCode.encodeXML("CountryCode", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        countryCode = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        communicationsStandard = new CommunicationsStandard(binary.subList(
-                    position, CommunicationsStandard.length()));
-        position += CommunicationsStandard.length();
-
-        // look ahead to see type
-        // may be optional or exactly once
-        type = null;
-        tempByteLength = 0;
-        tempLength = 0;
-
-        try {
-            // if first bit is one it is a TV Parameter
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-        } catch (IllegalArgumentException le) {
-            // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
-            LOGGER.info(
-                "RegulatoryCapabilities misses optional parameter of type UHFBandCapabilities");
-        }
-
-        if (binary.get(position)) {
-            // length can statically be determined for TV Parameters
-            tempLength = uHFBandCapabilities.length();
-        }
-
-        if ((type != null) && type.equals(UHFBandCapabilities.TYPENUM)) {
-            uHFBandCapabilities = new UHFBandCapabilities(binary.subList(
-                        position, tempLength));
-            position += tempLength;
-            LOGGER.debug(
-                " uHFBandCapabilities is instantiated with UHFBandCapabilities with length" +
-                tempLength);
-        } else {
-            LOGGER.info(
-                "RegulatoryCapabilities misses optional parameter of type UHFBandCapabilities");
-        }
-
-        // list of parameters
-        customList = new LinkedList<Custom>();
-        LOGGER.debug("decoding parameter customList ");
-
-        while (position < binary.length()) {
-            // store if one parameter matched
-            boolean atLeastOnce = false;
-
-            // look ahead to see type
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-
-            // custom
-            if ((type != null) && type.equals(Custom.TYPENUM)) {
-                Custom cus = new Custom(binary.subList(position, tempLength));
-                // custom parameters for this parameter	
-                // RegulatoryCapabilities
-                //end  parameters
-                //if none matched continue wasn't called and we add just cus as we found no specific vendor implementation
-                customList.add(cus);
-                position += tempLength;
-                atLeastOnce = true;
-            }
-
-            if (!atLeastOnce) {
-                //no parameter matched therefore we jump out of the loop
-                break;
-            }
-        }
-
-        //if list is still empty no parameter matched
-        if (customList.isEmpty()) {
-            LOGGER.info(
-                "encoded message does not contain parameter for optional customList");
-        }
+    if (communicationsStandard == null) {
+      LOGGER.warn(" communicationsStandard not set");
+      throw new MissingParameterException(
+        " communicationsStandard not set");
+    } else {
+      element.addContent(communicationsStandard.encodeXML(
+        "CommunicationsStandard", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
-
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("CountryCode", ns);
-
-        if (temp != null) {
-            countryCode = new UnsignedShort(temp);
-        }
-
-        element.removeChild("CountryCode", ns);
-        temp = element.getChild("CommunicationsStandard", ns);
-
-        if (temp != null) {
-            communicationsStandard = new CommunicationsStandard(temp);
-        }
-
-        element.removeChild("CommunicationsStandard", ns);
-
-        //parameter - not choices - no special actions needed
-        temp = element.getChild("UHFBandCapabilities", ns);
-
-        if (temp != null) {
-            uHFBandCapabilities = new UHFBandCapabilities(temp);
-            LOGGER.info(
-                "setting parameter uHFBandCapabilities for parameter RegulatoryCapabilities");
-        }
-
-        if (temp == null) {
-            LOGGER.info(
-                "RegulatoryCapabilities misses optional parameter of type uHFBandCapabilities");
-        }
-
-        element.removeChild("UHFBandCapabilities", ns);
-        //parameter - not choices - no special actions needed
-        //we expect a list of parameters
-        customList = new LinkedList<Custom>();
-        tempList = element.getChildren("Custom", ns);
-
-        if ((tempList == null) || tempList.isEmpty()) {
-            LOGGER.info(
-                "RegulatoryCapabilities misses optional parameter of type customList");
-        } else {
-            for (Element e : tempList) {
-                customList.add(new Custom(e));
-                LOGGER.debug("adding Custom to customList ");
-            }
-        }
-
-        element.removeChildren("Custom", ns);
-        //custom parameter
-        tempList = element.getChildren("Custom", ns);
-
-        for (Element e : tempList) {
-            customList.add(new Custom(e));
-            atLeastOnce = true;
-            LOGGER.debug("adding custom parameter");
-        }
-
-        element.removeChildren("Custom", ns);
-
-        //end custom
-        if (element.getChildren().size() > 0) {
-            String message = "RegulatoryCapabilities has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    //parameters
+    if (uHFBandCapabilities == null) {
+      LOGGER.info("uHFBandCapabilities not set");
+    } else {
+      element.addContent(uHFBandCapabilities.encodeXML(
+        uHFBandCapabilities.getClass().getSimpleName(), ns));
     }
 
-    //setters
-    /**
-    * set   countryCode of type UnsignedShort .
-    * @param   countryCode to be set
-    */
-    public void setCountryCode(final UnsignedShort countryCode) {
-        this.countryCode = countryCode;
+    if (customList == null) {
+      LOGGER.info("customList not set");
+    } else {
+      for (Custom field : customList) {
+        element.addContent(field.encodeXML(field.getClass().getName()
+          .replaceAll(field.getClass()
+            .getPackage()
+            .getName()
+            + ".", ""), ns));
+      }
     }
 
-    /**
-    * set communicationsStandard of type CommunicationsStandard .
-    * @param  communicationsStandard to be set
-    */
-    public void setCommunicationsStandard(
-        final CommunicationsStandard communicationsStandard) {
-        this.communicationsStandard = communicationsStandard;
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    countryCode = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    communicationsStandard = new CommunicationsStandard(binary.subList(
+      position, CommunicationsStandard.length()));
+    position += CommunicationsStandard.length();
+
+    // look ahead to see type
+    // may be optional or exactly once
+    type = null;
+    tempByteLength = 0;
+    tempLength = 0;
+
+    try {
+      // if first bit is one it is a TV Parameter
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+    } catch (IllegalArgumentException le) {
+      // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
+      LOGGER.info(
+        "RegulatoryCapabilities misses optional parameter of type UHFBandCapabilities");
     }
 
-    /**
-    * set uHFBandCapabilities of type UHFBandCapabilities.
-    * @param  uHFBandCapabilities to be set
-    */
-    public void setUHFBandCapabilities(
-        final UHFBandCapabilities uHFBandCapabilities) {
-        this.uHFBandCapabilities = uHFBandCapabilities;
+    if (binary.get(position)) {
+      // length can statically be determined for TV Parameters
+      tempLength = uHFBandCapabilities.length();
     }
 
-    /**
-    * set customList of type  List &lt;Custom>.
-    * @param  customList to be set
-    */
-    public void setCustomList(final List<Custom> customList) {
-        this.customList = customList;
+    if ((type != null) && type.equals(UHFBandCapabilities.TYPENUM)) {
+      uHFBandCapabilities = new UHFBandCapabilities(binary.subList(
+        position, tempLength));
+      position += tempLength;
+      LOGGER.debug(
+        " uHFBandCapabilities is instantiated with UHFBandCapabilities with length"
+        + tempLength);
+    } else {
+      LOGGER.info(
+        "RegulatoryCapabilities misses optional parameter of type UHFBandCapabilities");
     }
 
-    // end setter
+    // list of parameters
+    customList = new LinkedList<Custom>();
+    LOGGER.debug("decoding parameter customList ");
 
-    //getters
-    /**
-    * get   countryCode of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getCountryCode() {
-        return this.countryCode;
+    while (position < binary.length()) {
+      // store if one parameter matched
+      boolean atLeastOnce = false;
+
+      // look ahead to see type
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+
+      // custom
+      if ((type != null) && type.equals(Custom.TYPENUM)) {
+        Custom cus = new Custom(binary.subList(position, tempLength));
+        // custom parameters for this parameter
+        // RegulatoryCapabilities
+        //end  parameters
+        //if none matched continue wasn't called and we add just cus as we found no specific vendor implementation
+        customList.add(cus);
+        position += tempLength;
+        atLeastOnce = true;
+      }
+
+      if (!atLeastOnce) {
+        //no parameter matched therefore we jump out of the loop
+        break;
+      }
     }
 
-    /**
-    * get communicationsStandard of type CommunicationsStandard.
-    * @return  CommunicationsStandard
-    */
-    public CommunicationsStandard getCommunicationsStandard() {
-        return communicationsStandard;
+    //if list is still empty no parameter matched
+    if (customList.isEmpty()) {
+      LOGGER.info(
+        "encoded message does not contain parameter for optional customList");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("CountryCode", ns);
+
+    if (temp != null) {
+      countryCode = new UnsignedShort(temp);
     }
 
-    /**
-    * get uHFBandCapabilities of type UHFBandCapabilities .
-    * @return  UHFBandCapabilities
-    */
-    public UHFBandCapabilities getUHFBandCapabilities() {
-        return uHFBandCapabilities;
+    element.removeChild("CountryCode", ns);
+    temp = element.getChild("CommunicationsStandard", ns);
+
+    if (temp != null) {
+      communicationsStandard = new CommunicationsStandard(temp);
     }
 
-    /**
-    * get customList of type List &lt;Custom> .
-    * @return  List &lt;Custom>
-    */
-    public List<Custom> getCustomList() {
-        return customList;
+    element.removeChild("CommunicationsStandard", ns);
+
+    //parameter - not choices - no special actions needed
+    temp = element.getChild("UHFBandCapabilities", ns);
+
+    if (temp != null) {
+      uHFBandCapabilities = new UHFBandCapabilities(temp);
+      LOGGER.info(
+        "setting parameter uHFBandCapabilities for parameter RegulatoryCapabilities");
     }
 
-    // end getters
-
-    //add methods
-
-    /**
-    * add element custom of type Custom .
-    * @param  custom of type Custom
-    */
-    public void addToCustomList(Custom custom) {
-        if (this.customList == null) {
-            this.customList = new LinkedList<Custom>();
-        }
-
-        this.customList.add(custom);
+    if (temp == null) {
+      LOGGER.info(
+        "RegulatoryCapabilities misses optional parameter of type uHFBandCapabilities");
     }
 
-    // end add
+    element.removeChild("UHFBandCapabilities", ns);
+    //parameter - not choices - no special actions needed
+    //we expect a list of parameters
+    customList = new LinkedList<Custom>();
+    tempList = element.getChildren("Custom", ns);
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
+    if ((tempList == null) || tempList.isEmpty()) {
+      LOGGER.info(
+        "RegulatoryCapabilities misses optional parameter of type customList");
+    } else {
+      for (Element e : tempList) {
+        customList.add(new Custom(e));
+        LOGGER.debug("adding Custom to customList ");
+      }
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
+    element.removeChildren("Custom", ns);
+    //custom parameter
+    tempList = element.getChildren("Custom", ns);
+
+    for (Element e : tempList) {
+      customList.add(new Custom(e));
+      atLeastOnce = true;
+      LOGGER.debug("adding custom parameter");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "RegulatoryCapabilities";
+    element.removeChildren("Custom", ns);
+
+    //end custom
+    if (element.getChildren().size() > 0) {
+      String message = "RegulatoryCapabilities has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
+    }
+  }
+
+  //setters
+  /**
+   * set countryCode of type UnsignedShort .
+   *
+   * @param countryCode to be set
+   */
+  public void setCountryCode(final UnsignedShort countryCode) {
+    this.countryCode = countryCode;
+  }
+
+  /**
+   * set communicationsStandard of type CommunicationsStandard .
+   *
+   * @param communicationsStandard to be set
+   */
+  public void setCommunicationsStandard(
+    final CommunicationsStandard communicationsStandard) {
+    this.communicationsStandard = communicationsStandard;
+  }
+
+  /**
+   * set uHFBandCapabilities of type UHFBandCapabilities.
+   *
+   * @param uHFBandCapabilities to be set
+   */
+  public void setUHFBandCapabilities(
+    final UHFBandCapabilities uHFBandCapabilities) {
+    this.uHFBandCapabilities = uHFBandCapabilities;
+  }
+
+  /**
+   * set customList of type List &lt;Custom>.
+   *
+   * @param customList to be set
+   */
+  public void setCustomList(final List<Custom> customList) {
+    this.customList = customList;
+  }
+
+  // end setter
+  //getters
+  /**
+   * get countryCode of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getCountryCode() {
+    return this.countryCode;
+  }
+
+  /**
+   * get communicationsStandard of type CommunicationsStandard.
+   *
+   * @return CommunicationsStandard
+   */
+  public CommunicationsStandard getCommunicationsStandard() {
+    return communicationsStandard;
+  }
+
+  /**
+   * get uHFBandCapabilities of type UHFBandCapabilities .
+   *
+   * @return UHFBandCapabilities
+   */
+  public UHFBandCapabilities getUHFBandCapabilities() {
+    return uHFBandCapabilities;
+  }
+
+  /**
+   * get customList of type List &lt;Custom> .
+   *
+   * @return List &lt;Custom>
+   */
+  public List<Custom> getCustomList() {
+    return customList;
+  }
+
+  // end getters
+  //add methods
+  /**
+   * add element custom of type Custom .
+   *
+   * @param custom of type Custom
+   */
+  public void addToCustomList(Custom custom) {
+    if (this.customList == null) {
+      this.customList = new LinkedList<Custom>();
     }
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "RegulatoryCapabilities: ";
-        result += ", countryCode: ";
-        result += countryCode;
-        result += ", communicationsStandard: ";
-        result += communicationsStandard;
-        result = result.replaceFirst(", ", "");
+    this.customList.add(custom);
+  }
 
-        return result;
-    }
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "RegulatoryCapabilities";
+  }
+
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "RegulatoryCapabilities: ";
+    result += ", countryCode: ";
+    result += countryCode;
+    result += ", communicationsStandard: ";
+    result += communicationsStandard;
+    result = result.replaceFirst(", ", "");
+
+    return result;
+  }
 }

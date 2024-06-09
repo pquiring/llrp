@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,235 +47,236 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * FieldNum: Field number for which the error applies. The fields are numbered after the order in which they appear in the parameter or message body.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=96&view=fit">LLRP Specification Section 14.2.2.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=151&view=fit">LLRP Specification Section 16.2.8.1.1</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=96&view=fit">LLRP Specification Section 14.2.2.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=151&view=fit">LLRP Specification Section 16.2.8.1.1</a>}
+ *
+ *
  */
-
 /**
  * FieldNum: Field number for which the error applies. The fields are numbered after the order in which they appear in the parameter or message body.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=96&view=fit">LLRP Specification Section 14.2.2.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=151&view=fit">LLRP Specification Section 16.2.8.1.1</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=96&view=fit">LLRP Specification Section 14.2.2.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=151&view=fit">LLRP Specification Section 16.2.8.1.1</a>}
+ *
+ * .
  */
 public class FieldError extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(288);
-    private static final Logger LOGGER = Logger.getLogger(FieldError.class);
-    protected UnsignedShort fieldNum;
-    protected StatusCode errorCode;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public FieldError() {
+  public static final SignedShort TYPENUM = new SignedShort(288);
+  private static final Logger LOGGER = Logger.getLogger(FieldError.class);
+  protected UnsignedShort fieldNum;
+  protected StatusCode errorCode;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public FieldError() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public FieldError(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public FieldError(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (fieldNum == null) {
+      LOGGER.warn(" fieldNum not set");
+      throw new MissingParameterException(
+        " fieldNum not set  for Parameter of Type FieldError");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public FieldError(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(fieldNum.encodeBinary());
+
+    if (errorCode == null) {
+      LOGGER.warn(" errorCode not set");
+      throw new MissingParameterException(
+        " errorCode not set  for Parameter of Type FieldError");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public FieldError(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(errorCode.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (fieldNum == null) {
+      LOGGER.warn(" fieldNum not set");
+      throw new MissingParameterException(" fieldNum not set");
+    } else {
+      element.addContent(fieldNum.encodeXML("FieldNum", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (fieldNum == null) {
-            LOGGER.warn(" fieldNum not set");
-            throw new MissingParameterException(
-                " fieldNum not set  for Parameter of Type FieldError");
-        }
-
-        resultBits.append(fieldNum.encodeBinary());
-
-        if (errorCode == null) {
-            LOGGER.warn(" errorCode not set");
-            throw new MissingParameterException(
-                " errorCode not set  for Parameter of Type FieldError");
-        }
-
-        resultBits.append(errorCode.encodeBinary());
-
-        return resultBits;
+    if (errorCode == null) {
+      LOGGER.warn(" errorCode not set");
+      throw new MissingParameterException(" errorCode not set");
+    } else {
+      element.addContent(errorCode.encodeXML("ErrorCode", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    //parameters
+    return element;
+  }
 
-        if (fieldNum == null) {
-            LOGGER.warn(" fieldNum not set");
-            throw new MissingParameterException(" fieldNum not set");
-        } else {
-            element.addContent(fieldNum.encodeXML("FieldNum", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    fieldNum = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    errorCode = new StatusCode(binary.subList(position, StatusCode.length()));
+    position += StatusCode.length();
+  }
 
-        if (errorCode == null) {
-            LOGGER.warn(" errorCode not set");
-            throw new MissingParameterException(" errorCode not set");
-        } else {
-            element.addContent(errorCode.encodeXML("ErrorCode", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        //parameters
-        return element;
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("FieldNum", ns);
+
+    if (temp != null) {
+      fieldNum = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        fieldNum = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        errorCode = new StatusCode(binary.subList(position, StatusCode.length()));
-        position += StatusCode.length();
+    element.removeChild("FieldNum", ns);
+    temp = element.getChild("ErrorCode", ns);
+
+    if (temp != null) {
+      errorCode = new StatusCode(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    element.removeChild("ErrorCode", ns);
 
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("FieldNum", ns);
-
-        if (temp != null) {
-            fieldNum = new UnsignedShort(temp);
-        }
-
-        element.removeChild("FieldNum", ns);
-        temp = element.getChild("ErrorCode", ns);
-
-        if (temp != null) {
-            errorCode = new StatusCode(temp);
-        }
-
-        element.removeChild("ErrorCode", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "FieldError has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (element.getChildren().size() > 0) {
+      String message = "FieldError has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    //setters
-    /**
-    * set   fieldNum of type UnsignedShort .
-    * @param   fieldNum to be set
-    */
-    public void setFieldNum(final UnsignedShort fieldNum) {
-        this.fieldNum = fieldNum;
-    }
+  //setters
+  /**
+   * set fieldNum of type UnsignedShort .
+   *
+   * @param fieldNum to be set
+   */
+  public void setFieldNum(final UnsignedShort fieldNum) {
+    this.fieldNum = fieldNum;
+  }
 
-    /**
-    * set errorCode of type StatusCode .
-    * @param  errorCode to be set
-    */
-    public void setErrorCode(final StatusCode errorCode) {
-        this.errorCode = errorCode;
-    }
+  /**
+   * set errorCode of type StatusCode .
+   *
+   * @param errorCode to be set
+   */
+  public void setErrorCode(final StatusCode errorCode) {
+    this.errorCode = errorCode;
+  }
 
-    // end setter
+  // end setter
+  //getters
+  /**
+   * get fieldNum of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getFieldNum() {
+    return this.fieldNum;
+  }
 
-    //getters
-    /**
-    * get   fieldNum of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getFieldNum() {
-        return this.fieldNum;
-    }
+  /**
+   * get errorCode of type StatusCode.
+   *
+   * @return StatusCode
+   */
+  public StatusCode getErrorCode() {
+    return errorCode;
+  }
 
-    /**
-    * get errorCode of type StatusCode.
-    * @return  StatusCode
-    */
-    public StatusCode getErrorCode() {
-        return errorCode;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    // end getters
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    //add methods
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "FieldError";
+  }
 
-    // end add
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "FieldError: ";
+    result += ", fieldNum: ";
+    result += fieldNum;
+    result += ", errorCode: ";
+    result += errorCode;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "FieldError";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "FieldError: ";
-        result += ", fieldNum: ";
-        result += fieldNum;
-        result += ", errorCode: ";
-        result += errorCode;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

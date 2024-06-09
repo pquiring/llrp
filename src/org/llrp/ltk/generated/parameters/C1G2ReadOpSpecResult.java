@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,296 +49,299 @@ import org.llrp.ltk.types.UnsignedShortArray_HEX;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * Contains the results from a read operation.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=111&view=fit">LLRP Specification Section 15.2.1.5.5.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.5.1</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=111&view=fit">LLRP Specification Section 15.2.1.5.5.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.5.1</a>}
+ *
+ *
  */
-
 /**
  * Contains the results from a read operation.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=111&view=fit">LLRP Specification Section 15.2.1.5.5.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.5.1</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=111&view=fit">LLRP Specification Section 15.2.1.5.5.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.5.1</a>}
+ *
+ * .
  */
 public class C1G2ReadOpSpecResult extends TLVParameter
-    implements AccessCommandOpSpecResult {
-    public static final SignedShort TYPENUM = new SignedShort(349);
-    private static final Logger LOGGER = Logger.getLogger(C1G2ReadOpSpecResult.class);
-    protected C1G2ReadResultType result;
-    protected UnsignedShort opSpecID;
-    protected UnsignedShortArray_HEX readData;
+  implements AccessCommandOpSpecResult {
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public C1G2ReadOpSpecResult() {
+  public static final SignedShort TYPENUM = new SignedShort(349);
+  private static final Logger LOGGER = Logger.getLogger(C1G2ReadOpSpecResult.class);
+  protected C1G2ReadResultType result;
+  protected UnsignedShort opSpecID;
+  protected UnsignedShortArray_HEX readData;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public C1G2ReadOpSpecResult() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public C1G2ReadOpSpecResult(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public C1G2ReadOpSpecResult(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (result == null) {
+      LOGGER.warn(" result not set");
+      throw new MissingParameterException(
+        " result not set  for Parameter of Type C1G2ReadOpSpecResult");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public C1G2ReadOpSpecResult(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(result.encodeBinary());
+
+    if (opSpecID == null) {
+      LOGGER.warn(" opSpecID not set");
+      throw new MissingParameterException(
+        " opSpecID not set  for Parameter of Type C1G2ReadOpSpecResult");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public C1G2ReadOpSpecResult(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(opSpecID.encodeBinary());
+
+    if (readData == null) {
+      LOGGER.warn(" readData not set");
+      throw new MissingParameterException(
+        " readData not set  for Parameter of Type C1G2ReadOpSpecResult");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(readData.encodeBinary());
 
-        if (result == null) {
-            LOGGER.warn(" result not set");
-            throw new MissingParameterException(
-                " result not set  for Parameter of Type C1G2ReadOpSpecResult");
-        }
+    return resultBits;
+  }
 
-        resultBits.append(result.encodeBinary());
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        if (opSpecID == null) {
-            LOGGER.warn(" opSpecID not set");
-            throw new MissingParameterException(
-                " opSpecID not set  for Parameter of Type C1G2ReadOpSpecResult");
-        }
-
-        resultBits.append(opSpecID.encodeBinary());
-
-        if (readData == null) {
-            LOGGER.warn(" readData not set");
-            throw new MissingParameterException(
-                " readData not set  for Parameter of Type C1G2ReadOpSpecResult");
-        }
-
-        resultBits.append(readData.encodeBinary());
-
-        return resultBits;
+    if (result == null) {
+      LOGGER.warn(" result not set");
+      throw new MissingParameterException(" result not set");
+    } else {
+      element.addContent(result.encodeXML("Result", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        if (result == null) {
-            LOGGER.warn(" result not set");
-            throw new MissingParameterException(" result not set");
-        } else {
-            element.addContent(result.encodeXML("Result", ns));
-        }
-
-        if (opSpecID == null) {
-            LOGGER.warn(" opSpecID not set");
-            throw new MissingParameterException(" opSpecID not set");
-        } else {
-            element.addContent(opSpecID.encodeXML("OpSpecID", ns));
-        }
-
-        if (readData == null) {
-            LOGGER.warn(" readData not set");
-            throw new MissingParameterException(" readData not set");
-        } else {
-            element.addContent(readData.encodeXML("ReadData", ns));
-        }
-
-        //parameters
-        return element;
+    if (opSpecID == null) {
+      LOGGER.warn(" opSpecID not set");
+      throw new MissingParameterException(" opSpecID not set");
+    } else {
+      element.addContent(opSpecID.encodeXML("OpSpecID", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        result = new C1G2ReadResultType(binary.subList(position,
-                    C1G2ReadResultType.length()));
-        position += C1G2ReadResultType.length();
-        opSpecID = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        // array. first 16 bits indicate length of array
-        fieldCount = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length())).toShort();
-        tempLength = (UnsignedShortArray_HEX.length() * fieldCount) +
-            UnsignedShort.length();
-        readData = new UnsignedShortArray_HEX(binary.subList(position,
-                    tempLength));
-        position += tempLength;
-        LOGGER.debug("decoding array of type: UnsignedShortArray_HEX with " +
-            tempLength + " length");
-
-        //might need padding
-        // must always be blocks of 8 bites, if it is a bitlist, this might not be automatically the case
-        if ((tempLength % 8) > 0) {
-            position += (8 - (tempLength % 8));
-            LOGGER.info("padding needed for readData ");
-        }
+    if (readData == null) {
+      LOGGER.warn(" readData not set");
+      throw new MissingParameterException(" readData not set");
+    } else {
+      element.addContent(readData.encodeXML("ReadData", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    //parameters
+    return element;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    result = new C1G2ReadResultType(binary.subList(position,
+      C1G2ReadResultType.length()));
+    position += C1G2ReadResultType.length();
+    opSpecID = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    // array. first 16 bits indicate length of array
+    fieldCount = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length())).toShort();
+    tempLength = (UnsignedShortArray_HEX.length() * fieldCount)
+      + UnsignedShort.length();
+    readData = new UnsignedShortArray_HEX(binary.subList(position,
+      tempLength));
+    position += tempLength;
+    LOGGER.debug("decoding array of type: UnsignedShortArray_HEX with "
+      + tempLength + " length");
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+    //might need padding
+    // must always be blocks of 8 bites, if it is a bitlist, this might not be automatically the case
+    if ((tempLength % 8) > 0) {
+      position += (8 - (tempLength % 8));
+      LOGGER.info("padding needed for readData ");
+    }
+  }
 
-        temp = element.getChild("Result", ns);
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        if (temp != null) {
-            result = new C1G2ReadResultType(temp);
-        }
+    Element temp = null;
 
-        element.removeChild("Result", ns);
-        temp = element.getChild("OpSpecID", ns);
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
 
-        if (temp != null) {
-            opSpecID = new UnsignedShort(temp);
-        }
+    temp = element.getChild("Result", ns);
 
-        element.removeChild("OpSpecID", ns);
-        temp = element.getChild("ReadData", ns);
-
-        if (temp != null) {
-            readData = new UnsignedShortArray_HEX(temp);
-        }
-
-        element.removeChild("ReadData", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "C1G2ReadOpSpecResult has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (temp != null) {
+      result = new C1G2ReadResultType(temp);
     }
 
-    //setters
-    /**
-    * set result of type C1G2ReadResultType .
-    * @param  result to be set
-    */
-    public void setResult(final C1G2ReadResultType result) {
-        this.result = result;
+    element.removeChild("Result", ns);
+    temp = element.getChild("OpSpecID", ns);
+
+    if (temp != null) {
+      opSpecID = new UnsignedShort(temp);
     }
 
-    /**
-    * set   opSpecID of type UnsignedShort .
-    * @param   opSpecID to be set
-    */
-    public void setOpSpecID(final UnsignedShort opSpecID) {
-        this.opSpecID = opSpecID;
+    element.removeChild("OpSpecID", ns);
+    temp = element.getChild("ReadData", ns);
+
+    if (temp != null) {
+      readData = new UnsignedShortArray_HEX(temp);
     }
 
-    /**
-    * set readData of type UnsignedShortArray_HEX .
-    * @param  readData to be set
-    */
-    public void setReadData(final UnsignedShortArray_HEX readData) {
-        this.readData = readData;
+    element.removeChild("ReadData", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "C1G2ReadOpSpecResult has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    // end setter
+  //setters
+  /**
+   * set result of type C1G2ReadResultType .
+   *
+   * @param result to be set
+   */
+  public void setResult(final C1G2ReadResultType result) {
+    this.result = result;
+  }
 
-    //getters
-    /**
-    * get result of type C1G2ReadResultType.
-    * @return  C1G2ReadResultType
-    */
-    public C1G2ReadResultType getResult() {
-        return result;
-    }
+  /**
+   * set opSpecID of type UnsignedShort .
+   *
+   * @param opSpecID to be set
+   */
+  public void setOpSpecID(final UnsignedShort opSpecID) {
+    this.opSpecID = opSpecID;
+  }
 
-    /**
-    * get   opSpecID of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getOpSpecID() {
-        return this.opSpecID;
-    }
+  /**
+   * set readData of type UnsignedShortArray_HEX .
+   *
+   * @param readData to be set
+   */
+  public void setReadData(final UnsignedShortArray_HEX readData) {
+    this.readData = readData;
+  }
 
-    /**
-    * get readData of type  UnsignedShortArray_HEX.
-    * @return  UnsignedShortArray_HEX
-    */
-    public UnsignedShortArray_HEX getReadData() {
-        return readData;
-    }
+  // end setter
+  //getters
+  /**
+   * get result of type C1G2ReadResultType.
+   *
+   * @return C1G2ReadResultType
+   */
+  public C1G2ReadResultType getResult() {
+    return result;
+  }
 
-    // end getters
+  /**
+   * get opSpecID of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getOpSpecID() {
+    return this.opSpecID;
+  }
 
-    //add methods
+  /**
+   * get readData of type UnsignedShortArray_HEX.
+   *
+   * @return UnsignedShortArray_HEX
+   */
+  public UnsignedShortArray_HEX getReadData() {
+    return readData;
+  }
 
-    // end add
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "C1G2ReadOpSpecResult";
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "C1G2ReadOpSpecResult";
-    }
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "C1G2ReadOpSpecResult: ";
+    result += ", result: ";
+    result += result;
+    result += ", opSpecID: ";
+    result += opSpecID;
+    result += ", readData: ";
+    result += readData;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "C1G2ReadOpSpecResult: ";
-        result += ", result: ";
-        result += result;
-        result += ", opSpecID: ";
-        result += opSpecID;
-        result += ", readData: ";
-        result += readData;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,241 +47,242 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=111&view=fit">LLRP Specification Section 15.2.1.5.4</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.4</a>}
-
-
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=111&view=fit">LLRP Specification Section 15.2.1.5.4</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.4</a>}
+ *
+ *
  */
-
 /**
- * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=111&view=fit">LLRP Specification Section 15.2.1.5.4</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.4</a>}
-
-      .
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=111&view=fit">LLRP Specification Section 15.2.1.5.4</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=159&view=fit">LLRP Specification Section 16.3.1.5.4</a>}
+ *
+ * .
  */
 public class C1G2SingulationDetails extends TVParameter
-    implements AirProtocolSingulationDetails {
-    public static final SignedShort TYPENUM = new SignedShort(18);
-    private static final Logger LOGGER = Logger.getLogger(C1G2SingulationDetails.class);
-    protected UnsignedShort numCollisionSlots;
-    protected UnsignedShort numEmptySlots;
+  implements AirProtocolSingulationDetails {
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public C1G2SingulationDetails() {
+  public static final SignedShort TYPENUM = new SignedShort(18);
+  private static final Logger LOGGER = Logger.getLogger(C1G2SingulationDetails.class);
+  protected UnsignedShort numCollisionSlots;
+  protected UnsignedShort numEmptySlots;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public C1G2SingulationDetails() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public C1G2SingulationDetails(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public C1G2SingulationDetails(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (numCollisionSlots == null) {
+      LOGGER.warn(" numCollisionSlots not set");
+      throw new MissingParameterException(
+        " numCollisionSlots not set  for Parameter of Type C1G2SingulationDetails");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public C1G2SingulationDetails(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(numCollisionSlots.encodeBinary());
+
+    if (numEmptySlots == null) {
+      LOGGER.warn(" numEmptySlots not set");
+      throw new MissingParameterException(
+        " numEmptySlots not set  for Parameter of Type C1G2SingulationDetails");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public C1G2SingulationDetails(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(numEmptySlots.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (numCollisionSlots == null) {
+      LOGGER.warn(" numCollisionSlots not set");
+      throw new MissingParameterException(" numCollisionSlots not set");
+    } else {
+      element.addContent(numCollisionSlots.encodeXML(
+        "NumCollisionSlots", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (numCollisionSlots == null) {
-            LOGGER.warn(" numCollisionSlots not set");
-            throw new MissingParameterException(
-                " numCollisionSlots not set  for Parameter of Type C1G2SingulationDetails");
-        }
-
-        resultBits.append(numCollisionSlots.encodeBinary());
-
-        if (numEmptySlots == null) {
-            LOGGER.warn(" numEmptySlots not set");
-            throw new MissingParameterException(
-                " numEmptySlots not set  for Parameter of Type C1G2SingulationDetails");
-        }
-
-        resultBits.append(numEmptySlots.encodeBinary());
-
-        return resultBits;
+    if (numEmptySlots == null) {
+      LOGGER.warn(" numEmptySlots not set");
+      throw new MissingParameterException(" numEmptySlots not set");
+    } else {
+      element.addContent(numEmptySlots.encodeXML("NumEmptySlots", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    //parameters
+    return element;
+  }
 
-        if (numCollisionSlots == null) {
-            LOGGER.warn(" numCollisionSlots not set");
-            throw new MissingParameterException(" numCollisionSlots not set");
-        } else {
-            element.addContent(numCollisionSlots.encodeXML(
-                    "NumCollisionSlots", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    numCollisionSlots = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    numEmptySlots = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+  }
 
-        if (numEmptySlots == null) {
-            LOGGER.warn(" numEmptySlots not set");
-            throw new MissingParameterException(" numEmptySlots not set");
-        } else {
-            element.addContent(numEmptySlots.encodeXML("NumEmptySlots", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        //parameters
-        return element;
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("NumCollisionSlots", ns);
+
+    if (temp != null) {
+      numCollisionSlots = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        numCollisionSlots = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        numEmptySlots = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
+    element.removeChild("NumCollisionSlots", ns);
+    temp = element.getChild("NumEmptySlots", ns);
+
+    if (temp != null) {
+      numEmptySlots = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    element.removeChild("NumEmptySlots", ns);
 
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("NumCollisionSlots", ns);
-
-        if (temp != null) {
-            numCollisionSlots = new UnsignedShort(temp);
-        }
-
-        element.removeChild("NumCollisionSlots", ns);
-        temp = element.getChild("NumEmptySlots", ns);
-
-        if (temp != null) {
-            numEmptySlots = new UnsignedShort(temp);
-        }
-
-        element.removeChild("NumEmptySlots", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "C1G2SingulationDetails has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (element.getChildren().size() > 0) {
+      String message = "C1G2SingulationDetails has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    //setters
-    /**
-    * set   numCollisionSlots of type UnsignedShort .
-    * @param   numCollisionSlots to be set
-    */
-    public void setNumCollisionSlots(final UnsignedShort numCollisionSlots) {
-        this.numCollisionSlots = numCollisionSlots;
-    }
+  //setters
+  /**
+   * set numCollisionSlots of type UnsignedShort .
+   *
+   * @param numCollisionSlots to be set
+   */
+  public void setNumCollisionSlots(final UnsignedShort numCollisionSlots) {
+    this.numCollisionSlots = numCollisionSlots;
+  }
 
-    /**
-    * set   numEmptySlots of type UnsignedShort .
-    * @param   numEmptySlots to be set
-    */
-    public void setNumEmptySlots(final UnsignedShort numEmptySlots) {
-        this.numEmptySlots = numEmptySlots;
-    }
+  /**
+   * set numEmptySlots of type UnsignedShort .
+   *
+   * @param numEmptySlots to be set
+   */
+  public void setNumEmptySlots(final UnsignedShort numEmptySlots) {
+    this.numEmptySlots = numEmptySlots;
+  }
 
-    // end setter
+  // end setter
+  //getters
+  /**
+   * get numCollisionSlots of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getNumCollisionSlots() {
+    return this.numCollisionSlots;
+  }
 
-    //getters
-    /**
-    * get   numCollisionSlots of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getNumCollisionSlots() {
-        return this.numCollisionSlots;
-    }
+  /**
+   * get numEmptySlots of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getNumEmptySlots() {
+    return this.numEmptySlots;
+  }
 
-    /**
-    * get   numEmptySlots of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getNumEmptySlots() {
-        return this.numEmptySlots;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
+   *
+   * @return Integer giving length
+   */
+  public static Integer length() {
+    int tempLength = PARAMETERTYPELENGTH;
+    // the length of a TV parameter in bits is always the type
+    tempLength += UnsignedShort.length();
+    // the length of a TV parameter in bits is always the type
+    tempLength += UnsignedShort.length();
 
-    // end getters
+    return tempLength;
+  }
 
-    //add methods
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    // end add
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "C1G2SingulationDetails";
+  }
 
-    /**
-    * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
-    * @return Integer giving length
-    */
-    public static Integer length() {
-        int tempLength = PARAMETERTYPELENGTH;
-        // the length of a TV parameter in bits is always the type 
-        tempLength += UnsignedShort.length();
-        // the length of a TV parameter in bits is always the type 
-        tempLength += UnsignedShort.length();
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "C1G2SingulationDetails: ";
+    result += ", numCollisionSlots: ";
+    result += numCollisionSlots;
+    result += ", numEmptySlots: ";
+    result += numEmptySlots;
+    result = result.replaceFirst(", ", "");
 
-        return tempLength;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "C1G2SingulationDetails";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "C1G2SingulationDetails: ";
-        result += ", numCollisionSlots: ";
-        result += numCollisionSlots;
-        result += ", numEmptySlots: ";
-        result += numEmptySlots;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

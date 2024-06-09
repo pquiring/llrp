@@ -17,7 +17,7 @@ import org.llrp.ltk.types.LLRPBitList;
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,35 +34,38 @@ import org.llrp.ltk.types.LLRPBitList;
  * and limitations under the License.
  *
  */
-
 /**
- * interface AirProtocolTagData
- * representing choice construct in llrpdef.xml.
+ * interface AirProtocolTagData representing choice construct in llrpdef.xml.
  */
 public interface AirProtocolTagData {
-    /**
-     * encode parameter to binary.
-     * @return LLRPBitList
-     */
-    public LLRPBitList encodeBinary();
 
-    /**
-     * encode parameter to xml.
-     * @param name of element
-    * @param ns Namespace of elements
-     * @return JDom Content object
-     */
-    public Content encodeXML(String name, Namespace ns);
+  /**
+   * encode parameter to binary.
+   *
+   * @return LLRPBitList
+   */
+  public LLRPBitList encodeBinary();
 
-    /**
-     * decode parameter from binary.
-     * @param list to be decoded
-     */
-    public void decodeBinary(LLRPBitList list);
+  /**
+   * encode parameter to xml.
+   *
+   * @param name of element
+   * @param ns Namespace of elements
+   * @return JDom Content object
+   */
+  public Content encodeXML(String name, Namespace ns);
 
-    /**
-     * decode parameter from xml.
-     * @param element to be decoded
-     */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException;
+  /**
+   * decode parameter from binary.
+   *
+   * @param list to be decoded
+   */
+  public void decodeBinary(LLRPBitList list);
+
+  /**
+   * decode parameter from xml.
+   *
+   * @param element to be decoded
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException;
 }

@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,266 +46,254 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * AirProtocolsArray is Enumeration of Type UnsignedByteArray
  */
 public class AirProtocolsArray extends UnsignedByteArray
-    implements LLRPEnumeration {
-    public static final int Unspecified = 0;
-    public static final int EPCGlobalClass1Gen2 = 1;
-    Logger logger = Logger.getLogger(AirProtocolsArray.class);
+  implements LLRPEnumeration {
 
-    public AirProtocolsArray() {
-        super(0);
+  public static final int Unspecified = 0;
+  public static final int EPCGlobalClass1Gen2 = 1;
+  Logger logger = Logger.getLogger(AirProtocolsArray.class);
+
+  public AirProtocolsArray() {
+    super(0);
+  }
+
+  /**
+   * Create new AirProtocolsArray by passing integer value.
+   *
+   * @throws IllegalArgumentException if the value is not allowed for this enumeration
+   * @param value an Integer value allowed - might check first with isValidValue it it is an allowed value
+   */
+  public AirProtocolsArray(int value) {
+    // Enumerations must use String constructor
+    super(Integer.toString(value));
+
+    if (!isValidValue(value)) {
+      throw new IllegalArgumentException("Value not allowed");
+    }
+  }
+
+  /**
+   * Create new AirProtocolsArray by passing jdom element.
+   *
+   * @throws IllegalArgumentException String must be a concatenation of several enumeration strings seperated by whitespace
+   * @param element - jdom element where the child is a string that contains several names for values of the enumeration.
+   */
+  public AirProtocolsArray(final Element element) {
+    String[] items = element.getText().split(" ");
+    this.bytes = new UnsignedByte[items.length];
+
+    for (int i = 0; i < items.length; i++) {
+      this.bytes[i] = new UnsignedByte(getValue(items[i]));
+    }
+  }
+
+  /**
+   * Create new AirProtocolsArray by passing a string
+   *
+   * @throws IllegalArgumentException String must be a concatenation of several enumeration strings seperated by whitespace
+   * @param element - string that contains several names for values of the enumeration.
+   */
+  public AirProtocolsArray(final String element) {
+    String[] items = element.split(" ");
+    this.bytes = new UnsignedByte[items.length];
+
+    for (int i = 0; i < items.length; i++) {
+      this.bytes[i] = new UnsignedByte(getValue(items[i]));
+    }
+  }
+
+  /**
+   * Create new AirProtocolsArray by passing LLRPBitList.
+   *
+   * @throws IllegalArgumentException if the value found in the BitList is not allowed for this enumeration.
+   * @param list - LLRPBitList
+   */
+  public AirProtocolsArray(final LLRPBitList list) {
+    decodeBinary(list);
+
+    if (!isValidValue(toInteger())) {
+      throw new IllegalArgumentException("Value not allowed");
+    }
+  }
+
+  /**
+   * set a value of this enumeration to the value identified by given string.
+   *
+   * @throws IllegalArgumentException if the value found for given String is not allowed for this enumeration.
+   * @param name set this enumeration to hold one of the allowed values
+   */
+  public final void set(final String name, int position) {
+    if (!isValidName(name)) {
+      throw new IllegalArgumentException("name not allowed");
     }
 
-    /**
-     * Create new AirProtocolsArray by passing integer value.
-     *
-     * @throws IllegalArgumentException
-     * if the value is not allowed for this enumeration
-     * @param value an Integer value allowed - might check first
-     * with isValidValue it it is an allowed value
-     */
-    public AirProtocolsArray(int value) {
-        // Enumerations must use String constructor
-        super(new Integer(value).toString());
-
-        if (!isValidValue(value)) {
-            throw new IllegalArgumentException("Value not allowed");
-        }
+    if (position > this.bytes.length) {
+      throw new IllegalArgumentException(
+        "position is bigger than array size");
     }
 
-    /**
-     * Create new AirProtocolsArray by passing jdom element.
-     *
-     * @throws IllegalArgumentException
-     * String must be a concatenation of several enumeration strings seperated by whitespace
-     * @param element - jdom element where the child is a string
-     * that contains several names for values of the enumeration.
-     */
-    public AirProtocolsArray(final Element element) {
-        String[] items = element.getText().split(" ");
-        this.bytes = new UnsignedByte[items.length];
+    bytes[position] = new UnsignedByte(getValue(name));
+  }
 
-        for (int i = 0; i < items.length; i++) {
-            this.bytes[i] = new UnsignedByte(getValue(items[i]));
-        }
-    }
-
-    /**
-     * Create new AirProtocolsArray by passing a string
-     *
-     * @throws IllegalArgumentException
-     * String must be a concatenation of several enumeration strings seperated by whitespace
-     * @param element - string that contains several names for values of the enumeration.
-     */
-    public AirProtocolsArray(final String element) {
-        String[] items = element.split(" ");
-        this.bytes = new UnsignedByte[items.length];
-
-        for (int i = 0; i < items.length; i++) {
-            this.bytes[i] = new UnsignedByte(getValue(items[i]));
-        }
-    }
-
-    /**
-     * Create new AirProtocolsArray by passing LLRPBitList.
-     *
-     * @throws IllegalArgumentException
-     * if the value found in the BitList is not allowed
-     * for this enumeration.
-     * @param list - LLRPBitList
-     */
-    public AirProtocolsArray(final LLRPBitList list) {
-        decodeBinary(list);
-
-        if (!isValidValue(new Integer(toInteger()))) {
-            throw new IllegalArgumentException("Value not allowed");
-        }
-    }
-
-    /**
-    * set a value of this enumeration to the
-    * value identified by given string.
+  /**
+   * if no position is provided, the first element is set
     *
-    * @throws IllegalArgumentException
-    * if the value found for given String is not allowed
-    * for this enumeration.
-    * @param name set this enumeration to hold one of the allowed values
-    */
-    public final void set(final String name, int position) {
-        if (!isValidName(name)) {
-            throw new IllegalArgumentException("name not allowed");
-        }
+   */
+  public final void set(final String name) {
+    set(name, 0);
+  }
 
-        if (position > this.bytes.length) {
-            throw new IllegalArgumentException(
-                "position is bigger than array size");
-        }
-
-        bytes[position] = new UnsignedByte(getValue(name));
+  /**
+   * set a value of this enumeration to the value identified by given string.
+   *
+   * @throws IllegalArgumentException if the value found for given String is not allowed for this enumeration.
+   * @param value to be set at position
+   */
+  public final void set(final int value, int position) {
+    if (!isValidValue(value)) {
+      throw new IllegalArgumentException("name not allowed");
     }
 
-    /**
-    * if no position is provided, the first element is set
-    **/
-    public final void set(final String name) {
-        set(name, 0);
+    if (position > this.bytes.length) {
+      throw new IllegalArgumentException(
+        "position is bigger than array size");
     }
 
-    /**
-    * set a value of this enumeration to the
-    * value identified by given string.
+    bytes[position] = new UnsignedByte(value);
+  }
+
+  /**
+   * if no position is provided, the first element is set
     *
-    * @throws IllegalArgumentException
-    * if the value found for given String is not allowed
-    * for this enumeration.
-    * @param value to be set at position
-    */
-    public final void set(final int value, int position) {
-        if (!isValidValue(value)) {
-            throw new IllegalArgumentException("name not allowed");
-        }
+   */
+  public final void set(final int value) {
+    set(value, 0);
+  }
 
-        if (position > this.bytes.length) {
-            throw new IllegalArgumentException(
-                "position is bigger than array size");
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(final String name, Namespace ns) {
+    Element element = new Element(name, ns);
+    //Element element = new Element(name, Namespace.getNamespace("llrp",LLRPConstants.LLRPNAMESPACE));
+    element.setContent(new Text(toString()));
 
-        bytes[position] = new UnsignedByte(value);
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String toString() {
+    String s = "";
+
+    for (UnsignedByte b : this.bytes) {
+      s += " ";
+      s += getName(b.toInteger());
     }
 
-    /**
-    * if no position is provided, the first element is set
-    **/
-    public final void set(final int value) {
-        set(value, 0);
-    }
+    return s.replaceFirst(" ", "");
+  }
 
-    /**
-            * {@inheritDoc}
-     */
-    public Content encodeXML(final String name, Namespace ns) {
-        Element element = new Element(name, ns);
-        //Element element = new Element(name, Namespace.getNamespace("llrp",LLRPConstants.LLRPNAMESPACE));
-        element.setContent(new Text(toString()));
+  /**
+   * There is no reasonable representation as int return 0
+   */
+  public int intValue() {
+    return 0;
+  }
 
-        return element;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isValidValue(final int value) {
+    switch (value) {
+      case 0:
+        return true;
 
-    /**
-    * {@inheritDoc}
-    */
-    public String toString() {
-        String s = "";
+      case 1:
+        return true;
 
-        for (UnsignedByte b : this.bytes) {
-            s += " ";
-            s += getName(b.toInteger());
-        }
-
-        return s.replaceFirst(" ", "");
-    }
-
-    /**
-    * There is no reasonable representation as int
-    * return 0
-    */
-    public int intValue() {
-        return 0;
-    }
-
-    /**
-            * {@inheritDoc}
-     */
-    public boolean isValidValue(final int value) {
-        switch (value) {
-        case 0:
-            return true;
-
-        case 1:
-            return true;
-
-        default:
-            return false;
-        }
-    }
-
-    /**
-            * {@inheritDoc}
-     */
-    public final int getValue(final String name) {
-        if (name.equalsIgnoreCase("Unspecified")) {
-            return 0;
-        }
-
-        if (name.equalsIgnoreCase("EPCGlobalClass1Gen2")) {
-            return 1;
-        }
-
-        return -1;
-    }
-
-    /**
-             * {@inheritDoc}
-     */
-    public final String getName(final int value) {
-        if (0 == value) {
-            return "Unspecified";
-        }
-
-        if (1 == value) {
-            return "EPCGlobalClass1Gen2";
-        }
-
-        return "";
-    }
-
-    /**
-             * {@inheritDoc}
-     */
-    public boolean isValidName(final String name) {
-        if (name.equals("Unspecified")) {
-            return true;
-        }
-
-        if (name.equals("EPCGlobalClass1Gen2")) {
-            return true;
-        }
-
+      default:
         return false;
     }
+  }
 
-    /**
-    * number of bits used to represent this type.
-    *
-    * @return Integer
-    */
-    public static int length() {
-        return UnsignedByteArray.length();
+  /**
+   * {@inheritDoc}
+   */
+  public final int getValue(final String name) {
+    if (name.equalsIgnoreCase("Unspecified")) {
+      return 0;
     }
 
-    /**
-          * wrapper method for UnsignedIntegers that use BigIntegers to store value
-    *
-    */
-    private final String getName(final BigInteger value) {
-        logger.warn("AirProtocolsArray must convert BigInteger " + value +
-            " to Integer value " + value.intValue());
-
-        return getName(value.intValue());
+    if (name.equalsIgnoreCase("EPCGlobalClass1Gen2")) {
+      return 1;
     }
 
-    /**
-    * wrapper method for UnsignedIntegers that use BigIntegers to store value
-    *
-    */
-    private final boolean isValidValue(final BigInteger value) {
-        logger.warn("AirProtocolsArray must convert BigInteger " + value +
-            " to Integer value " + value.intValue());
+    return -1;
+  }
 
-        return isValidValue(value.intValue());
+  /**
+   * {@inheritDoc}
+   */
+  public final String getName(final int value) {
+    if (0 == value) {
+      return "Unspecified";
     }
+
+    if (1 == value) {
+      return "EPCGlobalClass1Gen2";
+    }
+
+    return "";
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isValidName(final String name) {
+    if (name.equals("Unspecified")) {
+      return true;
+    }
+
+    if (name.equals("EPCGlobalClass1Gen2")) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * number of bits used to represent this type.
+   *
+   * @return Integer
+   */
+  public static int length() {
+    return UnsignedByteArray.length();
+  }
+
+  /**
+   * wrapper method for UnsignedIntegers that use BigIntegers to store value
+   *
+   */
+  private final String getName(final BigInteger value) {
+    logger.warn("AirProtocolsArray must convert BigInteger " + value
+      + " to Integer value " + value.intValue());
+
+    return getName(value.intValue());
+  }
+
+  /**
+   * wrapper method for UnsignedIntegers that use BigIntegers to store value
+   *
+   */
+  private final boolean isValidValue(final BigInteger value) {
+    logger.warn("AirProtocolsArray must convert BigInteger " + value
+      + " to Integer value " + value.intValue());
+
+    return isValidValue(value.intValue());
+  }
 }

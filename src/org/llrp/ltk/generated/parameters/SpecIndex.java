@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,196 +46,195 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * This parameter carries the SpecIndex information. The SpecIndex indicates the item within the ROSpec that was being executed at the time the tag was observed.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=82&view=fit">LLRP Specification Section 13.2.3.4</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.4</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=82&view=fit">LLRP Specification Section 13.2.3.4</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.4</a>}
+ *
+ *
  */
-
 /**
  * This parameter carries the SpecIndex information. The SpecIndex indicates the item within the ROSpec that was being executed at the time the tag was observed.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=82&view=fit">LLRP Specification Section 13.2.3.4</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.4</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=82&view=fit">LLRP Specification Section 13.2.3.4</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.4</a>}
+ *
+ * .
  */
 public class SpecIndex extends TVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(14);
-    private static final Logger LOGGER = Logger.getLogger(SpecIndex.class);
-    protected UnsignedShort specIndex;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public SpecIndex() {
+  public static final SignedShort TYPENUM = new SignedShort(14);
+  private static final Logger LOGGER = Logger.getLogger(SpecIndex.class);
+  protected UnsignedShort specIndex;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public SpecIndex() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public SpecIndex(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public SpecIndex(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (specIndex == null) {
+      LOGGER.warn(" specIndex not set");
+      throw new MissingParameterException(
+        " specIndex not set  for Parameter of Type SpecIndex");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public SpecIndex(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(specIndex.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (specIndex == null) {
+      LOGGER.warn(" specIndex not set");
+      throw new MissingParameterException(" specIndex not set");
+    } else {
+      element.addContent(specIndex.encodeXML("SpecIndex", ns));
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public SpecIndex(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    //parameters
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    specIndex = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("SpecIndex", ns);
+
+    if (temp != null) {
+      specIndex = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    element.removeChild("SpecIndex", ns);
 
-        if (specIndex == null) {
-            LOGGER.warn(" specIndex not set");
-            throw new MissingParameterException(
-                " specIndex not set  for Parameter of Type SpecIndex");
-        }
-
-        resultBits.append(specIndex.encodeBinary());
-
-        return resultBits;
+    if (element.getChildren().size() > 0) {
+      String message = "SpecIndex has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+  //setters
+  /**
+   * set specIndex of type UnsignedShort .
+   *
+   * @param specIndex to be set
+   */
+  public void setSpecIndex(final UnsignedShort specIndex) {
+    this.specIndex = specIndex;
+  }
 
-        if (specIndex == null) {
-            LOGGER.warn(" specIndex not set");
-            throw new MissingParameterException(" specIndex not set");
-        } else {
-            element.addContent(specIndex.encodeXML("SpecIndex", ns));
-        }
+  // end setter
+  //getters
+  /**
+   * get specIndex of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getSpecIndex() {
+    return this.specIndex;
+  }
 
-        //parameters
-        return element;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
+   *
+   * @return Integer giving length
+   */
+  public static Integer length() {
+    int tempLength = PARAMETERTYPELENGTH;
+    // the length of a TV parameter in bits is always the type
+    tempLength += UnsignedShort.length();
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        specIndex = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-    }
+    return tempLength;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "SpecIndex";
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "SpecIndex: ";
+    result += ", specIndex: ";
+    result += specIndex;
+    result = result.replaceFirst(", ", "");
 
-        temp = element.getChild("SpecIndex", ns);
-
-        if (temp != null) {
-            specIndex = new UnsignedShort(temp);
-        }
-
-        element.removeChild("SpecIndex", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "SpecIndex has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
-    }
-
-    //setters
-    /**
-    * set   specIndex of type UnsignedShort .
-    * @param   specIndex to be set
-    */
-    public void setSpecIndex(final UnsignedShort specIndex) {
-        this.specIndex = specIndex;
-    }
-
-    // end setter
-
-    //getters
-    /**
-    * get   specIndex of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getSpecIndex() {
-        return this.specIndex;
-    }
-
-    // end getters
-
-    //add methods
-
-    // end add
-
-    /**
-    * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
-    * @return Integer giving length
-    */
-    public static Integer length() {
-        int tempLength = PARAMETERTYPELENGTH;
-        // the length of a TV parameter in bits is always the type 
-        tempLength += UnsignedShort.length();
-
-        return tempLength;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "SpecIndex";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "SpecIndex: ";
-        result += ", specIndex: ";
-        result += specIndex;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

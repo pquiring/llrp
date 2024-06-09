@@ -15,78 +15,73 @@
  */
 package org.llrp.ltk.types;
 
-
 /**
- * TV Parameter do not encode length as the length is implicitly given by the
- * type TV parameter have type values from 0 to 127 TV Parameters encode the
- * length of a parameter when encoded. The binary encoding Is always: Reserved
- * (Bit set to 1) Parameter Type (7 Bits) | Parameter Value
+ * TV Parameter do not encode length as the length is implicitly given by the type TV parameter have type values from 0 to 127 TV Parameters encode the length of a parameter when
+ * encoded. The binary encoding Is always: Reserved (Bit set to 1) Parameter Type (7 Bits) | Parameter Value
  *
  * @author gasserb
  */
 public abstract class TVParameter extends LLRPParameter {
-    protected static final int PARAMETERTYPELENGTH = 8;
 
-    /**
-     * decodeBinary should be called from Constructor Taking binary encoded
-     * parameter as argument.
-     *
-     * @param bits to be decoded
-     *
-     * @throws LLRPException
-     *             in case of any error or unexpected behaviour
-     *
-     */
-    public void decodeBinary(LLRPBitList bits) {
-        // 7 bits only for type!!
-        // very first bit is always set to 1
-        SignedShort tN = new SignedShort(bits.subList(1, 7));
+  protected static final int PARAMETERTYPELENGTH = 8;
 
-        if (!tN.equals(getTypeNum())) {
-            // LLRPMessage.logger.error("incorrect type. Expected
-            // "+getTypeNum().toShort()+" message indicates "+tN.toShort());
-            throw new IllegalArgumentException("incorrect type. Expected " +
-                getTypeNum().toShort() + " message indicates " + tN.toShort());
-        }
+  /**
+   * decodeBinary should be called from Constructor Taking binary encoded parameter as argument.
+   *
+   * @param bits to be decoded
+   *
+   * @throws LLRPException in case of any error or unexpected behaviour
+   *
+   */
+  public void decodeBinary(LLRPBitList bits) {
+    // 7 bits only for type!!
+    // very first bit is always set to 1
+    SignedShort tN = new SignedShort(bits.subList(1, 7));
 
-        //decodeBinarySpecific is called for parameter specific decoding. Each parameter must have implemented it
-        decodeBinarySpecific(bits.subList(PARAMETERTYPELENGTH,
-                bits.length() - PARAMETERTYPELENGTH));
+    if (!tN.equals(getTypeNum())) {
+      // LLRPMessage.logger.error("incorrect type. Expected
+      // "+getTypeNum().toShort()+" message indicates "+tN.toShort());
+      throw new IllegalArgumentException("incorrect type. Expected "
+        + getTypeNum().toShort() + " message indicates " + tN.toShort());
     }
 
-    /**
-     * encode parameter
-     *
-     * @return LLRPBitList
-     *
-     */
-    public LLRPBitList encodeBinary() {
-        LLRPBitList le = getTypeNum().encodeBinary();
+    //decodeBinarySpecific is called for parameter specific decoding. Each parameter must have implemented it
+    decodeBinarySpecific(bits.subList(PARAMETERTYPELENGTH,
+      bits.length() - PARAMETERTYPELENGTH));
+  }
 
-        // type Number is saved as a short, but we need only the last 8 bits
-        LLRPBitList result = le.subList(le.length() - PARAMETERTYPELENGTH,
-                PARAMETERTYPELENGTH);
+  /**
+   * encode parameter
+   *
+   * @return LLRPBitList
+   *
+   */
+  public LLRPBitList encodeBinary() {
+    LLRPBitList le = getTypeNum().encodeBinary();
 
-        // first bit must always be set to 1
-        result.set(0);
-        // call parameter specific encoding method
-        result.append(encodeBinarySpecific());
+    // type Number is saved as a short, but we need only the last 8 bits
+    LLRPBitList result = le.subList(le.length() - PARAMETERTYPELENGTH,
+      PARAMETERTYPELENGTH);
 
-        return result;
-    }
+    // first bit must always be set to 1
+    result.set(0);
+    // call parameter specific encoding method
+    result.append(encodeBinarySpecific());
 
-    /**
-     * function to be implemented
-     *
-     * @param binary
-     *            binary representation of this parameter
-     */
-    protected abstract void decodeBinarySpecific(LLRPBitList binary);
+    return result;
+  }
 
-    /**
-     * protected method to force subclasses to implement their specific encoding
-     *
-     * @return LLRPBitList
-     */
-    protected abstract LLRPBitList encodeBinarySpecific();
+  /**
+   * function to be implemented
+   *
+   * @param binary binary representation of this parameter
+   */
+  protected abstract void decodeBinarySpecific(LLRPBitList binary);
+
+  /**
+   * protected method to force subclasses to implement their specific encoding
+   *
+   * @return LLRPBitList
+   */
+  protected abstract LLRPBitList encodeBinarySpecific();
 }

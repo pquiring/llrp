@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,196 +46,195 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * This parameter carries the one-based ChannelIndex informationvalue.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=83&view=fit">LLRP Specification Section 13.2.3.8</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.8</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=83&view=fit">LLRP Specification Section 13.2.3.8</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.8</a>}
+ *
+ *
  */
-
 /**
  * This parameter carries the one-based ChannelIndex informationvalue.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=83&view=fit">LLRP Specification Section 13.2.3.8</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.8</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=83&view=fit">LLRP Specification Section 13.2.3.8</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=145&view=fit">LLRP Specification Section 16.2.7.3.8</a>}
+ *
+ * .
  */
 public class ChannelIndex extends TVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(7);
-    private static final Logger LOGGER = Logger.getLogger(ChannelIndex.class);
-    protected UnsignedShort channelIndex;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public ChannelIndex() {
+  public static final SignedShort TYPENUM = new SignedShort(7);
+  private static final Logger LOGGER = Logger.getLogger(ChannelIndex.class);
+  protected UnsignedShort channelIndex;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public ChannelIndex() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public ChannelIndex(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public ChannelIndex(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (channelIndex == null) {
+      LOGGER.warn(" channelIndex not set");
+      throw new MissingParameterException(
+        " channelIndex not set  for Parameter of Type ChannelIndex");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public ChannelIndex(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(channelIndex.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (channelIndex == null) {
+      LOGGER.warn(" channelIndex not set");
+      throw new MissingParameterException(" channelIndex not set");
+    } else {
+      element.addContent(channelIndex.encodeXML("ChannelIndex", ns));
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public ChannelIndex(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    //parameters
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    channelIndex = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("ChannelIndex", ns);
+
+    if (temp != null) {
+      channelIndex = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    element.removeChild("ChannelIndex", ns);
 
-        if (channelIndex == null) {
-            LOGGER.warn(" channelIndex not set");
-            throw new MissingParameterException(
-                " channelIndex not set  for Parameter of Type ChannelIndex");
-        }
-
-        resultBits.append(channelIndex.encodeBinary());
-
-        return resultBits;
+    if (element.getChildren().size() > 0) {
+      String message = "ChannelIndex has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+  //setters
+  /**
+   * set channelIndex of type UnsignedShort .
+   *
+   * @param channelIndex to be set
+   */
+  public void setChannelIndex(final UnsignedShort channelIndex) {
+    this.channelIndex = channelIndex;
+  }
 
-        if (channelIndex == null) {
-            LOGGER.warn(" channelIndex not set");
-            throw new MissingParameterException(" channelIndex not set");
-        } else {
-            element.addContent(channelIndex.encodeXML("ChannelIndex", ns));
-        }
+  // end setter
+  //getters
+  /**
+   * get channelIndex of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getChannelIndex() {
+    return this.channelIndex;
+  }
 
-        //parameters
-        return element;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
+   *
+   * @return Integer giving length
+   */
+  public static Integer length() {
+    int tempLength = PARAMETERTYPELENGTH;
+    // the length of a TV parameter in bits is always the type
+    tempLength += UnsignedShort.length();
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        channelIndex = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-    }
+    return tempLength;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "ChannelIndex";
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "ChannelIndex: ";
+    result += ", channelIndex: ";
+    result += channelIndex;
+    result = result.replaceFirst(", ", "");
 
-        temp = element.getChild("ChannelIndex", ns);
-
-        if (temp != null) {
-            channelIndex = new UnsignedShort(temp);
-        }
-
-        element.removeChild("ChannelIndex", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "ChannelIndex has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
-    }
-
-    //setters
-    /**
-    * set   channelIndex of type UnsignedShort .
-    * @param   channelIndex to be set
-    */
-    public void setChannelIndex(final UnsignedShort channelIndex) {
-        this.channelIndex = channelIndex;
-    }
-
-    // end setter
-
-    //getters
-    /**
-    * get   channelIndex of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getChannelIndex() {
-        return this.channelIndex;
-    }
-
-    // end getters
-
-    //add methods
-
-    // end add
-
-    /**
-    * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
-    * @return Integer giving length
-    */
-    public static Integer length() {
-        int tempLength = PARAMETERTYPELENGTH;
-        // the length of a TV parameter in bits is always the type 
-        tempLength += UnsignedShort.length();
-
-        return tempLength;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "ChannelIndex";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "ChannelIndex: ";
-        result += ", channelIndex: ";
-        result += channelIndex;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

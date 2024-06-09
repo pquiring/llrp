@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,240 +48,243 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This parameter carries the data pertinent to perform the write to a general purpose output port.Readers that do not support GPOs SHALL set NumGPOs in the GPIOCapabilities to zero. If such a Reader receives a SET_READER_CONFIG with GPOWriteData Parameter, the Reader SHALL return an error message and not process any of the parameters in that message.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=72&view=fit">LLRP Specification Section 12.2.3</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=140&view=fit">LLRP Specification Section 16.2.6.3</a>}
-
-
+ * This parameter carries the data pertinent to perform the write to a general purpose output port.Readers that do not support GPOs SHALL set NumGPOs in the GPIOCapabilities to
+ * zero. If such a Reader receives a SET_READER_CONFIG with GPOWriteData Parameter, the Reader SHALL return an error message and not process any of the parameters in that message.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=72&view=fit">LLRP Specification Section 12.2.3</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=140&view=fit">LLRP Specification Section 16.2.6.3</a>}
+ *
+ *
  */
-
 /**
- * This parameter carries the data pertinent to perform the write to a general purpose output port.Readers that do not support GPOs SHALL set NumGPOs in the GPIOCapabilities to zero. If such a Reader receives a SET_READER_CONFIG with GPOWriteData Parameter, the Reader SHALL return an error message and not process any of the parameters in that message.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=72&view=fit">LLRP Specification Section 12.2.3</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=140&view=fit">LLRP Specification Section 16.2.6.3</a>}
-
-      .
+ * This parameter carries the data pertinent to perform the write to a general purpose output port.Readers that do not support GPOs SHALL set NumGPOs in the GPIOCapabilities to
+ * zero. If such a Reader receives a SET_READER_CONFIG with GPOWriteData Parameter, the Reader SHALL return an error message and not process any of the parameters in that message.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=72&view=fit">LLRP Specification Section 12.2.3</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=140&view=fit">LLRP Specification Section 16.2.6.3</a>}
+ *
+ * .
  */
 public class GPOWriteData extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(219);
-    private static final Logger LOGGER = Logger.getLogger(GPOWriteData.class);
-    protected UnsignedShort gPOPortNumber;
-    protected Bit gPOData;
-    protected BitList reserved0 = new BitList(7);
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public GPOWriteData() {
+  public static final SignedShort TYPENUM = new SignedShort(219);
+  private static final Logger LOGGER = Logger.getLogger(GPOWriteData.class);
+  protected UnsignedShort gPOPortNumber;
+  protected Bit gPOData;
+  protected BitList reserved0 = new BitList(7);
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public GPOWriteData() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public GPOWriteData(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public GPOWriteData(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (gPOPortNumber == null) {
+      LOGGER.warn(" gPOPortNumber not set");
+      throw new MissingParameterException(
+        " gPOPortNumber not set  for Parameter of Type GPOWriteData");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public GPOWriteData(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(gPOPortNumber.encodeBinary());
+
+    if (gPOData == null) {
+      LOGGER.warn(" gPOData not set");
+      throw new MissingParameterException(
+        " gPOData not set  for Parameter of Type GPOWriteData");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public GPOWriteData(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(gPOData.encodeBinary());
+    resultBits.append(reserved0.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (gPOPortNumber == null) {
+      LOGGER.warn(" gPOPortNumber not set");
+      throw new MissingParameterException(" gPOPortNumber not set");
+    } else {
+      element.addContent(gPOPortNumber.encodeXML("GPOPortNumber", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (gPOPortNumber == null) {
-            LOGGER.warn(" gPOPortNumber not set");
-            throw new MissingParameterException(
-                " gPOPortNumber not set  for Parameter of Type GPOWriteData");
-        }
-
-        resultBits.append(gPOPortNumber.encodeBinary());
-
-        if (gPOData == null) {
-            LOGGER.warn(" gPOData not set");
-            throw new MissingParameterException(
-                " gPOData not set  for Parameter of Type GPOWriteData");
-        }
-
-        resultBits.append(gPOData.encodeBinary());
-        resultBits.append(reserved0.encodeBinary());
-
-        return resultBits;
+    if (gPOData == null) {
+      LOGGER.warn(" gPOData not set");
+      throw new MissingParameterException(" gPOData not set");
+    } else {
+      element.addContent(gPOData.encodeXML("GPOData", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    //element.addContent(reserved0.encodeXML("reserved",ns));
+    //parameters
+    return element;
+  }
 
-        if (gPOPortNumber == null) {
-            LOGGER.warn(" gPOPortNumber not set");
-            throw new MissingParameterException(" gPOPortNumber not set");
-        } else {
-            element.addContent(gPOPortNumber.encodeXML("GPOPortNumber", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    gPOPortNumber = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    gPOData = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    position += reserved0.length();
+  }
 
-        if (gPOData == null) {
-            LOGGER.warn(" gPOData not set");
-            throw new MissingParameterException(" gPOData not set");
-        } else {
-            element.addContent(gPOData.encodeXML("GPOData", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        //element.addContent(reserved0.encodeXML("reserved",ns));
-        //parameters
-        return element;
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("GPOPortNumber", ns);
+
+    if (temp != null) {
+      gPOPortNumber = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        gPOPortNumber = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        gPOData = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        position += reserved0.length();
+    element.removeChild("GPOPortNumber", ns);
+    temp = element.getChild("GPOData", ns);
+
+    if (temp != null) {
+      gPOData = new Bit(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    element.removeChild("GPOData", ns);
 
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("GPOPortNumber", ns);
-
-        if (temp != null) {
-            gPOPortNumber = new UnsignedShort(temp);
-        }
-
-        element.removeChild("GPOPortNumber", ns);
-        temp = element.getChild("GPOData", ns);
-
-        if (temp != null) {
-            gPOData = new Bit(temp);
-        }
-
-        element.removeChild("GPOData", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "GPOWriteData has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (element.getChildren().size() > 0) {
+      String message = "GPOWriteData has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    //setters
-    /**
-    * set   gPOPortNumber of type UnsignedShort .
-    * @param   gPOPortNumber to be set
-    */
-    public void setGPOPortNumber(final UnsignedShort gPOPortNumber) {
-        this.gPOPortNumber = gPOPortNumber;
-    }
+  //setters
+  /**
+   * set gPOPortNumber of type UnsignedShort .
+   *
+   * @param gPOPortNumber to be set
+   */
+  public void setGPOPortNumber(final UnsignedShort gPOPortNumber) {
+    this.gPOPortNumber = gPOPortNumber;
+  }
 
-    /**
-    * set   gPOData of type Bit .
-    * @param   gPOData to be set
-    */
-    public void setGPOData(final Bit gPOData) {
-        this.gPOData = gPOData;
-    }
+  /**
+   * set gPOData of type Bit .
+   *
+   * @param gPOData to be set
+   */
+  public void setGPOData(final Bit gPOData) {
+    this.gPOData = gPOData;
+  }
 
-    // end setter
+  // end setter
+  //getters
+  /**
+   * get gPOPortNumber of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getGPOPortNumber() {
+    return this.gPOPortNumber;
+  }
 
-    //getters
-    /**
-    * get   gPOPortNumber of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getGPOPortNumber() {
-        return this.gPOPortNumber;
-    }
+  /**
+   * get gPOData of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getGPOData() {
+    return this.gPOData;
+  }
 
-    /**
-    * get   gPOData of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getGPOData() {
-        return this.gPOData;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    // end getters
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    //add methods
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "GPOWriteData";
+  }
 
-    // end add
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "GPOWriteData: ";
+    result += ", gPOPortNumber: ";
+    result += gPOPortNumber;
+    result += ", gPOData: ";
+    result += gPOData;
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "GPOWriteData";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "GPOWriteData: ";
-        result += ", gPOPortNumber: ";
-        result += gPOPortNumber;
-        result += ", gPOData: ";
-        result += gPOData;
-
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

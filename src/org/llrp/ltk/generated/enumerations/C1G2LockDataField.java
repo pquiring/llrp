@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,268 +46,254 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * C1G2LockDataField is Enumeration of Type UnsignedByte
  */
 public class C1G2LockDataField extends UnsignedByte implements LLRPEnumeration {
-    public static final int Kill_Password = 0;
-    public static final int Access_Password = 1;
-    public static final int EPC_Memory = 2;
-    public static final int TID_Memory = 3;
-    public static final int User_Memory = 4;
-    Logger logger = Logger.getLogger(C1G2LockDataField.class);
 
-    public C1G2LockDataField() {
-        super(0);
+  public static final int Kill_Password = 0;
+  public static final int Access_Password = 1;
+  public static final int EPC_Memory = 2;
+  public static final int TID_Memory = 3;
+  public static final int User_Memory = 4;
+  Logger logger = Logger.getLogger(C1G2LockDataField.class);
+
+  public C1G2LockDataField() {
+    super(0);
+  }
+
+  /**
+   * Create new C1G2LockDataField by passing integer value.
+   *
+   * @throws IllegalArgumentException if the value is not allowed for this enumeration
+   * @param value an Integer value allowed - might check first with isValidValue it it is an allowed value
+   */
+  public C1G2LockDataField(int value) {
+    super(value);
+
+    if (!isValidValue(value)) {
+      throw new IllegalArgumentException("Value not allowed");
+    }
+  }
+
+  /**
+   * Create new C1G2LockDataField by passing jdom element.
+   *
+   * @throws IllegalArgumentException if the value found in element is not allowed for this enumeration.
+   * @param element - jdom element where the child is a string that is the name for a value of the enumeration.
+   */
+  public C1G2LockDataField(final Element element) {
+    this(element.getText());
+  }
+
+  /**
+   * Create new C1G2LockDataField by passing a string.
+   *
+   * @throws IllegalArgumentException if the string does not stand for a valid value.
+   */
+  public C1G2LockDataField(final String name) {
+    if (!isValidName(name)) {
+      throw new IllegalArgumentException("Name not allowed");
     }
 
-    /**
-     * Create new C1G2LockDataField by passing integer value.
-     *
-     * @throws IllegalArgumentException
-     * if the value is not allowed for this enumeration
-     * @param value an Integer value allowed - might check first
-     * with isValidValue it it is an allowed value
-     */
-    public C1G2LockDataField(int value) {
-        super(value);
+    this.value = getValue(name);
+    signed = false;
+  }
 
-        if (!isValidValue(value)) {
-            throw new IllegalArgumentException("Value not allowed");
-        }
+  /**
+   * Create new C1G2LockDataField by passing LLRPBitList.
+   *
+   * @throws IllegalArgumentException if the value found in the BitList is not allowed for this enumeration.
+   * @param list - LLRPBitList
+   */
+  public C1G2LockDataField(final LLRPBitList list) {
+    decodeBinary(list);
+
+    if (!isValidValue(toInteger())) {
+      throw new IllegalArgumentException("Value not allowed");
+    }
+  }
+
+  /**
+   * set the current value of this enumeration to the value identified by given string.
+   *
+   * @throws IllegalArgumentException if the value found for given String is not allowed for this enumeration.
+   * @param name set this enumeration to hold one of the allowed values
+   */
+  public final void set(final String name) {
+    if (!isValidName(name)) {
+      throw new IllegalArgumentException("name not allowed");
     }
 
-    /**
-    * Create new C1G2LockDataField by passing jdom element.
-    *
-    * @throws IllegalArgumentException
-    * if the value found in element is not allowed
-    * for this enumeration.
-    * @param element - jdom element where the child is a string
-    * that is the name for a value of the enumeration.
-    */
-    public C1G2LockDataField(final Element element) {
-        this(element.getText());
+    this.value = getValue(name);
+  }
+
+  /**
+   * set the current value of this enumeration to the value given.
+   *
+   * @throws IllegalArgumentException if the value is not allowed for this enumeration.
+   * @param value to be set
+   */
+  public final void set(final int value) {
+    if (!isValidValue(value)) {
+      throw new IllegalArgumentException("value not allowed");
     }
 
-    /**
-    * Create new C1G2LockDataField by passing a string.
-    *
-    * @throws IllegalArgumentException
-    * if the string does not stand for a valid value.
-    */
-    public C1G2LockDataField(final String name) {
-        if (!isValidName(name)) {
-            throw new IllegalArgumentException("Name not allowed");
-        }
+    this.value = value;
+  }
 
-        this.value = getValue(name);
-        signed = false;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(final String name, Namespace ns) {
+    Element element = new Element(name, ns);
+    //Element element = new Element(name, Namespace.getNamespace("llrp",LLRPConstants.LLRPNAMESPACE));
+    element.setContent(new Text(toString()));
 
-    /**
-     * Create new C1G2LockDataField by passing LLRPBitList.
-     *
-     * @throws IllegalArgumentException
-     * if the value found in the BitList is not allowed
-     * for this enumeration.
-     * @param list - LLRPBitList
-     */
-    public C1G2LockDataField(final LLRPBitList list) {
-        decodeBinary(list);
+    return element;
+  }
 
-        if (!isValidValue(new Integer(toInteger()))) {
-            throw new IllegalArgumentException("Value not allowed");
-        }
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String toString() {
+    return getName(toInteger());
+  }
 
-    /**
-    * set the current value of this enumeration to the
-    * value identified by given string.
-    *
-    * @throws IllegalArgumentException
-    * if the value found for given String is not allowed
-    * for this enumeration.
-    * @param name set this enumeration to hold one of the allowed values
-    */
-    public final void set(final String name) {
-        if (!isValidName(name)) {
-            throw new IllegalArgumentException("name not allowed");
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isValidValue(final int value) {
+    switch (value) {
+      case 0:
+        return true;
 
-        this.value = getValue(name);
-    }
+      case 1:
+        return true;
 
-    /**
-    * set the current value of this enumeration to the
-    * value given.
-    *
-    * @throws IllegalArgumentException
-    * if the value is not allowed
-    * for this enumeration.
-    * @param value to be set
-    */
-    public final void set(final int value) {
-        if (!isValidValue(value)) {
-            throw new IllegalArgumentException("value not allowed");
-        }
+      case 2:
+        return true;
 
-        this.value = value;
-    }
+      case 3:
+        return true;
 
-    /**
-            * {@inheritDoc}
-     */
-    public Content encodeXML(final String name, Namespace ns) {
-        Element element = new Element(name, ns);
-        //Element element = new Element(name, Namespace.getNamespace("llrp",LLRPConstants.LLRPNAMESPACE));
-        element.setContent(new Text(toString()));
+      case 4:
+        return true;
 
-        return element;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String toString() {
-        return getName(toInteger());
-    }
-
-    /**
-            * {@inheritDoc}
-     */
-    public boolean isValidValue(final int value) {
-        switch (value) {
-        case 0:
-            return true;
-
-        case 1:
-            return true;
-
-        case 2:
-            return true;
-
-        case 3:
-            return true;
-
-        case 4:
-            return true;
-
-        default:
-            return false;
-        }
-    }
-
-    /**
-            * {@inheritDoc}
-     */
-    public final int getValue(final String name) {
-        if (name.equalsIgnoreCase("Kill_Password")) {
-            return 0;
-        }
-
-        if (name.equalsIgnoreCase("Access_Password")) {
-            return 1;
-        }
-
-        if (name.equalsIgnoreCase("EPC_Memory")) {
-            return 2;
-        }
-
-        if (name.equalsIgnoreCase("TID_Memory")) {
-            return 3;
-        }
-
-        if (name.equalsIgnoreCase("User_Memory")) {
-            return 4;
-        }
-
-        return -1;
-    }
-
-    /**
-             * {@inheritDoc}
-     */
-    public final String getName(final int value) {
-        if (0 == value) {
-            return "Kill_Password";
-        }
-
-        if (1 == value) {
-            return "Access_Password";
-        }
-
-        if (2 == value) {
-            return "EPC_Memory";
-        }
-
-        if (3 == value) {
-            return "TID_Memory";
-        }
-
-        if (4 == value) {
-            return "User_Memory";
-        }
-
-        return "";
-    }
-
-    /**
-             * {@inheritDoc}
-     */
-    public boolean isValidName(final String name) {
-        if (name.equals("Kill_Password")) {
-            return true;
-        }
-
-        if (name.equals("Access_Password")) {
-            return true;
-        }
-
-        if (name.equals("EPC_Memory")) {
-            return true;
-        }
-
-        if (name.equals("TID_Memory")) {
-            return true;
-        }
-
-        if (name.equals("User_Memory")) {
-            return true;
-        }
-
+      default:
         return false;
     }
+  }
 
-    /**
-    * number of bits used to represent this type.
-    *
-    * @return Integer
-    */
-    public static int length() {
-        return UnsignedByte.length();
+  /**
+   * {@inheritDoc}
+   */
+  public final int getValue(final String name) {
+    if (name.equalsIgnoreCase("Kill_Password")) {
+      return 0;
     }
 
-    /**
-          * wrapper method for UnsignedIntegers that use BigIntegers to store value
-    *
-    */
-    private final String getName(final BigInteger value) {
-        logger.warn("C1G2LockDataField must convert BigInteger " + value +
-            " to Integer value " + value.intValue());
-
-        return getName(value.intValue());
+    if (name.equalsIgnoreCase("Access_Password")) {
+      return 1;
     }
 
-    /**
-    * wrapper method for UnsignedIntegers that use BigIntegers to store value
-    *
-    */
-    private final boolean isValidValue(final BigInteger value) {
-        logger.warn("C1G2LockDataField must convert BigInteger " + value +
-            " to Integer value " + value.intValue());
-
-        return isValidValue(value.intValue());
+    if (name.equalsIgnoreCase("EPC_Memory")) {
+      return 2;
     }
+
+    if (name.equalsIgnoreCase("TID_Memory")) {
+      return 3;
+    }
+
+    if (name.equalsIgnoreCase("User_Memory")) {
+      return 4;
+    }
+
+    return -1;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public final String getName(final int value) {
+    if (0 == value) {
+      return "Kill_Password";
+    }
+
+    if (1 == value) {
+      return "Access_Password";
+    }
+
+    if (2 == value) {
+      return "EPC_Memory";
+    }
+
+    if (3 == value) {
+      return "TID_Memory";
+    }
+
+    if (4 == value) {
+      return "User_Memory";
+    }
+
+    return "";
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isValidName(final String name) {
+    if (name.equals("Kill_Password")) {
+      return true;
+    }
+
+    if (name.equals("Access_Password")) {
+      return true;
+    }
+
+    if (name.equals("EPC_Memory")) {
+      return true;
+    }
+
+    if (name.equals("TID_Memory")) {
+      return true;
+    }
+
+    if (name.equals("User_Memory")) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * number of bits used to represent this type.
+   *
+   * @return Integer
+   */
+  public static int length() {
+    return UnsignedByte.length();
+  }
+
+  /**
+   * wrapper method for UnsignedIntegers that use BigIntegers to store value
+   *
+   */
+  private final String getName(final BigInteger value) {
+    logger.warn("C1G2LockDataField must convert BigInteger " + value
+      + " to Integer value " + value.intValue());
+
+    return getName(value.intValue());
+  }
+
+  /**
+   * wrapper method for UnsignedIntegers that use BigIntegers to store value
+   *
+   */
+  private final boolean isValidValue(final BigInteger value) {
+    logger.warn("C1G2LockDataField must convert BigInteger " + value
+      + " to Integer value " + value.intValue());
+
+    return isValidValue(value.intValue());
+  }
 }

@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,194 +47,195 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This parameter sets up the triggers for the Reader to send the access results to the Client. In addition, the Client can enable or disable reporting of ROSpec details in the access results.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=79&view=fit">LLRP Specification Section 13.2.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=143&view=fit">LLRP Specification Section 16.2.7.2</a>}
-
-
+ * This parameter sets up the triggers for the Reader to send the access results to the Client. In addition, the Client can enable or disable reporting of ROSpec details in the
+ * access results.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=79&view=fit">LLRP Specification Section 13.2.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=143&view=fit">LLRP Specification Section 16.2.7.2</a>}
+ *
+ *
  */
-
 /**
- * This parameter sets up the triggers for the Reader to send the access results to the Client. In addition, the Client can enable or disable reporting of ROSpec details in the access results.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=79&view=fit">LLRP Specification Section 13.2.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=143&view=fit">LLRP Specification Section 16.2.7.2</a>}
-
-      .
+ * This parameter sets up the triggers for the Reader to send the access results to the Client. In addition, the Client can enable or disable reporting of ROSpec details in the
+ * access results.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=79&view=fit">LLRP Specification Section 13.2.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=143&view=fit">LLRP Specification Section 16.2.7.2</a>}
+ *
+ * .
  */
 public class AccessReportSpec extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(239);
-    private static final Logger LOGGER = Logger.getLogger(AccessReportSpec.class);
-    protected AccessReportTriggerType accessReportTrigger;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public AccessReportSpec() {
+  public static final SignedShort TYPENUM = new SignedShort(239);
+  private static final Logger LOGGER = Logger.getLogger(AccessReportSpec.class);
+  protected AccessReportTriggerType accessReportTrigger;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public AccessReportSpec() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public AccessReportSpec(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public AccessReportSpec(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (accessReportTrigger == null) {
+      LOGGER.warn(" accessReportTrigger not set");
+      throw new MissingParameterException(
+        " accessReportTrigger not set  for Parameter of Type AccessReportSpec");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public AccessReportSpec(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(accessReportTrigger.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (accessReportTrigger == null) {
+      LOGGER.warn(" accessReportTrigger not set");
+      throw new MissingParameterException(" accessReportTrigger not set");
+    } else {
+      element.addContent(accessReportTrigger.encodeXML(
+        "AccessReportTrigger", ns));
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public AccessReportSpec(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    //parameters
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    accessReportTrigger = new AccessReportTriggerType(binary.subList(
+      position, AccessReportTriggerType.length()));
+    position += AccessReportTriggerType.length();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("AccessReportTrigger", ns);
+
+    if (temp != null) {
+      accessReportTrigger = new AccessReportTriggerType(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    element.removeChild("AccessReportTrigger", ns);
 
-        if (accessReportTrigger == null) {
-            LOGGER.warn(" accessReportTrigger not set");
-            throw new MissingParameterException(
-                " accessReportTrigger not set  for Parameter of Type AccessReportSpec");
-        }
-
-        resultBits.append(accessReportTrigger.encodeBinary());
-
-        return resultBits;
+    if (element.getChildren().size() > 0) {
+      String message = "AccessReportSpec has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+  //setters
+  /**
+   * set accessReportTrigger of type AccessReportTriggerType .
+   *
+   * @param accessReportTrigger to be set
+   */
+  public void setAccessReportTrigger(
+    final AccessReportTriggerType accessReportTrigger) {
+    this.accessReportTrigger = accessReportTrigger;
+  }
 
-        if (accessReportTrigger == null) {
-            LOGGER.warn(" accessReportTrigger not set");
-            throw new MissingParameterException(" accessReportTrigger not set");
-        } else {
-            element.addContent(accessReportTrigger.encodeXML(
-                    "AccessReportTrigger", ns));
-        }
+  // end setter
+  //getters
+  /**
+   * get accessReportTrigger of type AccessReportTriggerType.
+   *
+   * @return AccessReportTriggerType
+   */
+  public AccessReportTriggerType getAccessReportTrigger() {
+    return accessReportTrigger;
+  }
 
-        //parameters
-        return element;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        accessReportTrigger = new AccessReportTriggerType(binary.subList(
-                    position, AccessReportTriggerType.length()));
-        position += AccessReportTriggerType.length();
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "AccessReportSpec";
+  }
 
-        Element temp = null;
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "AccessReportSpec: ";
+    result += ", accessReportTrigger: ";
+    result += accessReportTrigger;
+    result = result.replaceFirst(", ", "");
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("AccessReportTrigger", ns);
-
-        if (temp != null) {
-            accessReportTrigger = new AccessReportTriggerType(temp);
-        }
-
-        element.removeChild("AccessReportTrigger", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "AccessReportSpec has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
-    }
-
-    //setters
-    /**
-    * set accessReportTrigger of type AccessReportTriggerType .
-    * @param  accessReportTrigger to be set
-    */
-    public void setAccessReportTrigger(
-        final AccessReportTriggerType accessReportTrigger) {
-        this.accessReportTrigger = accessReportTrigger;
-    }
-
-    // end setter
-
-    //getters
-    /**
-    * get accessReportTrigger of type AccessReportTriggerType.
-    * @return  AccessReportTriggerType
-    */
-    public AccessReportTriggerType getAccessReportTrigger() {
-        return accessReportTrigger;
-    }
-
-    // end getters
-
-    //add methods
-
-    // end add
-
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "AccessReportSpec";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "AccessReportSpec: ";
-        result += ", accessReportTrigger: ";
-        result += accessReportTrigger;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

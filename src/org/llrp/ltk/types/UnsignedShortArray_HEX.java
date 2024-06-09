@@ -6,107 +6,108 @@ import org.jdom.Content;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.Text;
+
 /**
  * Array of unsigned shorts encoded in HEX Format. Length encoded in first 16 bits of binary encoding
+ *
  * @author Basil Gasser - ETH Zurich
  *
  */
 public class UnsignedShortArray_HEX extends UnsignedShortArray {
-	public UnsignedShortArray_HEX(Element element) {
-		super(element);
-	}
 
-	/**
-	 * Creates a new UnsignedShortArray object.
-	 * 
-	 * @param length
-	 *            of array
-	 */
-	public UnsignedShortArray_HEX(int length) {
-		super(length);
-	}
+  public UnsignedShortArray_HEX(Element element) {
+    super(element);
+  }
 
-	public UnsignedShortArray_HEX(short[] data) {
-		this.shorts = new UnsignedShort[data.length];
-		for (int i = 0; i < data.length; i++) {
-			shorts[i] = new UnsignedShort(data[i]);
-		}
-	}
+  /**
+   * Creates a new UnsignedShortArray object.
+   *
+   * @param length of array
+   */
+  public UnsignedShortArray_HEX(int length) {
+    super(length);
+  }
 
-	/**
-	 * @param string
-	 */
-	public UnsignedShortArray_HEX(String string) {
-		Element element = new Element("foo", "ns");
-		element.setText(string);
-		decodeXML(element);
-	}
+  public UnsignedShortArray_HEX(short[] data) {
+    this.shorts = new UnsignedShort[data.length];
+    for (int i = 0; i < data.length; i++) {
+      shorts[i] = new UnsignedShort(data[i]);
+    }
+  }
 
-	/**
-	 * first 16 bits of LLRPBitlist must indicate number of entries that follow
-	 * 
-	 * @param bits
-	 *            to be decoded
-	 */
-	public UnsignedShortArray_HEX(LLRPBitList bits) {
-		super(bits);
-	}
+  /**
+   * @param string
+   */
+  public UnsignedShortArray_HEX(String string) {
+    Element element = new Element("foo", "ns");
+    element.setText(string);
+    decodeXML(element);
+  }
 
-	/**
-	 * Creates a new UnsignedShortArray_HEX object.
-	 */
-	public UnsignedShortArray_HEX() {
-		super();
-	}
+  /**
+   * first 16 bits of LLRPBitlist must indicate number of entries that follow
+   *
+   * @param bits to be decoded
+   */
+  public UnsignedShortArray_HEX(LLRPBitList bits) {
+    super(bits);
+  }
 
-	@Override
-	public Content encodeXML(String name, Namespace ns) {
+  /**
+   * Creates a new UnsignedShortArray_HEX object.
+   */
+  public UnsignedShortArray_HEX() {
+    super();
+  }
 
-		Element element = new Element(name, ns);
-		element.setContent(new Text(toString()));
+  @Override
+  public Content encodeXML(String name, Namespace ns) {
 
-		return element;
-	}
+    Element element = new Element(name, ns);
+    element.setContent(new Text(toString()));
 
-	@Override
-	public void decodeXML(Element element) {
-		String text = element.getText();
-		if (!text.equals("")) {
-			String[] strings = text.split(" ");
-			shorts = new UnsignedShort[strings.length];
+    return element;
+  }
 
-			for (int i = 0; i < strings.length; i++) {
-				if (!strings[i].equals("")) {
-					shorts[i] = new UnsignedShort(Integer.parseInt(strings[i],
-							16));
-				}
-			}
-		} else {
-			shorts = new UnsignedShort[0];
-		}
-	}
+  @Override
+  public void decodeXML(Element element) {
+    String text = element.getText();
+    if (!text.equals("")) {
+      String[] strings = text.split(" ");
+      shorts = new UnsignedShort[strings.length];
 
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		for (UnsignedShort b : shorts) {
-			if (b != null) {
-				sb.append(" ");
-				String s = b.toString(16);
-				int check = s.length()%4;
-				StringBuffer padding = new StringBuffer();
-				if (check!=0){
-					for (int i=0;i<4-check;i++){
-						padding.append("0");
-					}
-				}
-				sb.append(padding.append(s));
-			}
-		}
-		// remove initial " " in the string
-		if (sb.length() > 0 && sb.toString().startsWith(" ")) {
-			sb.deleteCharAt(0);
-		}
-		
-		return sb.toString();
-	}
+      for (int i = 0; i < strings.length; i++) {
+        if (!strings[i].equals("")) {
+          shorts[i] = new UnsignedShort(Integer.parseInt(strings[i],
+            16));
+        }
+      }
+    } else {
+      shorts = new UnsignedShort[0];
+    }
+  }
+
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    for (UnsignedShort b : shorts) {
+      if (b != null) {
+        sb.append(" ");
+        String s = b.toString(16);
+        int check = s.length() % 4;
+        StringBuffer padding = new StringBuffer();
+        if (check != 0) {
+          for (int i = 0; i < 4 - check; i++) {
+            padding.append("0");
+          }
+        }
+        sb.append(padding.append(s));
+      }
+    }
+    // remove initial " " in the string
+    if (sb.length() > 0 && sb.toString().startsWith(" ")) {
+      sb.deleteCharAt(0);
+    }
+
+    return sb.toString();
+  }
 }

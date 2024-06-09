@@ -20,30 +20,27 @@ import java.io.IOException;
 
 import org.xml.sax.SAXException;
 
-
 /**
- * Main LLRP Exception - this exception is thrown whenever an invalid
- * LLRP message is detected during binary or XML message encoding and decoding. 
- * The validation of a binary message is based on the 
- * rules specified in the llrpdef.xml. When encoding and decoding LLRP
- * messages in the LTK-XML message format, this exception is also thrown
- * if the message cannot be validated against the LLRP.xsd schema.
+ * Main LLRP Exception - this exception is thrown whenever an invalid LLRP message is detected during binary or XML message encoding and decoding. The validation of a binary
+ * message is based on the rules specified in the llrpdef.xml. When encoding and decoding LLRP messages in the LTK-XML message format, this exception is also thrown if the message
+ * cannot be validated against the LLRP.xsd schema.
  *
  * @author Basil Gasser - ETH Zurich
  * @author Christian Floerkemeier - MIT
  */
 public class InvalidLLRPMessageException extends Exception {
-    /**
-         * Creates a new LLRPException object.
-         *
-         * @param message string
-         */
-    public InvalidLLRPMessageException(final String message) {
-        super(message);
-    }
 
-	public InvalidLLRPMessageException(String string, Exception e) {
-		super(string,e);
-	}
+  /**
+   * Creates a new LLRPException object.
+   *
+   * @param message string
+   */
+  public InvalidLLRPMessageException(final String message) {
+    super(message);
+  }
+
+  public InvalidLLRPMessageException(String string, Exception e) {
+    super(string, e);
+  }
 
 }

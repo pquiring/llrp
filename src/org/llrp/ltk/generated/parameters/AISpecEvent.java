@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,381 +50,388 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This parameter carries the AISpec event details. The EventType is the end of the AISpec. When reporting the end event, the AirProtocolSingulationDetails MAY be reported if it is supported by the Reader and EventType of 7 has been enabled (Section 13.2.5.1).
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=91&view=fit">LLRP Specification Section 13.2.6.9</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.8</a>}
-
-
+ * This parameter carries the AISpec event details. The EventType is the end of the AISpec. When reporting the end event, the AirProtocolSingulationDetails MAY be reported if it is
+ * supported by the Reader and EventType of 7 has been enabled (Section 13.2.5.1).
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=91&view=fit">LLRP Specification Section 13.2.6.9</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.8</a>}
+ *
+ *
  */
-
 /**
- * This parameter carries the AISpec event details. The EventType is the end of the AISpec. When reporting the end event, the AirProtocolSingulationDetails MAY be reported if it is supported by the Reader and EventType of 7 has been enabled (Section 13.2.5.1).
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=91&view=fit">LLRP Specification Section 13.2.6.9</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.8</a>}
-
-      .
+ * This parameter carries the AISpec event details. The EventType is the end of the AISpec. When reporting the end event, the AirProtocolSingulationDetails MAY be reported if it is
+ * supported by the Reader and EventType of 7 has been enabled (Section 13.2.5.1).
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=91&view=fit">LLRP Specification Section 13.2.6.9</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.8</a>}
+ *
+ * .
  */
 public class AISpecEvent extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(254);
-    private static final Logger LOGGER = Logger.getLogger(AISpecEvent.class);
-    protected AISpecEventType eventType;
-    protected UnsignedInteger rOSpecID;
-    protected UnsignedShort specIndex;
-    protected AirProtocolSingulationDetails airProtocolSingulationDetails;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public AISpecEvent() {
+  public static final SignedShort TYPENUM = new SignedShort(254);
+  private static final Logger LOGGER = Logger.getLogger(AISpecEvent.class);
+  protected AISpecEventType eventType;
+  protected UnsignedInteger rOSpecID;
+  protected UnsignedShort specIndex;
+  protected AirProtocolSingulationDetails airProtocolSingulationDetails;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public AISpecEvent() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public AISpecEvent(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public AISpecEvent(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (eventType == null) {
+      LOGGER.warn(" eventType not set");
+      throw new MissingParameterException(
+        " eventType not set  for Parameter of Type AISpecEvent");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public AISpecEvent(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(eventType.encodeBinary());
+
+    if (rOSpecID == null) {
+      LOGGER.warn(" rOSpecID not set");
+      throw new MissingParameterException(
+        " rOSpecID not set  for Parameter of Type AISpecEvent");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public AISpecEvent(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(rOSpecID.encodeBinary());
+
+    if (specIndex == null) {
+      LOGGER.warn(" specIndex not set");
+      throw new MissingParameterException(
+        " specIndex not set  for Parameter of Type AISpecEvent");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(specIndex.encodeBinary());
 
-        if (eventType == null) {
-            LOGGER.warn(" eventType not set");
-            throw new MissingParameterException(
-                " eventType not set  for Parameter of Type AISpecEvent");
-        }
-
-        resultBits.append(eventType.encodeBinary());
-
-        if (rOSpecID == null) {
-            LOGGER.warn(" rOSpecID not set");
-            throw new MissingParameterException(
-                " rOSpecID not set  for Parameter of Type AISpecEvent");
-        }
-
-        resultBits.append(rOSpecID.encodeBinary());
-
-        if (specIndex == null) {
-            LOGGER.warn(" specIndex not set");
-            throw new MissingParameterException(
-                " specIndex not set  for Parameter of Type AISpecEvent");
-        }
-
-        resultBits.append(specIndex.encodeBinary());
-
-        if (airProtocolSingulationDetails == null) {
-            // optional parameter, may be null
-            LOGGER.info(" airProtocolSingulationDetails not set");
-        } else {
-            resultBits.append(airProtocolSingulationDetails.encodeBinary());
-        }
-
-        return resultBits;
+    if (airProtocolSingulationDetails == null) {
+      // optional parameter, may be null
+      LOGGER.info(" airProtocolSingulationDetails not set");
+    } else {
+      resultBits.append(airProtocolSingulationDetails.encodeBinary());
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    return resultBits;
+  }
 
-        if (eventType == null) {
-            LOGGER.warn(" eventType not set");
-            throw new MissingParameterException(" eventType not set");
-        } else {
-            element.addContent(eventType.encodeXML("EventType", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        if (rOSpecID == null) {
-            LOGGER.warn(" rOSpecID not set");
-            throw new MissingParameterException(" rOSpecID not set");
-        } else {
-            element.addContent(rOSpecID.encodeXML("ROSpecID", ns));
-        }
-
-        if (specIndex == null) {
-            LOGGER.warn(" specIndex not set");
-            throw new MissingParameterException(" specIndex not set");
-        } else {
-            element.addContent(specIndex.encodeXML("SpecIndex", ns));
-        }
-
-        //parameters
-        if (airProtocolSingulationDetails == null) {
-            LOGGER.info("airProtocolSingulationDetails not set");
-        } else {
-            element.addContent(airProtocolSingulationDetails.encodeXML(
-                    airProtocolSingulationDetails.getClass().getSimpleName(), ns));
-        }
-
-        return element;
+    if (eventType == null) {
+      LOGGER.warn(" eventType not set");
+      throw new MissingParameterException(" eventType not set");
+    } else {
+      element.addContent(eventType.encodeXML("EventType", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        eventType = new AISpecEventType(binary.subList(position,
-                    AISpecEventType.length()));
-        position += AISpecEventType.length();
-        rOSpecID = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        specIndex = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-
-        // look ahead to see type
-        // may be optional or exactly once
-        type = null;
-        tempByteLength = 0;
-        tempLength = 0;
-
-        try {
-            // if first bit is one it is a TV Parameter
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-        } catch (IllegalArgumentException le) {
-            // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
-            LOGGER.info(
-                "AISpecEvent misses optional parameter of type AirProtocolSingulationDetails");
-        }
-
-        boolean found = false;
-        LOGGER.debug("decoding choice type AirProtocolSingulationDetails ");
-
-        //if first bit is 1 it is a TV Parameter
-        if (binary.get(position)) {
-            // length can statically be determined for TV Parameters
-            tempLength = C1G2SingulationDetails.length();
-        }
-
-        if ((type != null) && type.equals(C1G2SingulationDetails.TYPENUM)) {
-            airProtocolSingulationDetails = new C1G2SingulationDetails(binary.subList(
-                        position, tempLength));
-            LOGGER.debug(
-                " airProtocolSingulationDetails instatiated to C1G2SingulationDetails with length " +
-                tempLength);
-            position += tempLength;
-            found = true;
-        }
-
-        if (!found) {
-            LOGGER.info(
-                "encoded message misses optional parameter airProtocolSingulationDetails");
-        }
+    if (rOSpecID == null) {
+      LOGGER.warn(" rOSpecID not set");
+      throw new MissingParameterException(" rOSpecID not set");
+    } else {
+      element.addContent(rOSpecID.encodeXML("ROSpecID", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
-
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("EventType", ns);
-
-        if (temp != null) {
-            eventType = new AISpecEventType(temp);
-        }
-
-        element.removeChild("EventType", ns);
-        temp = element.getChild("ROSpecID", ns);
-
-        if (temp != null) {
-            rOSpecID = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("ROSpecID", ns);
-        temp = element.getChild("SpecIndex", ns);
-
-        if (temp != null) {
-            specIndex = new UnsignedShort(temp);
-        }
-
-        element.removeChild("SpecIndex", ns);
-
-        //choices - must check all possible subtypes
-        boolean found = false;
-        LOGGER.debug("decoding choice type AirProtocolSingulationDetails ");
-        // try to get child for each possible subtype
-        temp = element.getChild("C1G2SingulationDetails", ns);
-
-        if (temp != null) {
-            airProtocolSingulationDetails = new C1G2SingulationDetails(temp);
-            LOGGER.debug(
-                " airProtocolSingulationDetails instatiated to C1G2SingulationDetails with");
-            found = true;
-        }
-
-        element.removeChild("C1G2SingulationDetails", ns);
-
-        if (!found) {
-            LOGGER.info(
-                "AISpecEvent misses optional parameter of type airProtocolSingulationDetailsList");
-        }
-
-        if (element.getChildren().size() > 0) {
-            String message = "AISpecEvent has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (specIndex == null) {
+      LOGGER.warn(" specIndex not set");
+      throw new MissingParameterException(" specIndex not set");
+    } else {
+      element.addContent(specIndex.encodeXML("SpecIndex", ns));
     }
 
-    //setters
-    /**
-    * set eventType of type AISpecEventType .
-    * @param  eventType to be set
-    */
-    public void setEventType(final AISpecEventType eventType) {
-        this.eventType = eventType;
+    //parameters
+    if (airProtocolSingulationDetails == null) {
+      LOGGER.info("airProtocolSingulationDetails not set");
+    } else {
+      element.addContent(airProtocolSingulationDetails.encodeXML(
+        airProtocolSingulationDetails.getClass().getSimpleName(), ns));
     }
 
-    /**
-    * set   rOSpecID of type UnsignedInteger .
-    * @param   rOSpecID to be set
-    */
-    public void setROSpecID(final UnsignedInteger rOSpecID) {
-        this.rOSpecID = rOSpecID;
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    eventType = new AISpecEventType(binary.subList(position,
+      AISpecEventType.length()));
+    position += AISpecEventType.length();
+    rOSpecID = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    specIndex = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+
+    // look ahead to see type
+    // may be optional or exactly once
+    type = null;
+    tempByteLength = 0;
+    tempLength = 0;
+
+    try {
+      // if first bit is one it is a TV Parameter
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+    } catch (IllegalArgumentException le) {
+      // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
+      LOGGER.info(
+        "AISpecEvent misses optional parameter of type AirProtocolSingulationDetails");
     }
 
-    /**
-    * set   specIndex of type UnsignedShort .
-    * @param   specIndex to be set
-    */
-    public void setSpecIndex(final UnsignedShort specIndex) {
-        this.specIndex = specIndex;
+    boolean found = false;
+    LOGGER.debug("decoding choice type AirProtocolSingulationDetails ");
+
+    //if first bit is 1 it is a TV Parameter
+    if (binary.get(position)) {
+      // length can statically be determined for TV Parameters
+      tempLength = C1G2SingulationDetails.length();
     }
 
-    /**
-    * set airProtocolSingulationDetails of type AirProtocolSingulationDetails.
-    * @param  airProtocolSingulationDetails to be set
-    */
-    public void setAirProtocolSingulationDetails(
-        final AirProtocolSingulationDetails airProtocolSingulationDetails) {
-        this.airProtocolSingulationDetails = airProtocolSingulationDetails;
+    if ((type != null) && type.equals(C1G2SingulationDetails.TYPENUM)) {
+      airProtocolSingulationDetails = new C1G2SingulationDetails(binary.subList(
+        position, tempLength));
+      LOGGER.debug(
+        " airProtocolSingulationDetails instatiated to C1G2SingulationDetails with length "
+        + tempLength);
+      position += tempLength;
+      found = true;
     }
 
-    // end setter
+    if (!found) {
+      LOGGER.info(
+        "encoded message misses optional parameter airProtocolSingulationDetails");
+    }
+  }
 
-    //getters
-    /**
-    * get eventType of type AISpecEventType.
-    * @return  AISpecEventType
-    */
-    public AISpecEventType getEventType() {
-        return eventType;
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("EventType", ns);
+
+    if (temp != null) {
+      eventType = new AISpecEventType(temp);
     }
 
-    /**
-    * get   rOSpecID of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getROSpecID() {
-        return this.rOSpecID;
+    element.removeChild("EventType", ns);
+    temp = element.getChild("ROSpecID", ns);
+
+    if (temp != null) {
+      rOSpecID = new UnsignedInteger(temp);
     }
 
-    /**
-    * get   specIndex of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getSpecIndex() {
-        return this.specIndex;
+    element.removeChild("ROSpecID", ns);
+    temp = element.getChild("SpecIndex", ns);
+
+    if (temp != null) {
+      specIndex = new UnsignedShort(temp);
     }
 
-    /**
-    * get airProtocolSingulationDetails of type AirProtocolSingulationDetails .
-    * @return  AirProtocolSingulationDetails
-    */
-    public AirProtocolSingulationDetails getAirProtocolSingulationDetails() {
-        return airProtocolSingulationDetails;
+    element.removeChild("SpecIndex", ns);
+
+    //choices - must check all possible subtypes
+    boolean found = false;
+    LOGGER.debug("decoding choice type AirProtocolSingulationDetails ");
+    // try to get child for each possible subtype
+    temp = element.getChild("C1G2SingulationDetails", ns);
+
+    if (temp != null) {
+      airProtocolSingulationDetails = new C1G2SingulationDetails(temp);
+      LOGGER.debug(
+        " airProtocolSingulationDetails instatiated to C1G2SingulationDetails with");
+      found = true;
     }
 
-    // end getters
+    element.removeChild("C1G2SingulationDetails", ns);
 
-    //add methods
-
-    // end add
-
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
+    if (!found) {
+      LOGGER.info(
+        "AISpecEvent misses optional parameter of type airProtocolSingulationDetailsList");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
+    if (element.getChildren().size() > 0) {
+      String message = "AISpecEvent has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "AISpecEvent";
-    }
+  //setters
+  /**
+   * set eventType of type AISpecEventType .
+   *
+   * @param eventType to be set
+   */
+  public void setEventType(final AISpecEventType eventType) {
+    this.eventType = eventType;
+  }
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "AISpecEvent: ";
-        result += ", eventType: ";
-        result += eventType;
-        result += ", rOSpecID: ";
-        result += rOSpecID;
-        result += ", specIndex: ";
-        result += specIndex;
-        result = result.replaceFirst(", ", "");
+  /**
+   * set rOSpecID of type UnsignedInteger .
+   *
+   * @param rOSpecID to be set
+   */
+  public void setROSpecID(final UnsignedInteger rOSpecID) {
+    this.rOSpecID = rOSpecID;
+  }
 
-        return result;
-    }
+  /**
+   * set specIndex of type UnsignedShort .
+   *
+   * @param specIndex to be set
+   */
+  public void setSpecIndex(final UnsignedShort specIndex) {
+    this.specIndex = specIndex;
+  }
+
+  /**
+   * set airProtocolSingulationDetails of type AirProtocolSingulationDetails.
+   *
+   * @param airProtocolSingulationDetails to be set
+   */
+  public void setAirProtocolSingulationDetails(
+    final AirProtocolSingulationDetails airProtocolSingulationDetails) {
+    this.airProtocolSingulationDetails = airProtocolSingulationDetails;
+  }
+
+  // end setter
+  //getters
+  /**
+   * get eventType of type AISpecEventType.
+   *
+   * @return AISpecEventType
+   */
+  public AISpecEventType getEventType() {
+    return eventType;
+  }
+
+  /**
+   * get rOSpecID of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getROSpecID() {
+    return this.rOSpecID;
+  }
+
+  /**
+   * get specIndex of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getSpecIndex() {
+    return this.specIndex;
+  }
+
+  /**
+   * get airProtocolSingulationDetails of type AirProtocolSingulationDetails .
+   *
+   * @return AirProtocolSingulationDetails
+   */
+  public AirProtocolSingulationDetails getAirProtocolSingulationDetails() {
+    return airProtocolSingulationDetails;
+  }
+
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "AISpecEvent";
+  }
+
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "AISpecEvent: ";
+    result += ", eventType: ";
+    result += eventType;
+    result += ", rOSpecID: ";
+    result += rOSpecID;
+    result += ", specIndex: ";
+    result += specIndex;
+    result = result.replaceFirst(", ", "");
+
+    return result;
+  }
 }

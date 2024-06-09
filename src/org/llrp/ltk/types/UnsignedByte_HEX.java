@@ -24,107 +24,102 @@ import org.jdom.Text;
 
 /**
  * unsigned 16 bit short
- * 
+ *
  * @author Basil Gasser - ETH Zurich
  */
 public class UnsignedByte_HEX extends UnsignedByte {
-	private static final Integer LENGTH = 8;
 
-	/**
-	 * Creates a new UnsignedByte_HEX object.
-	 * 
-	 * @param value
-	 *            to set
-	 */
-	public UnsignedByte_HEX(int value) {
-		if (value < 0) {
-			this.value = (2*Byte.MAX_VALUE+value+2);
-		} else {
-			this.value = value;
-		}
-		signed = false;
-		if (!inRange(this.value)) {
-			throw new IllegalArgumentException("value " + value
-					+ " not in range allowed for UnsignedByte_HEX");
-		}
-	}
+  private static final Integer LENGTH = 8;
 
-	/**
-	 * Creates a new UnsignedByte_HEX object from byte
-	 * 
-	 * @param value
-	 *            interpreted as unsigned byte
-	 */
-	public UnsignedByte_HEX(byte value) {
-		this((int) value);
-	}
+  /**
+   * Creates a new UnsignedByte_HEX object.
+   *
+   * @param value to set
+   */
+  public UnsignedByte_HEX(int value) {
+    if (value < 0) {
+      this.value = (2 * Byte.MAX_VALUE + value + 2);
+    } else {
+      this.value = value;
+    }
+    signed = false;
+    if (!inRange(this.value)) {
+      throw new IllegalArgumentException("value " + value
+        + " not in range allowed for UnsignedByte_HEX");
+    }
+  }
 
-	/**
-	 * Creates a new UnsignedByte_HEX object.
-	 * 
-	 * @param valueString
-	 *            value as string
-	 */
-	public UnsignedByte_HEX(String valueString) {
-		this(Integer.parseInt(valueString,16));
-		if (!inRange(value)) {
-			throw new IllegalArgumentException("value " + valueString
-					+ " not in range");
-		}
-	}
+  /**
+   * Creates a new UnsignedByte_HEX object from byte
+   *
+   * @param value interpreted as unsigned byte
+   */
+  public UnsignedByte_HEX(byte value) {
+    this((int) value);
+  }
 
-	/**
-	 * Creates a new UnsignedByte_HEX object.
-	 * 
-	 * @param bitList
-	 *            to be decoded
-	 */
-	public UnsignedByte_HEX(LLRPBitList bitList) {
-		decodeBinary(bitList);
-		signed = false;
-	}
+  /**
+   * Creates a new UnsignedByte_HEX object.
+   *
+   * @param valueString value as string
+   */
+  public UnsignedByte_HEX(String valueString) {
+    this(Integer.parseInt(valueString, 16));
+    if (!inRange(value)) {
+      throw new IllegalArgumentException("value " + valueString
+        + " not in range");
+    }
+  }
 
-	/**
-	 * Creates a new UnsignedByte_HEX object.
-	 */
-	public UnsignedByte_HEX() {
-		value = 0;
-		signed = false;
-	}
+  /**
+   * Creates a new UnsignedByte_HEX object.
+   *
+   * @param bitList to be decoded
+   */
+  public UnsignedByte_HEX(LLRPBitList bitList) {
+    decodeBinary(bitList);
+    signed = false;
+  }
 
-	/**
-	 * String representation in specified radix.
-	 * 
-	 */
-	public UnsignedByte_HEX(String valueString, int radix) {
-		this(new BigInteger(valueString, radix).intValue());
-	}
+  /**
+   * Creates a new UnsignedByte_HEX object.
+   */
+  public UnsignedByte_HEX() {
+    value = 0;
+    signed = false;
+  }
 
-	public UnsignedByte_HEX(Element element) {
-		decodeXML(element);
-	}
+  /**
+   * String representation in specified radix.
+   *
+   */
+  public UnsignedByte_HEX(String valueString, int radix) {
+    this(new BigInteger(valueString, radix).intValue());
+  }
 
-	@Override
-	public void decodeXML(Element element) {
-		value = Integer.parseInt(element.getText(), 16);
-	}
+  public UnsignedByte_HEX(Element element) {
+    decodeXML(element);
+  }
 
-	
+  @Override
+  public void decodeXML(Element element) {
+    value = Integer.parseInt(element.getText(), 16);
+  }
 
-	@Override
-	public Content encodeXML(String name, Namespace ns) {
-		Element element = new Element(name, ns);
-		element.setContent(new Text(Integer.toHexString(value)));
+  @Override
+  public Content encodeXML(String name, Namespace ns) {
+    Element element = new Element(name, ns);
+    element.setContent(new Text(Integer.toHexString(value)));
 
-		return element;
-	}
+    return element;
+  }
 
-	public String toString(int radix) {
-		return Integer.toString(value, radix).replace("-", "");
-	}
+  public String toString(int radix) {
+    return Integer.toString(value, radix).replace("-", "");
+  }
 
-	public String toString() {
-		return toString(16);
-	}
+  public String toString() {
+    return toString(16);
+  }
 
 }

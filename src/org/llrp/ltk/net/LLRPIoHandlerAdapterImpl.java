@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions
  * and limitations under the License.
  */
-
 package org.llrp.ltk.net;
 
 import java.util.concurrent.BlockingQueue;
@@ -31,183 +30,161 @@ import org.llrp.ltk.types.LLRPMessage;
 
 /**
  *
- * LLRPIoHandlerAdapterImpl is the default implementation of the LLRPIoHandlerAdapter.
- * It handles incoming messages: routes incoming asynchronous messages
- * to the LLRPEndpoint registered, replies to KEEP_ALIVE messages and handles incoming READER_NOTIFICATION
- * messages and responses to synchronous calls.
+ * LLRPIoHandlerAdapterImpl is the default implementation of the LLRPIoHandlerAdapter. It handles incoming messages: routes incoming asynchronous messages to the LLRPEndpoint
+ * registered, replies to KEEP_ALIVE messages and handles incoming READER_NOTIFICATION messages and responses to synchronous calls.
  *
  */
+public class LLRPIoHandlerAdapterImpl extends LLRPIoHandlerAdapter {
 
-public class LLRPIoHandlerAdapterImpl extends LLRPIoHandlerAdapter{
-	private Logger log = Logger.getLogger(LLRPIoHandlerAdapterImpl.class);
-	private LLRPConnection connection;
-	private BlockingQueue<LLRPMessage> synMessageQueue = new LinkedBlockingQueue<LLRPMessage>();
-	private BlockingQueue<ConnectionAttemptEvent> connectionAttemptEventQueue = new LinkedBlockingQueue<ConnectionAttemptEvent>(1);
-	private boolean keepAliveAck = true;
-	private boolean keepAliveForward = false;
+  private Logger log = Logger.getLogger(LLRPIoHandlerAdapterImpl.class);
+  private LLRPConnection connection;
+  private BlockingQueue<LLRPMessage> synMessageQueue = new LinkedBlockingQueue<LLRPMessage>();
+  private BlockingQueue<ConnectionAttemptEvent> connectionAttemptEventQueue = new LinkedBlockingQueue<ConnectionAttemptEvent>(1);
+  private boolean keepAliveAck = true;
+  private boolean keepAliveForward = false;
 
+  public LLRPIoHandlerAdapterImpl(LLRPConnection connection) {
+    this.connection = connection;
+  }
 
-	public LLRPIoHandlerAdapterImpl(LLRPConnection connection) {
-		this.connection = connection;
-	}
+  public LLRPIoHandlerAdapterImpl() {
+  }
 
-	public LLRPIoHandlerAdapterImpl() {
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public void sessionOpened(IoSession session) throws Exception {
+    log.debug("session is opened:" + session);
+    this.connection.session = session;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
+  /**
+   * is called whenever an LLRP Message is received. The method replies to incoming KEEP_ALIVE messages by sending an KEEP_ALIVE_ACK when the keepAliveAck flag is set.
+   * ConnectionAttemptEvents of incoming are stored in a queue that can be retrieved using the getConnectionAttemptEventQueue method. messageReceived also checks whether the
+   * incoming message is a response to previously method sent via the LLRPConnection.transact method. Matching messages are stored in a queue that can be retrieved via the
+   * getSynMessageQueue() method. All incoming messages except KEEP_ALIVE and those identified as synchronous responses to the LLRPConnection.transact method are passed to the
+   * LLRPEndpoint registered.
+   */
+  public void messageReceived(IoSession session, Object message)
+    throws Exception {
+    LLRPMessage llrpMessage = (LLRPMessage) message;
+    log.info("message " + message.getClass() + " received in session " + session);
+    if (log.isDebugEnabled()) {
+      log.debug(llrpMessage.toXMLString());
+    }
+    if (message instanceof KEEPALIVE) {
+      if (keepAliveForward) {
+        connection.getEndpoint().messageReceived(llrpMessage);
+      }
+      if (keepAliveAck) {
+        session.write(new KEEPALIVE_ACK());
+        return;
+      }
 
-	public void sessionOpened(IoSession session) throws Exception {
-		log.debug("session is opened:"+session);
-		this.connection.session = session;
-	}
-
-	/**
-	 * is called whenever an LLRP Message is received. The method replies to incoming
-	 * KEEP_ALIVE messages by sending an KEEP_ALIVE_ACK when the keepAliveAck flag is set.
-	 * ConnectionAttemptEvents of incoming are stored in a queue that can be retrieved using
-	 * the getConnectionAttemptEventQueue method. messageReceived also checks whether the
-	 * incoming message is a response to previously method sent via the LLRPConnection.transact
-	 * method. Matching messages are stored in a queue that can be retrieved via the
-	 * getSynMessageQueue() method. All incoming messages except KEEP_ALIVE and those identified
-	 * as synchronous responses to the LLRPConnection.transact method are passed to the
-	 * LLRPEndpoint registered.
-	 */
-
-	public void messageReceived(IoSession session, Object message)
-			throws Exception {
-		LLRPMessage llrpMessage = (LLRPMessage) message;
-		log.info("message "+message.getClass()+" received in session "+session);
-		if (log.isDebugEnabled()) {
-			log.debug(llrpMessage.toXMLString());
-		}
-		if(message instanceof KEEPALIVE){
-			if (keepAliveForward) {
-				connection.getEndpoint().messageReceived(llrpMessage);
-			}
-			if(keepAliveAck){
-				session.write(new KEEPALIVE_ACK());
-				return;
-			}
-
-		}
-
-		if (llrpMessage instanceof READER_EVENT_NOTIFICATION) {
-			 ConnectionAttemptEvent connectionAttemptEvent = ((READER_EVENT_NOTIFICATION)message).getReaderEventNotificationData().getConnectionAttemptEvent();
-			 if(connectionAttemptEvent != null){
-				 connectionAttemptEventQueue.add(connectionAttemptEvent);
-				 connection.getEndpoint().messageReceived(llrpMessage);
-				 return;
-			 }
-		}
-
-		String expectedSyncMessage = (String) session.getAttribute(LLRPConnection.SYNC_MESSAGE_ANSWER);
-		// send message only if not already handled by synchronous call
-		if (!llrpMessage.getName().equals(expectedSyncMessage)){
-			log.debug("Calling messageReceived of endpoint ... "+session);
-			connection.getEndpoint().messageReceived(llrpMessage);
-		}else{
-			synMessageQueue.add(llrpMessage);
-			log.debug("Adding message "+message.getClass()+" to transaction queue "+session);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-
-	public void messageSent(IoSession session, Object message)	throws java.lang.Exception {
-		if (log.isInfoEnabled()) {
-			log.info( "Message " + ((LLRPMessage)message).getName() + " successfully transmitted");
-		}
-		if (log.isDebugEnabled()) {
-			log.debug(((LLRPMessage)message).toXMLString());
-		}
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-
-	public void exceptionCaught(IoSession session, Throwable cause)
-			throws Exception {
-		connection.getEndpoint().errorOccured(cause.getClass().getName());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-
-    public void sessionIdle( IoSession session, IdleStatus status ) throws Exception
-    {
-        System.out.println( "IDLE " + session.getIdleCount( status ));
     }
 
-    /**
-	 * {@inheritDoc}
-	 */
+    if (llrpMessage instanceof READER_EVENT_NOTIFICATION) {
+      ConnectionAttemptEvent connectionAttemptEvent = ((READER_EVENT_NOTIFICATION) message).getReaderEventNotificationData().getConnectionAttemptEvent();
+      if (connectionAttemptEvent != null) {
+        connectionAttemptEventQueue.add(connectionAttemptEvent);
+        connection.getEndpoint().messageReceived(llrpMessage);
+        return;
+      }
+    }
 
-	public BlockingQueue<LLRPMessage> getSynMessageQueue() {
-		return synMessageQueue;
-	}
+    String expectedSyncMessage = (String) session.getAttribute(LLRPConnection.SYNC_MESSAGE_ANSWER);
+    // send message only if not already handled by synchronous call
+    if (!llrpMessage.getName().equals(expectedSyncMessage)) {
+      log.debug("Calling messageReceived of endpoint ... " + session);
+      connection.getEndpoint().messageReceived(llrpMessage);
+    } else {
+      synMessageQueue.add(llrpMessage);
+      log.debug("Adding message " + message.getClass() + " to transaction queue " + session);
+    }
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
+  /**
+   * {@inheritDoc}
+   */
+  public void messageSent(IoSession session, Object message) throws java.lang.Exception {
+    if (log.isInfoEnabled()) {
+      log.info("Message " + ((LLRPMessage) message).getName() + " successfully transmitted");
+    }
+    if (log.isDebugEnabled()) {
+      log.debug(((LLRPMessage) message).toXMLString());
+    }
 
-	public BlockingQueue<ConnectionAttemptEvent> getConnectionAttemptEventQueue() {
-		return connectionAttemptEventQueue;
-	}
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
+  /**
+   * {@inheritDoc}
+   */
+  public void exceptionCaught(IoSession session, Throwable cause)
+    throws Exception {
+    connection.getEndpoint().errorOccured(cause.getClass().getName());
+  }
 
-	public boolean isKeepAliveAck() {
-		return keepAliveAck;
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
+    System.out.println("IDLE " + session.getIdleCount(status));
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
+  /**
+   * {@inheritDoc}
+   */
+  public BlockingQueue<LLRPMessage> getSynMessageQueue() {
+    return synMessageQueue;
+  }
 
-	public void setKeepAliveAck(boolean keepAliveAck) {
-		this.keepAliveAck = keepAliveAck;
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public BlockingQueue<ConnectionAttemptEvent> getConnectionAttemptEventQueue() {
+    return connectionAttemptEventQueue;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isKeepAliveAck() {
+    return keepAliveAck;
+  }
 
-	public boolean isKeepAliveForward() {
-		return keepAliveForward;
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public void setKeepAliveAck(boolean keepAliveAck) {
+    this.keepAliveAck = keepAliveAck;
+  }
 
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isKeepAliveForward() {
+    return keepAliveForward;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
+  /**
+   * {@inheritDoc}
+   */
+  public void setKeepAliveForward(boolean keepAliveForward) {
+    this.keepAliveForward = keepAliveForward;
+  }
 
-	public void setKeepAliveForward(boolean keepAliveForward) {
-		this.keepAliveForward = keepAliveForward;
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPConnection getConnection() {
+    return connection;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-
-	public LLRPConnection getConnection() {
-		return connection;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-
-	public void setConnection(LLRPConnection connection) {
-		this.connection = connection;
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public void setConnection(LLRPConnection connection) {
+    this.connection = connection;
+  }
 
 }

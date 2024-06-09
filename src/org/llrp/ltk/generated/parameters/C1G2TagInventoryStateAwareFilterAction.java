@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,239 +48,248 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This parameter is used by the Client to manage the tag states during an inventory operation.  In order to use this parameter during inventory, the TagInventoryStateAware flag is set to true in the InventoryParameterSpec. This parameter contains:Target: This value indicates which flag in the tag to modify - whether the SL flag or its inventoried flag for a particular session.Action describes the action for matching and non-matching tags. The actions are specific about the tag-inventory states - e.g., do nothing, assert or deassert SL, assign inventoried S0/S1/S2/S3 to A or B.Readers that do not support tag inventory state aware singulation SHALL set CanDoTagInventoryStateAwareSingulation to false in LLRPCapabilities
-
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=102&view=fit">LLRP Specification Section 15.2.1.2.1.1.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=155&view=fit">LLRP Specification Section 16.3.1.2.1.1.2</a>}
-
-
+ * This parameter is used by the Client to manage the tag states during an inventory operation. In order to use this parameter during inventory, the TagInventoryStateAware flag is
+ * set to true in the InventoryParameterSpec. This parameter contains:Target: This value indicates which flag in the tag to modify - whether the SL flag or its inventoried flag for
+ * a particular session.Action describes the action for matching and non-matching tags. The actions are specific about the tag-inventory states - e.g., do nothing, assert or
+ * deassert SL, assign inventoried S0/S1/S2/S3 to A or B.Readers that do not support tag inventory state aware singulation SHALL set CanDoTagInventoryStateAwareSingulation to false
+ * in LLRPCapabilities
+ *
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=102&view=fit">LLRP Specification Section 15.2.1.2.1.1.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=155&view=fit">LLRP Specification Section 16.3.1.2.1.1.2</a>}
+ *
+ *
  */
-
 /**
- * This parameter is used by the Client to manage the tag states during an inventory operation.  In order to use this parameter during inventory, the TagInventoryStateAware flag is set to true in the InventoryParameterSpec. This parameter contains:Target: This value indicates which flag in the tag to modify - whether the SL flag or its inventoried flag for a particular session.Action describes the action for matching and non-matching tags. The actions are specific about the tag-inventory states - e.g., do nothing, assert or deassert SL, assign inventoried S0/S1/S2/S3 to A or B.Readers that do not support tag inventory state aware singulation SHALL set CanDoTagInventoryStateAwareSingulation to false in LLRPCapabilities
-
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=102&view=fit">LLRP Specification Section 15.2.1.2.1.1.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=155&view=fit">LLRP Specification Section 16.3.1.2.1.1.2</a>}
-
-      .
+ * This parameter is used by the Client to manage the tag states during an inventory operation. In order to use this parameter during inventory, the TagInventoryStateAware flag is
+ * set to true in the InventoryParameterSpec. This parameter contains:Target: This value indicates which flag in the tag to modify - whether the SL flag or its inventoried flag for
+ * a particular session.Action describes the action for matching and non-matching tags. The actions are specific about the tag-inventory states - e.g., do nothing, assert or
+ * deassert SL, assign inventoried S0/S1/S2/S3 to A or B.Readers that do not support tag inventory state aware singulation SHALL set CanDoTagInventoryStateAwareSingulation to false
+ * in LLRPCapabilities
+ *
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=102&view=fit">LLRP Specification Section 15.2.1.2.1.1.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=155&view=fit">LLRP Specification Section 16.3.1.2.1.1.2</a>}
+ *
+ * .
  */
 public class C1G2TagInventoryStateAwareFilterAction extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(333);
-    private static final Logger LOGGER = Logger.getLogger(C1G2TagInventoryStateAwareFilterAction.class);
-    protected C1G2StateAwareTarget target;
-    protected C1G2StateAwareAction action;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public C1G2TagInventoryStateAwareFilterAction() {
+  public static final SignedShort TYPENUM = new SignedShort(333);
+  private static final Logger LOGGER = Logger.getLogger(C1G2TagInventoryStateAwareFilterAction.class);
+  protected C1G2StateAwareTarget target;
+  protected C1G2StateAwareAction action;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public C1G2TagInventoryStateAwareFilterAction() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public C1G2TagInventoryStateAwareFilterAction(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public C1G2TagInventoryStateAwareFilterAction(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (target == null) {
+      LOGGER.warn(" target not set");
+      throw new MissingParameterException(
+        " target not set  for Parameter of Type C1G2TagInventoryStateAwareFilterAction");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public C1G2TagInventoryStateAwareFilterAction(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(target.encodeBinary());
+
+    if (action == null) {
+      LOGGER.warn(" action not set");
+      throw new MissingParameterException(
+        " action not set  for Parameter of Type C1G2TagInventoryStateAwareFilterAction");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public C1G2TagInventoryStateAwareFilterAction(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(action.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (target == null) {
+      LOGGER.warn(" target not set");
+      throw new MissingParameterException(" target not set");
+    } else {
+      element.addContent(target.encodeXML("Target", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (target == null) {
-            LOGGER.warn(" target not set");
-            throw new MissingParameterException(
-                " target not set  for Parameter of Type C1G2TagInventoryStateAwareFilterAction");
-        }
-
-        resultBits.append(target.encodeBinary());
-
-        if (action == null) {
-            LOGGER.warn(" action not set");
-            throw new MissingParameterException(
-                " action not set  for Parameter of Type C1G2TagInventoryStateAwareFilterAction");
-        }
-
-        resultBits.append(action.encodeBinary());
-
-        return resultBits;
+    if (action == null) {
+      LOGGER.warn(" action not set");
+      throw new MissingParameterException(" action not set");
+    } else {
+      element.addContent(action.encodeXML("Action", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    //parameters
+    return element;
+  }
 
-        if (target == null) {
-            LOGGER.warn(" target not set");
-            throw new MissingParameterException(" target not set");
-        } else {
-            element.addContent(target.encodeXML("Target", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    target = new C1G2StateAwareTarget(binary.subList(position,
+      C1G2StateAwareTarget.length()));
+    position += C1G2StateAwareTarget.length();
+    action = new C1G2StateAwareAction(binary.subList(position,
+      C1G2StateAwareAction.length()));
+    position += C1G2StateAwareAction.length();
+  }
 
-        if (action == null) {
-            LOGGER.warn(" action not set");
-            throw new MissingParameterException(" action not set");
-        } else {
-            element.addContent(action.encodeXML("Action", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        //parameters
-        return element;
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("Target", ns);
+
+    if (temp != null) {
+      target = new C1G2StateAwareTarget(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        target = new C1G2StateAwareTarget(binary.subList(position,
-                    C1G2StateAwareTarget.length()));
-        position += C1G2StateAwareTarget.length();
-        action = new C1G2StateAwareAction(binary.subList(position,
-                    C1G2StateAwareAction.length()));
-        position += C1G2StateAwareAction.length();
+    element.removeChild("Target", ns);
+    temp = element.getChild("Action", ns);
+
+    if (temp != null) {
+      action = new C1G2StateAwareAction(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    element.removeChild("Action", ns);
 
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("Target", ns);
-
-        if (temp != null) {
-            target = new C1G2StateAwareTarget(temp);
-        }
-
-        element.removeChild("Target", ns);
-        temp = element.getChild("Action", ns);
-
-        if (temp != null) {
-            action = new C1G2StateAwareAction(temp);
-        }
-
-        element.removeChild("Action", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "C1G2TagInventoryStateAwareFilterAction has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (element.getChildren().size() > 0) {
+      String message = "C1G2TagInventoryStateAwareFilterAction has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    //setters
-    /**
-    * set target of type C1G2StateAwareTarget .
-    * @param  target to be set
-    */
-    public void setTarget(final C1G2StateAwareTarget target) {
-        this.target = target;
-    }
+  //setters
+  /**
+   * set target of type C1G2StateAwareTarget .
+   *
+   * @param target to be set
+   */
+  public void setTarget(final C1G2StateAwareTarget target) {
+    this.target = target;
+  }
 
-    /**
-    * set action of type C1G2StateAwareAction .
-    * @param  action to be set
-    */
-    public void setAction(final C1G2StateAwareAction action) {
-        this.action = action;
-    }
+  /**
+   * set action of type C1G2StateAwareAction .
+   *
+   * @param action to be set
+   */
+  public void setAction(final C1G2StateAwareAction action) {
+    this.action = action;
+  }
 
-    // end setter
+  // end setter
+  //getters
+  /**
+   * get target of type C1G2StateAwareTarget.
+   *
+   * @return C1G2StateAwareTarget
+   */
+  public C1G2StateAwareTarget getTarget() {
+    return target;
+  }
 
-    //getters
-    /**
-    * get target of type C1G2StateAwareTarget.
-    * @return  C1G2StateAwareTarget
-    */
-    public C1G2StateAwareTarget getTarget() {
-        return target;
-    }
+  /**
+   * get action of type C1G2StateAwareAction.
+   *
+   * @return C1G2StateAwareAction
+   */
+  public C1G2StateAwareAction getAction() {
+    return action;
+  }
 
-    /**
-    * get action of type C1G2StateAwareAction.
-    * @return  C1G2StateAwareAction
-    */
-    public C1G2StateAwareAction getAction() {
-        return action;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    // end getters
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    //add methods
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "C1G2TagInventoryStateAwareFilterAction";
+  }
 
-    // end add
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "C1G2TagInventoryStateAwareFilterAction: ";
+    result += ", target: ";
+    result += target;
+    result += ", action: ";
+    result += action;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "C1G2TagInventoryStateAwareFilterAction";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "C1G2TagInventoryStateAwareFilterAction: ";
-        result += ", target: ";
-        result += target;
-        result += ", action: ";
-        result += action;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

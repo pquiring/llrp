@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,197 +47,196 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * This parameter carries the LastSeenTimestamp information in UTC.This is the time elapsed since boot, measured in microseconds.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=84&view=fit">LLRP Specification Section 13.2.3.11</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=146&view=fit">LLRP Specification Section 16.2.7.3.11</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=84&view=fit">LLRP Specification Section 13.2.3.11</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=146&view=fit">LLRP Specification Section 16.2.7.3.11</a>}
+ *
+ *
  */
-
 /**
  * This parameter carries the LastSeenTimestamp information in UTC.This is the time elapsed since boot, measured in microseconds.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=84&view=fit">LLRP Specification Section 13.2.3.11</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=146&view=fit">LLRP Specification Section 16.2.7.3.11</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=84&view=fit">LLRP Specification Section 13.2.3.11</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=146&view=fit">LLRP Specification Section 16.2.7.3.11</a>}
+ *
+ * .
  */
 public class LastSeenTimestampUTC extends TVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(4);
-    private static final Logger LOGGER = Logger.getLogger(LastSeenTimestampUTC.class);
-    protected UnsignedLong_DATETIME microseconds;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public LastSeenTimestampUTC() {
+  public static final SignedShort TYPENUM = new SignedShort(4);
+  private static final Logger LOGGER = Logger.getLogger(LastSeenTimestampUTC.class);
+  protected UnsignedLong_DATETIME microseconds;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public LastSeenTimestampUTC() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public LastSeenTimestampUTC(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public LastSeenTimestampUTC(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (microseconds == null) {
+      LOGGER.warn(" microseconds not set");
+      throw new MissingParameterException(
+        " microseconds not set  for Parameter of Type LastSeenTimestampUTC");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public LastSeenTimestampUTC(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(microseconds.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (microseconds == null) {
+      LOGGER.warn(" microseconds not set");
+      throw new MissingParameterException(" microseconds not set");
+    } else {
+      element.addContent(microseconds.encodeXML("Microseconds", ns));
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public LastSeenTimestampUTC(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    //parameters
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    microseconds = new UnsignedLong_DATETIME(binary.subList(position,
+      UnsignedLong_DATETIME.length()));
+    position += UnsignedLong_DATETIME.length();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("Microseconds", ns);
+
+    if (temp != null) {
+      microseconds = new UnsignedLong_DATETIME(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    element.removeChild("Microseconds", ns);
 
-        if (microseconds == null) {
-            LOGGER.warn(" microseconds not set");
-            throw new MissingParameterException(
-                " microseconds not set  for Parameter of Type LastSeenTimestampUTC");
-        }
-
-        resultBits.append(microseconds.encodeBinary());
-
-        return resultBits;
+    if (element.getChildren().size() > 0) {
+      String message = "LastSeenTimestampUTC has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+  //setters
+  /**
+   * set microseconds of type UnsignedLong_DATETIME .
+   *
+   * @param microseconds to be set
+   */
+  public void setMicroseconds(final UnsignedLong_DATETIME microseconds) {
+    this.microseconds = microseconds;
+  }
 
-        if (microseconds == null) {
-            LOGGER.warn(" microseconds not set");
-            throw new MissingParameterException(" microseconds not set");
-        } else {
-            element.addContent(microseconds.encodeXML("Microseconds", ns));
-        }
+  // end setter
+  //getters
+  /**
+   * get microseconds of type UnsignedLong_DATETIME.
+   *
+   * @return UnsignedLong_DATETIME
+   */
+  public UnsignedLong_DATETIME getMicroseconds() {
+    return microseconds;
+  }
 
-        //parameters
-        return element;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
+   *
+   * @return Integer giving length
+   */
+  public static Integer length() {
+    int tempLength = PARAMETERTYPELENGTH;
+    // the length of a TV parameter in bits is always the type
+    tempLength += UnsignedLong_DATETIME.length();
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        microseconds = new UnsignedLong_DATETIME(binary.subList(position,
-                    UnsignedLong_DATETIME.length()));
-        position += UnsignedLong_DATETIME.length();
-    }
+    return tempLength;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "LastSeenTimestampUTC";
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "LastSeenTimestampUTC: ";
+    result += ", microseconds: ";
+    result += microseconds;
+    result = result.replaceFirst(", ", "");
 
-        temp = element.getChild("Microseconds", ns);
-
-        if (temp != null) {
-            microseconds = new UnsignedLong_DATETIME(temp);
-        }
-
-        element.removeChild("Microseconds", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "LastSeenTimestampUTC has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
-    }
-
-    //setters
-    /**
-    * set microseconds of type UnsignedLong_DATETIME .
-    * @param  microseconds to be set
-    */
-    public void setMicroseconds(final UnsignedLong_DATETIME microseconds) {
-        this.microseconds = microseconds;
-    }
-
-    // end setter
-
-    //getters
-    /**
-    * get microseconds of type  UnsignedLong_DATETIME.
-    * @return  UnsignedLong_DATETIME
-    */
-    public UnsignedLong_DATETIME getMicroseconds() {
-        return microseconds;
-    }
-
-    // end getters
-
-    //add methods
-
-    // end add
-
-    /**
-    * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
-    * @return Integer giving length
-    */
-    public static Integer length() {
-        int tempLength = PARAMETERTYPELENGTH;
-        // the length of a TV parameter in bits is always the type 
-        tempLength += UnsignedLong_DATETIME.length();
-
-        return tempLength;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "LastSeenTimestampUTC";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "LastSeenTimestampUTC: ";
-        result += ", microseconds: ";
-        result += microseconds;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

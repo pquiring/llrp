@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,196 +46,195 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * Reports the OpSpecID in the reader exception event
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=90&view=fit">LLRP Specification Section 13.2.6.7.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.6.1</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=90&view=fit">LLRP Specification Section 13.2.6.7.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.6.1</a>}
+ *
+ *
  */
-
 /**
  * Reports the OpSpecID in the reader exception event
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=90&view=fit">LLRP Specification Section 13.2.6.7.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.6.1</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=90&view=fit">LLRP Specification Section 13.2.6.7.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=150&view=fit">LLRP Specification Section 16.2.7.6.6.1</a>}
+ *
+ * .
  */
 public class OpSpecID extends TVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(17);
-    private static final Logger LOGGER = Logger.getLogger(OpSpecID.class);
-    protected UnsignedShort opSpecID;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public OpSpecID() {
+  public static final SignedShort TYPENUM = new SignedShort(17);
+  private static final Logger LOGGER = Logger.getLogger(OpSpecID.class);
+  protected UnsignedShort opSpecID;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public OpSpecID() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public OpSpecID(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public OpSpecID(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (opSpecID == null) {
+      LOGGER.warn(" opSpecID not set");
+      throw new MissingParameterException(
+        " opSpecID not set  for Parameter of Type OpSpecID");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public OpSpecID(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(opSpecID.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (opSpecID == null) {
+      LOGGER.warn(" opSpecID not set");
+      throw new MissingParameterException(" opSpecID not set");
+    } else {
+      element.addContent(opSpecID.encodeXML("OpSpecID", ns));
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public OpSpecID(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    //parameters
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    opSpecID = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("OpSpecID", ns);
+
+    if (temp != null) {
+      opSpecID = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    element.removeChild("OpSpecID", ns);
 
-        if (opSpecID == null) {
-            LOGGER.warn(" opSpecID not set");
-            throw new MissingParameterException(
-                " opSpecID not set  for Parameter of Type OpSpecID");
-        }
-
-        resultBits.append(opSpecID.encodeBinary());
-
-        return resultBits;
+    if (element.getChildren().size() > 0) {
+      String message = "OpSpecID has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+  //setters
+  /**
+   * set opSpecID of type UnsignedShort .
+   *
+   * @param opSpecID to be set
+   */
+  public void setOpSpecID(final UnsignedShort opSpecID) {
+    this.opSpecID = opSpecID;
+  }
 
-        if (opSpecID == null) {
-            LOGGER.warn(" opSpecID not set");
-            throw new MissingParameterException(" opSpecID not set");
-        } else {
-            element.addContent(opSpecID.encodeXML("OpSpecID", ns));
-        }
+  // end setter
+  //getters
+  /**
+   * get opSpecID of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getOpSpecID() {
+    return this.opSpecID;
+  }
 
-        //parameters
-        return element;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
+   *
+   * @return Integer giving length
+   */
+  public static Integer length() {
+    int tempLength = PARAMETERTYPELENGTH;
+    // the length of a TV parameter in bits is always the type
+    tempLength += UnsignedShort.length();
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        opSpecID = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-    }
+    return tempLength;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "OpSpecID";
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "OpSpecID: ";
+    result += ", opSpecID: ";
+    result += opSpecID;
+    result = result.replaceFirst(", ", "");
 
-        temp = element.getChild("OpSpecID", ns);
-
-        if (temp != null) {
-            opSpecID = new UnsignedShort(temp);
-        }
-
-        element.removeChild("OpSpecID", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "OpSpecID has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
-    }
-
-    //setters
-    /**
-    * set   opSpecID of type UnsignedShort .
-    * @param   opSpecID to be set
-    */
-    public void setOpSpecID(final UnsignedShort opSpecID) {
-        this.opSpecID = opSpecID;
-    }
-
-    // end setter
-
-    //getters
-    /**
-    * get   opSpecID of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getOpSpecID() {
-        return this.opSpecID;
-    }
-
-    // end getters
-
-    //add methods
-
-    // end add
-
-    /**
-    * return length of parameter. For TV Parameter it is always length of its field plus 8 bits for type.
-    * @return Integer giving length
-    */
-    public static Integer length() {
-        int tempLength = PARAMETERTYPELENGTH;
-        // the length of a TV parameter in bits is always the type 
-        tempLength += UnsignedShort.length();
-
-        return tempLength;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "OpSpecID";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "OpSpecID: ";
-        result += ", opSpecID: ";
-        result += opSpecID;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

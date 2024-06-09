@@ -5,9 +5,9 @@
 * for more information
 * Generated on: Sun Apr 08 14:14:10 EDT 2012;
 *
-*/
+ */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,290 +47,288 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This message is issued by the Reader to the Client whenever an event that the Client subscribed to occurs. The pertinent event data is conveyed using the ReaderEventNotificationData parameter.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=77&view=fit">LLRP Specification Section 13.1.5</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=126&view=fit">LLRP Specification Section 16.1.33</a>}
-
-
+ * This message is issued by the Reader to the Client whenever an event that the Client subscribed to occurs. The pertinent event data is conveyed using the
+ * ReaderEventNotificationData parameter.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=77&view=fit">LLRP Specification Section 13.1.5</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=126&view=fit">LLRP Specification Section 16.1.33</a>}
+ *
+ *
  */
 public class READER_EVENT_NOTIFICATION extends LLRPMessage {
-    public static final SignedShort TYPENUM = new SignedShort(63);
-    private static final Logger LOGGER = Logger.getLogger(READER_EVENT_NOTIFICATION.class);
-    public static final String RESPONSETYPE = "";
-    protected ReaderEventNotificationData readerEventNotificationData;
 
-    /**
-     * empty constructor to create new message
-     * with LLRP version set to 1.0 (0x1).
-     */
-    public READER_EVENT_NOTIFICATION() {
-        setVersion(new BitList(0, 0, 1));
+  public static final SignedShort TYPENUM = new SignedShort(63);
+  private static final Logger LOGGER = Logger.getLogger(READER_EVENT_NOTIFICATION.class);
+  public static final String RESPONSETYPE = "";
+  protected ReaderEventNotificationData readerEventNotificationData;
+
+  /**
+   * empty constructor to create new message with LLRP version set to 1.0 (0x1).
+   */
+  public READER_EVENT_NOTIFICATION() {
+    setVersion(new BitList(0, 0, 1));
+  }
+
+  /**
+   * Constructor to create message from binary encoded message calls decodeBinary to decode message.
+   *
+   * @param list to be decoded
+   */
+  public READER_EVENT_NOTIFICATION(final LLRPBitList list)
+    throws InvalidLLRPMessageException {
+    decodeBinary(list.toByteArray());
+  }
+
+  /**
+   * Constructor to create message from binary encoded message calls decodeBinary to decode message.
+   *
+   * @param byteArray representing message
+   */
+  public READER_EVENT_NOTIFICATION(final byte[] byteArray)
+    throws InvalidLLRPMessageException {
+    decodeBinary(byteArray);
+  }
+
+  /**
+   * Constructor to create message from xml encoded message calls decodeXML to decode message.
+   *
+   * @param document to be decoded
+   */
+  public READER_EVENT_NOTIFICATION(final Document document)
+    throws InvalidLLRPMessageException {
+    decodeXML(document);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected LLRPBitList encodeBinarySpecific()
+    throws InvalidLLRPMessageException {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (readerEventNotificationData == null) {
+      // single parameter, may not be null
+      LOGGER.warn(" readerEventNotificationData not set");
+      throw new InvalidLLRPMessageException(
+        " readerEventNotificationData not set");
+    } else {
+      resultBits.append(readerEventNotificationData.encodeBinary());
     }
 
-    /**
-     * Constructor to create message from binary encoded message
-     * calls decodeBinary to decode message.
-     * @param list to be decoded
-     */
-    public READER_EVENT_NOTIFICATION(final LLRPBitList list)
-        throws InvalidLLRPMessageException {
-        decodeBinary(list.toByteArray());
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Document encodeXML() throws InvalidLLRPMessageException {
+    try {
+      Namespace ns = Namespace.getNamespace("llrp",
+        LLRPConstants.LLRPNAMESPACE);
+
+      Element root = new Element("READER_EVENT_NOTIFICATION", ns);
+      //	Element root = new Element("READER_EVENT_NOTIFICATION");
+      root.addNamespaceDeclaration(Namespace.getNamespace("llrp",
+        LLRPConstants.LLRPNAMESPACE));
+
+      if (version == null) {
+        throw new InvalidLLRPMessageException("Version not set");
+      } else {
+        root.setAttribute("Version", version.toInteger().toString());
+      }
+
+      if (messageID == null) {
+        throw new InvalidLLRPMessageException("MessageID not set");
+      } else {
+        root.setAttribute("MessageID", messageID.toString(10));
+      }
+
+      //parameters
+      if (readerEventNotificationData == null) {
+        LOGGER.info("readerEventNotificationData not set");
+        throw new MissingParameterException(
+          "readerEventNotificationData not set");
+      } else {
+        root.addContent(readerEventNotificationData.encodeXML(
+          readerEventNotificationData.getClass().getSimpleName(),
+          ns));
+      }
+
+      Document doc = new Document(root);
+
+      if (isValidXMLMessage(doc, LLRPConstants.LLRPMESSAGESCHEMAPATH)) {
+        return doc;
+      } else {
+        return null;
+      }
+    } catch (IllegalArgumentException e) {
+      throw new InvalidLLRPMessageException(e.getMessage());
+    } catch (MissingParameterException e) {
+      throw new InvalidLLRPMessageException(e.getMessage());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary)
+    throws InvalidLLRPMessageException {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+
+    // look ahead to see type
+    // may be optional or exactly once
+    type = null;
+    tempByteLength = 0;
+    tempLength = 0;
+
+    try {
+      // if first bit is one it is a TV Parameter
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+    } catch (IllegalArgumentException le) {
+      // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
+      LOGGER.warn(
+        "READER_EVENT_NOTIFICATION misses non optional parameter of type ReaderEventNotificationData");
+      throw new InvalidLLRPMessageException(
+        "READER_EVENT_NOTIFICATION misses non optional parameter of type ReaderEventNotificationData");
     }
 
-    /**
-     * Constructor to create message from binary encoded message
-     * calls decodeBinary to decode message.
-     * @param byteArray representing message
-     */
-    public READER_EVENT_NOTIFICATION(final byte[] byteArray)
-        throws InvalidLLRPMessageException {
-        decodeBinary(byteArray);
+    if (binary.get(position)) {
+      // length can statically be determined for TV Parameters
+      tempLength = readerEventNotificationData.length();
     }
 
-    /**
-    * Constructor to create message from xml encoded message
-    * calls decodeXML to decode message.
-    * @param document to be decoded
-    */
-    public READER_EVENT_NOTIFICATION(final Document document)
-        throws InvalidLLRPMessageException {
-        decodeXML(document);
+    if ((type != null) && type.equals(ReaderEventNotificationData.TYPENUM)) {
+      readerEventNotificationData = new ReaderEventNotificationData(binary.subList(
+        position, tempLength));
+      position += tempLength;
+      LOGGER.debug(
+        " readerEventNotificationData is instantiated with ReaderEventNotificationData with length"
+        + tempLength);
+    } else {
+      LOGGER.warn(
+        "READER_EVENT_NOTIFICATION misses non optional parameter of type ReaderEventNotificationData");
+      throw new InvalidLLRPMessageException(
+        "READER_EVENT_NOTIFICATION misses non optional parameter of type ReaderEventNotificationData");
     }
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected LLRPBitList encodeBinarySpecific()
-        throws InvalidLLRPMessageException {
-        LLRPBitList resultBits = new LLRPBitList();
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(final Document document)
+    throws InvalidLLRPMessageException {
+    Element temp = null;
+    Custom custom;
 
-        if (readerEventNotificationData == null) {
-            // single parameter, may not be null
-            LOGGER.warn(" readerEventNotificationData not set");
-            throw new InvalidLLRPMessageException(
-                " readerEventNotificationData not set");
-        } else {
-            resultBits.append(readerEventNotificationData.encodeBinary());
-        }
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
 
-        return resultBits;
+    try {
+      isValidXMLMessage(document, LLRPConstants.LLRPMESSAGESCHEMAPATH);
+
+      Element root = (Element) document.getRootElement().clone();
+      List<Element> tempList = null;
+
+      // the version field is always 3 bit long
+      // if the version attribute is not set in the LTK-XML message,
+      // it is set to version 001
+      String versionAttribute = root.getAttributeValue("Version");
+
+      if (versionAttribute != null) {
+        version = new BitList(3);
+        version.setValue(Integer.valueOf(versionAttribute));
+      } else {
+        version = new BitList(0, 0, 1);
+      }
+
+      messageID = new UnsignedInteger(root.getAttributeValue("MessageID"));
+
+      //parameter - not choices - no special actions needed
+      temp = root.getChild("ReaderEventNotificationData", ns);
+
+      if (temp != null) {
+        readerEventNotificationData = new ReaderEventNotificationData(temp);
+        LOGGER.info(
+          "setting parameter readerEventNotificationData for parameter READER_EVENT_NOTIFICATION");
+      } else {
+        LOGGER.warn(
+          "READER_EVENT_NOTIFICATION misses non optional parameter of type readerEventNotificationData");
+        throw new MissingParameterException(
+          "READER_EVENT_NOTIFICATION misses non optional parameter of type readerEventNotificationData");
+      }
+
+      root.removeChild("ReaderEventNotificationData", ns);
+
+      if (root.getChildren().size() > 0) {
+        String message = "READER_EVENT_NOTIFICATION has unknown element "
+          + ((Element) root.getChildren().get(0)).getName();
+        throw new InvalidLLRPMessageException(message);
+      }
+    } catch (IllegalArgumentException e) {
+      throw new InvalidLLRPMessageException(e.getMessage());
+    } catch (MissingParameterException e) {
+      throw new InvalidLLRPMessageException(e.getMessage());
     }
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Document encodeXML() throws InvalidLLRPMessageException {
-        try {
-            Namespace ns = Namespace.getNamespace("llrp",
-                    LLRPConstants.LLRPNAMESPACE);
+  //setters
+  /**
+   * set readerEventNotificationData of type ReaderEventNotificationData.
+   *
+   * @param readerEventNotificationData to be set
+   */
+  public void setReaderEventNotificationData(
+    final ReaderEventNotificationData readerEventNotificationData) {
+    this.readerEventNotificationData = readerEventNotificationData;
+  }
 
-            Element root = new Element("READER_EVENT_NOTIFICATION", ns);
-            //	Element root = new Element("READER_EVENT_NOTIFICATION");
-            root.addNamespaceDeclaration(Namespace.getNamespace("llrp",
-                    LLRPConstants.LLRPNAMESPACE));
+  // end setter
+  //getters
+  /**
+   * get readerEventNotificationData of type ReaderEventNotificationData .
+   *
+   * @return ReaderEventNotificationData
+   */
+  public ReaderEventNotificationData getReaderEventNotificationData() {
+    return readerEventNotificationData;
+  }
 
-            if (version == null) {
-                throw new InvalidLLRPMessageException("Version not set");
-            } else {
-                root.setAttribute("Version", version.toInteger().toString());
-            }
+  // end getters
+  //add methods
+  // end add
+  @Override
+  public String getResponseType() {
+    return RESPONSETYPE;
+  }
 
-            if (messageID == null) {
-                throw new InvalidLLRPMessageException("MessageID not set");
-            } else {
-                root.setAttribute("MessageID", messageID.toString(10));
-            }
+  @Override
+  public String getName() {
+    return "READER_EVENT_NOTIFICATION";
+  }
 
-            //parameters
-            if (readerEventNotificationData == null) {
-                LOGGER.info("readerEventNotificationData not set");
-                throw new MissingParameterException(
-                    "readerEventNotificationData not set");
-            } else {
-                root.addContent(readerEventNotificationData.encodeXML(
-                        readerEventNotificationData.getClass().getSimpleName(),
-                        ns));
-            }
-
-            Document doc = new Document(root);
-
-            if (isValidXMLMessage(doc, LLRPConstants.LLRPMESSAGESCHEMAPATH)) {
-                return doc;
-            } else {
-                return null;
-            }
-        } catch (IllegalArgumentException e) {
-            throw new InvalidLLRPMessageException(e.getMessage());
-        } catch (MissingParameterException e) {
-            throw new InvalidLLRPMessageException(e.getMessage());
-        }
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary)
-        throws InvalidLLRPMessageException {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-
-        // look ahead to see type
-        // may be optional or exactly once
-        type = null;
-        tempByteLength = 0;
-        tempLength = 0;
-
-        try {
-            // if first bit is one it is a TV Parameter
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-        } catch (IllegalArgumentException le) {
-            // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
-            LOGGER.warn(
-                "READER_EVENT_NOTIFICATION misses non optional parameter of type ReaderEventNotificationData");
-            throw new InvalidLLRPMessageException(
-                "READER_EVENT_NOTIFICATION misses non optional parameter of type ReaderEventNotificationData");
-        }
-
-        if (binary.get(position)) {
-            // length can statically be determined for TV Parameters
-            tempLength = readerEventNotificationData.length();
-        }
-
-        if ((type != null) && type.equals(ReaderEventNotificationData.TYPENUM)) {
-            readerEventNotificationData = new ReaderEventNotificationData(binary.subList(
-                        position, tempLength));
-            position += tempLength;
-            LOGGER.debug(
-                " readerEventNotificationData is instantiated with ReaderEventNotificationData with length" +
-                tempLength);
-        } else {
-            LOGGER.warn(
-                "READER_EVENT_NOTIFICATION misses non optional parameter of type ReaderEventNotificationData");
-            throw new InvalidLLRPMessageException(
-                "READER_EVENT_NOTIFICATION misses non optional parameter of type ReaderEventNotificationData");
-        }
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(final Document document)
-        throws InvalidLLRPMessageException {
-        Element temp = null;
-        Custom custom;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        try {
-            isValidXMLMessage(document, LLRPConstants.LLRPMESSAGESCHEMAPATH);
-
-            Element root = (Element) document.getRootElement().clone();
-            List<Element> tempList = null;
-
-            // the version field is always 3 bit long 
-            // if the version attribute is not set in the LTK-XML message,
-            // it is set to version 001
-            String versionAttribute = root.getAttributeValue("Version");
-
-            if (versionAttribute != null) {
-                version = new BitList(3);
-                version.setValue(new Integer(versionAttribute));
-            } else {
-                version = new BitList(0, 0, 1);
-            }
-
-            messageID = new UnsignedInteger(root.getAttributeValue("MessageID"));
-
-            //parameter - not choices - no special actions needed
-            temp = root.getChild("ReaderEventNotificationData", ns);
-
-            if (temp != null) {
-                readerEventNotificationData = new ReaderEventNotificationData(temp);
-                LOGGER.info(
-                    "setting parameter readerEventNotificationData for parameter READER_EVENT_NOTIFICATION");
-            } else {
-                LOGGER.warn(
-                    "READER_EVENT_NOTIFICATION misses non optional parameter of type readerEventNotificationData");
-                throw new MissingParameterException(
-                    "READER_EVENT_NOTIFICATION misses non optional parameter of type readerEventNotificationData");
-            }
-
-            root.removeChild("ReaderEventNotificationData", ns);
-
-            if (root.getChildren().size() > 0) {
-                String message = "READER_EVENT_NOTIFICATION has unknown element " +
-                    ((Element) root.getChildren().get(0)).getName();
-                throw new InvalidLLRPMessageException(message);
-            }
-        } catch (IllegalArgumentException e) {
-            throw new InvalidLLRPMessageException(e.getMessage());
-        } catch (MissingParameterException e) {
-            throw new InvalidLLRPMessageException(e.getMessage());
-        }
-    }
-
-    //setters
-
-    /**
-    * set readerEventNotificationData of type ReaderEventNotificationData.
-    * @param  readerEventNotificationData to be set
-    */
-    public void setReaderEventNotificationData(
-        final ReaderEventNotificationData readerEventNotificationData) {
-        this.readerEventNotificationData = readerEventNotificationData;
-    }
-
-    // end setter
-
-    //getters
-
-    /**
-    * get readerEventNotificationData of type ReaderEventNotificationData .
-    * @return  ReaderEventNotificationData
-    */
-    public ReaderEventNotificationData getReaderEventNotificationData() {
-        return readerEventNotificationData;
-    }
-
-    // end getters
-
-    //add methods
-
-    // end add
-    @Override
-    public String getResponseType() {
-        return RESPONSETYPE;
-    }
-
-    @Override
-    public String getName() {
-        return "READER_EVENT_NOTIFICATION";
-    }
-
-    /**
-    * return uniuque type number.
-    * @return SignedShort holding unique type number
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * return uniuque type number.
+   *
+   * @return SignedShort holding unique type number
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 }

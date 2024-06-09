@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,301 +46,287 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * C1G2BlockWriteResultType is Enumeration of Type UnsignedByte
  */
 public class C1G2BlockWriteResultType extends UnsignedByte
-    implements LLRPEnumeration {
-    public static final int Success = 0;
-    public static final int Tag_Memory_Overrun_Error = 1;
-    public static final int Tag_Memory_Locked_Error = 2;
-    public static final int Insufficient_Power = 3;
-    public static final int Nonspecific_Tag_Error = 4;
-    public static final int No_Response_From_Tag = 5;
-    public static final int Nonspecific_Reader_Error = 6;
-    Logger logger = Logger.getLogger(C1G2BlockWriteResultType.class);
+  implements LLRPEnumeration {
 
-    public C1G2BlockWriteResultType() {
-        super(0);
+  public static final int Success = 0;
+  public static final int Tag_Memory_Overrun_Error = 1;
+  public static final int Tag_Memory_Locked_Error = 2;
+  public static final int Insufficient_Power = 3;
+  public static final int Nonspecific_Tag_Error = 4;
+  public static final int No_Response_From_Tag = 5;
+  public static final int Nonspecific_Reader_Error = 6;
+  Logger logger = Logger.getLogger(C1G2BlockWriteResultType.class);
+
+  public C1G2BlockWriteResultType() {
+    super(0);
+  }
+
+  /**
+   * Create new C1G2BlockWriteResultType by passing integer value.
+   *
+   * @throws IllegalArgumentException if the value is not allowed for this enumeration
+   * @param value an Integer value allowed - might check first with isValidValue it it is an allowed value
+   */
+  public C1G2BlockWriteResultType(int value) {
+    super(value);
+
+    if (!isValidValue(value)) {
+      throw new IllegalArgumentException("Value not allowed");
+    }
+  }
+
+  /**
+   * Create new C1G2BlockWriteResultType by passing jdom element.
+   *
+   * @throws IllegalArgumentException if the value found in element is not allowed for this enumeration.
+   * @param element - jdom element where the child is a string that is the name for a value of the enumeration.
+   */
+  public C1G2BlockWriteResultType(final Element element) {
+    this(element.getText());
+  }
+
+  /**
+   * Create new C1G2BlockWriteResultType by passing a string.
+   *
+   * @throws IllegalArgumentException if the string does not stand for a valid value.
+   */
+  public C1G2BlockWriteResultType(final String name) {
+    if (!isValidName(name)) {
+      throw new IllegalArgumentException("Name not allowed");
     }
 
-    /**
-     * Create new C1G2BlockWriteResultType by passing integer value.
-     *
-     * @throws IllegalArgumentException
-     * if the value is not allowed for this enumeration
-     * @param value an Integer value allowed - might check first
-     * with isValidValue it it is an allowed value
-     */
-    public C1G2BlockWriteResultType(int value) {
-        super(value);
+    this.value = getValue(name);
+    signed = false;
+  }
 
-        if (!isValidValue(value)) {
-            throw new IllegalArgumentException("Value not allowed");
-        }
+  /**
+   * Create new C1G2BlockWriteResultType by passing LLRPBitList.
+   *
+   * @throws IllegalArgumentException if the value found in the BitList is not allowed for this enumeration.
+   * @param list - LLRPBitList
+   */
+  public C1G2BlockWriteResultType(final LLRPBitList list) {
+    decodeBinary(list);
+
+    if (!isValidValue(toInteger())) {
+      throw new IllegalArgumentException("Value not allowed");
+    }
+  }
+
+  /**
+   * set the current value of this enumeration to the value identified by given string.
+   *
+   * @throws IllegalArgumentException if the value found for given String is not allowed for this enumeration.
+   * @param name set this enumeration to hold one of the allowed values
+   */
+  public final void set(final String name) {
+    if (!isValidName(name)) {
+      throw new IllegalArgumentException("name not allowed");
     }
 
-    /**
-    * Create new C1G2BlockWriteResultType by passing jdom element.
-    *
-    * @throws IllegalArgumentException
-    * if the value found in element is not allowed
-    * for this enumeration.
-    * @param element - jdom element where the child is a string
-    * that is the name for a value of the enumeration.
-    */
-    public C1G2BlockWriteResultType(final Element element) {
-        this(element.getText());
+    this.value = getValue(name);
+  }
+
+  /**
+   * set the current value of this enumeration to the value given.
+   *
+   * @throws IllegalArgumentException if the value is not allowed for this enumeration.
+   * @param value to be set
+   */
+  public final void set(final int value) {
+    if (!isValidValue(value)) {
+      throw new IllegalArgumentException("value not allowed");
     }
 
-    /**
-    * Create new C1G2BlockWriteResultType by passing a string.
-    *
-    * @throws IllegalArgumentException
-    * if the string does not stand for a valid value.
-    */
-    public C1G2BlockWriteResultType(final String name) {
-        if (!isValidName(name)) {
-            throw new IllegalArgumentException("Name not allowed");
-        }
+    this.value = value;
+  }
 
-        this.value = getValue(name);
-        signed = false;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(final String name, Namespace ns) {
+    Element element = new Element(name, ns);
+    //Element element = new Element(name, Namespace.getNamespace("llrp",LLRPConstants.LLRPNAMESPACE));
+    element.setContent(new Text(toString()));
 
-    /**
-     * Create new C1G2BlockWriteResultType by passing LLRPBitList.
-     *
-     * @throws IllegalArgumentException
-     * if the value found in the BitList is not allowed
-     * for this enumeration.
-     * @param list - LLRPBitList
-     */
-    public C1G2BlockWriteResultType(final LLRPBitList list) {
-        decodeBinary(list);
+    return element;
+  }
 
-        if (!isValidValue(new Integer(toInteger()))) {
-            throw new IllegalArgumentException("Value not allowed");
-        }
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String toString() {
+    return getName(toInteger());
+  }
 
-    /**
-    * set the current value of this enumeration to the
-    * value identified by given string.
-    *
-    * @throws IllegalArgumentException
-    * if the value found for given String is not allowed
-    * for this enumeration.
-    * @param name set this enumeration to hold one of the allowed values
-    */
-    public final void set(final String name) {
-        if (!isValidName(name)) {
-            throw new IllegalArgumentException("name not allowed");
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isValidValue(final int value) {
+    switch (value) {
+      case 0:
+        return true;
 
-        this.value = getValue(name);
-    }
+      case 1:
+        return true;
 
-    /**
-    * set the current value of this enumeration to the
-    * value given.
-    *
-    * @throws IllegalArgumentException
-    * if the value is not allowed
-    * for this enumeration.
-    * @param value to be set
-    */
-    public final void set(final int value) {
-        if (!isValidValue(value)) {
-            throw new IllegalArgumentException("value not allowed");
-        }
+      case 2:
+        return true;
 
-        this.value = value;
-    }
+      case 3:
+        return true;
 
-    /**
-            * {@inheritDoc}
-     */
-    public Content encodeXML(final String name, Namespace ns) {
-        Element element = new Element(name, ns);
-        //Element element = new Element(name, Namespace.getNamespace("llrp",LLRPConstants.LLRPNAMESPACE));
-        element.setContent(new Text(toString()));
+      case 4:
+        return true;
 
-        return element;
-    }
+      case 5:
+        return true;
 
-    /**
-    * {@inheritDoc}
-    */
-    public String toString() {
-        return getName(toInteger());
-    }
+      case 6:
+        return true;
 
-    /**
-            * {@inheritDoc}
-     */
-    public boolean isValidValue(final int value) {
-        switch (value) {
-        case 0:
-            return true;
-
-        case 1:
-            return true;
-
-        case 2:
-            return true;
-
-        case 3:
-            return true;
-
-        case 4:
-            return true;
-
-        case 5:
-            return true;
-
-        case 6:
-            return true;
-
-        default:
-            return false;
-        }
-    }
-
-    /**
-            * {@inheritDoc}
-     */
-    public final int getValue(final String name) {
-        if (name.equalsIgnoreCase("Success")) {
-            return 0;
-        }
-
-        if (name.equalsIgnoreCase("Tag_Memory_Overrun_Error")) {
-            return 1;
-        }
-
-        if (name.equalsIgnoreCase("Tag_Memory_Locked_Error")) {
-            return 2;
-        }
-
-        if (name.equalsIgnoreCase("Insufficient_Power")) {
-            return 3;
-        }
-
-        if (name.equalsIgnoreCase("Nonspecific_Tag_Error")) {
-            return 4;
-        }
-
-        if (name.equalsIgnoreCase("No_Response_From_Tag")) {
-            return 5;
-        }
-
-        if (name.equalsIgnoreCase("Nonspecific_Reader_Error")) {
-            return 6;
-        }
-
-        return -1;
-    }
-
-    /**
-             * {@inheritDoc}
-     */
-    public final String getName(final int value) {
-        if (0 == value) {
-            return "Success";
-        }
-
-        if (1 == value) {
-            return "Tag_Memory_Overrun_Error";
-        }
-
-        if (2 == value) {
-            return "Tag_Memory_Locked_Error";
-        }
-
-        if (3 == value) {
-            return "Insufficient_Power";
-        }
-
-        if (4 == value) {
-            return "Nonspecific_Tag_Error";
-        }
-
-        if (5 == value) {
-            return "No_Response_From_Tag";
-        }
-
-        if (6 == value) {
-            return "Nonspecific_Reader_Error";
-        }
-
-        return "";
-    }
-
-    /**
-             * {@inheritDoc}
-     */
-    public boolean isValidName(final String name) {
-        if (name.equals("Success")) {
-            return true;
-        }
-
-        if (name.equals("Tag_Memory_Overrun_Error")) {
-            return true;
-        }
-
-        if (name.equals("Tag_Memory_Locked_Error")) {
-            return true;
-        }
-
-        if (name.equals("Insufficient_Power")) {
-            return true;
-        }
-
-        if (name.equals("Nonspecific_Tag_Error")) {
-            return true;
-        }
-
-        if (name.equals("No_Response_From_Tag")) {
-            return true;
-        }
-
-        if (name.equals("Nonspecific_Reader_Error")) {
-            return true;
-        }
-
+      default:
         return false;
     }
+  }
 
-    /**
-    * number of bits used to represent this type.
-    *
-    * @return Integer
-    */
-    public static int length() {
-        return UnsignedByte.length();
+  /**
+   * {@inheritDoc}
+   */
+  public final int getValue(final String name) {
+    if (name.equalsIgnoreCase("Success")) {
+      return 0;
     }
 
-    /**
-          * wrapper method for UnsignedIntegers that use BigIntegers to store value
-    *
-    */
-    private final String getName(final BigInteger value) {
-        logger.warn("C1G2BlockWriteResultType must convert BigInteger " +
-            value + " to Integer value " + value.intValue());
-
-        return getName(value.intValue());
+    if (name.equalsIgnoreCase("Tag_Memory_Overrun_Error")) {
+      return 1;
     }
 
-    /**
-    * wrapper method for UnsignedIntegers that use BigIntegers to store value
-    *
-    */
-    private final boolean isValidValue(final BigInteger value) {
-        logger.warn("C1G2BlockWriteResultType must convert BigInteger " +
-            value + " to Integer value " + value.intValue());
-
-        return isValidValue(value.intValue());
+    if (name.equalsIgnoreCase("Tag_Memory_Locked_Error")) {
+      return 2;
     }
+
+    if (name.equalsIgnoreCase("Insufficient_Power")) {
+      return 3;
+    }
+
+    if (name.equalsIgnoreCase("Nonspecific_Tag_Error")) {
+      return 4;
+    }
+
+    if (name.equalsIgnoreCase("No_Response_From_Tag")) {
+      return 5;
+    }
+
+    if (name.equalsIgnoreCase("Nonspecific_Reader_Error")) {
+      return 6;
+    }
+
+    return -1;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public final String getName(final int value) {
+    if (0 == value) {
+      return "Success";
+    }
+
+    if (1 == value) {
+      return "Tag_Memory_Overrun_Error";
+    }
+
+    if (2 == value) {
+      return "Tag_Memory_Locked_Error";
+    }
+
+    if (3 == value) {
+      return "Insufficient_Power";
+    }
+
+    if (4 == value) {
+      return "Nonspecific_Tag_Error";
+    }
+
+    if (5 == value) {
+      return "No_Response_From_Tag";
+    }
+
+    if (6 == value) {
+      return "Nonspecific_Reader_Error";
+    }
+
+    return "";
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isValidName(final String name) {
+    if (name.equals("Success")) {
+      return true;
+    }
+
+    if (name.equals("Tag_Memory_Overrun_Error")) {
+      return true;
+    }
+
+    if (name.equals("Tag_Memory_Locked_Error")) {
+      return true;
+    }
+
+    if (name.equals("Insufficient_Power")) {
+      return true;
+    }
+
+    if (name.equals("Nonspecific_Tag_Error")) {
+      return true;
+    }
+
+    if (name.equals("No_Response_From_Tag")) {
+      return true;
+    }
+
+    if (name.equals("Nonspecific_Reader_Error")) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * number of bits used to represent this type.
+   *
+   * @return Integer
+   */
+  public static int length() {
+    return UnsignedByte.length();
+  }
+
+  /**
+   * wrapper method for UnsignedIntegers that use BigIntegers to store value
+   *
+   */
+  private final String getName(final BigInteger value) {
+    logger.warn("C1G2BlockWriteResultType must convert BigInteger "
+      + value + " to Integer value " + value.intValue());
+
+    return getName(value.intValue());
+  }
+
+  /**
+   * wrapper method for UnsignedIntegers that use BigIntegers to store value
+   *
+   */
+  private final boolean isValidValue(final BigInteger value) {
+    logger.warn("C1G2BlockWriteResultType must convert BigInteger "
+      + value + " to Integer value " + value.intValue());
+
+    return isValidValue(value.intValue());
+  }
 }

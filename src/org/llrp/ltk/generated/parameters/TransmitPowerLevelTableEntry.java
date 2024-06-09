@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,238 +46,241 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This parameter specifies the index into the TransmitPowerLevelTable for a transmit power value. The transmit power is expressed in dBm*100 to allow fractional dBm representation and is the conducted power at the connector of the Reader.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=49&view=fit">LLRP Specification Section 9.2.4.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=134&view=fit">LLRP Specification Section 16.2.3.4.1.1</a>}
-
-
+ * This parameter specifies the index into the TransmitPowerLevelTable for a transmit power value. The transmit power is expressed in dBm*100 to allow fractional dBm representation
+ * and is the conducted power at the connector of the Reader.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=49&view=fit">LLRP Specification Section 9.2.4.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=134&view=fit">LLRP Specification Section 16.2.3.4.1.1</a>}
+ *
+ *
  */
-
 /**
- * This parameter specifies the index into the TransmitPowerLevelTable for a transmit power value. The transmit power is expressed in dBm*100 to allow fractional dBm representation and is the conducted power at the connector of the Reader.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=49&view=fit">LLRP Specification Section 9.2.4.1.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=134&view=fit">LLRP Specification Section 16.2.3.4.1.1</a>}
-
-      .
+ * This parameter specifies the index into the TransmitPowerLevelTable for a transmit power value. The transmit power is expressed in dBm*100 to allow fractional dBm representation
+ * and is the conducted power at the connector of the Reader.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=49&view=fit">LLRP Specification Section 9.2.4.1.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=134&view=fit">LLRP Specification Section 16.2.3.4.1.1</a>}
+ *
+ * .
  */
 public class TransmitPowerLevelTableEntry extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(145);
-    private static final Logger LOGGER = Logger.getLogger(TransmitPowerLevelTableEntry.class);
-    protected UnsignedShort index;
-    protected SignedShort transmitPowerValue;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public TransmitPowerLevelTableEntry() {
+  public static final SignedShort TYPENUM = new SignedShort(145);
+  private static final Logger LOGGER = Logger.getLogger(TransmitPowerLevelTableEntry.class);
+  protected UnsignedShort index;
+  protected SignedShort transmitPowerValue;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public TransmitPowerLevelTableEntry() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public TransmitPowerLevelTableEntry(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public TransmitPowerLevelTableEntry(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (index == null) {
+      LOGGER.warn(" index not set");
+      throw new MissingParameterException(
+        " index not set  for Parameter of Type TransmitPowerLevelTableEntry");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public TransmitPowerLevelTableEntry(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(index.encodeBinary());
+
+    if (transmitPowerValue == null) {
+      LOGGER.warn(" transmitPowerValue not set");
+      throw new MissingParameterException(
+        " transmitPowerValue not set  for Parameter of Type TransmitPowerLevelTableEntry");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public TransmitPowerLevelTableEntry(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(transmitPowerValue.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (index == null) {
+      LOGGER.warn(" index not set");
+      throw new MissingParameterException(" index not set");
+    } else {
+      element.addContent(index.encodeXML("Index", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
-
-        if (index == null) {
-            LOGGER.warn(" index not set");
-            throw new MissingParameterException(
-                " index not set  for Parameter of Type TransmitPowerLevelTableEntry");
-        }
-
-        resultBits.append(index.encodeBinary());
-
-        if (transmitPowerValue == null) {
-            LOGGER.warn(" transmitPowerValue not set");
-            throw new MissingParameterException(
-                " transmitPowerValue not set  for Parameter of Type TransmitPowerLevelTableEntry");
-        }
-
-        resultBits.append(transmitPowerValue.encodeBinary());
-
-        return resultBits;
+    if (transmitPowerValue == null) {
+      LOGGER.warn(" transmitPowerValue not set");
+      throw new MissingParameterException(" transmitPowerValue not set");
+    } else {
+      element.addContent(transmitPowerValue.encodeXML(
+        "TransmitPowerValue", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    //parameters
+    return element;
+  }
 
-        if (index == null) {
-            LOGGER.warn(" index not set");
-            throw new MissingParameterException(" index not set");
-        } else {
-            element.addContent(index.encodeXML("Index", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    index = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    transmitPowerValue = new SignedShort(binary.subList(position,
+      SignedShort.length()));
+    position += SignedShort.length();
+  }
 
-        if (transmitPowerValue == null) {
-            LOGGER.warn(" transmitPowerValue not set");
-            throw new MissingParameterException(" transmitPowerValue not set");
-        } else {
-            element.addContent(transmitPowerValue.encodeXML(
-                    "TransmitPowerValue", ns));
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        //parameters
-        return element;
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("Index", ns);
+
+    if (temp != null) {
+      index = new UnsignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        index = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        transmitPowerValue = new SignedShort(binary.subList(position,
-                    SignedShort.length()));
-        position += SignedShort.length();
+    element.removeChild("Index", ns);
+    temp = element.getChild("TransmitPowerValue", ns);
+
+    if (temp != null) {
+      transmitPowerValue = new SignedShort(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    element.removeChild("TransmitPowerValue", ns);
 
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("Index", ns);
-
-        if (temp != null) {
-            index = new UnsignedShort(temp);
-        }
-
-        element.removeChild("Index", ns);
-        temp = element.getChild("TransmitPowerValue", ns);
-
-        if (temp != null) {
-            transmitPowerValue = new SignedShort(temp);
-        }
-
-        element.removeChild("TransmitPowerValue", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "TransmitPowerLevelTableEntry has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (element.getChildren().size() > 0) {
+      String message = "TransmitPowerLevelTableEntry has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    //setters
-    /**
-    * set   index of type UnsignedShort .
-    * @param   index to be set
-    */
-    public void setIndex(final UnsignedShort index) {
-        this.index = index;
-    }
+  //setters
+  /**
+   * set index of type UnsignedShort .
+   *
+   * @param index to be set
+   */
+  public void setIndex(final UnsignedShort index) {
+    this.index = index;
+  }
 
-    /**
-    * set   transmitPowerValue of type SignedShort .
-    * @param   transmitPowerValue to be set
-    */
-    public void setTransmitPowerValue(final SignedShort transmitPowerValue) {
-        this.transmitPowerValue = transmitPowerValue;
-    }
+  /**
+   * set transmitPowerValue of type SignedShort .
+   *
+   * @param transmitPowerValue to be set
+   */
+  public void setTransmitPowerValue(final SignedShort transmitPowerValue) {
+    this.transmitPowerValue = transmitPowerValue;
+  }
 
-    // end setter
+  // end setter
+  //getters
+  /**
+   * get index of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getIndex() {
+    return this.index;
+  }
 
-    //getters
-    /**
-    * get   index of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getIndex() {
-        return this.index;
-    }
+  /**
+   * get transmitPowerValue of type SignedShort.
+   *
+   * @return type SignedShort to be set
+   */
+  public SignedShort getTransmitPowerValue() {
+    return this.transmitPowerValue;
+  }
 
-    /**
-    * get   transmitPowerValue of type SignedShort.
-    * @return   type SignedShort to be set
-    */
-    public SignedShort getTransmitPowerValue() {
-        return this.transmitPowerValue;
-    }
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    // end getters
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    //add methods
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "TransmitPowerLevelTableEntry";
+  }
 
-    // end add
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "TransmitPowerLevelTableEntry: ";
+    result += ", index: ";
+    result += index;
+    result += ", transmitPowerValue: ";
+    result += transmitPowerValue;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "TransmitPowerLevelTableEntry";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "TransmitPowerLevelTableEntry: ";
-        result += ", index: ";
-        result += index;
-        result += ", transmitPowerValue: ";
-        result += transmitPowerValue;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

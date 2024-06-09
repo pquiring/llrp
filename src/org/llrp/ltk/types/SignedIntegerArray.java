@@ -22,262 +22,252 @@ import org.jdom.Text;
 
 /**
  * Array of 32 bit integers - length encoded as first 16 bits in binary encoding
- * 
+ *
  * @author gasserb
  */
 public class SignedIntegerArray extends LLRPType {
-	private SignedInteger[] integers;
 
-	/**
-	 * Creates a new SignedIntegerArray object.
-	 * 
-	 * @param ints
-	 *            to create UsnignedIntegerArray from
-	 */
-	public SignedIntegerArray(SignedInteger[] ints) {
-		this.integers = ints.clone();
-	}
+  private SignedInteger[] integers;
 
-	/**
-	 * Creates a new SignedIntegerArray object from jdom element - used for xml
-	 * decoding
-	 * 
-	 * @param element
-	 *            to be decoded
-	 */
-	public SignedIntegerArray(Element element) {
-		decodeXML(element);
-	}
+  /**
+   * Creates a new SignedIntegerArray object.
+   *
+   * @param ints to create UsnignedIntegerArray from
+   */
+  public SignedIntegerArray(SignedInteger[] ints) {
+    this.integers = ints.clone();
+  }
 
-	/**
-	 * Creates a new SignedIntegerArray object.
-	 * 
-	 * @param length
-	 *            of array
-	 */
-	public SignedIntegerArray(int length) {
-		integers = new SignedInteger[length];
-	}
+  /**
+   * Creates a new SignedIntegerArray object from jdom element - used for xml decoding
+   *
+   * @param element to be decoded
+   */
+  public SignedIntegerArray(Element element) {
+    decodeXML(element);
+  }
 
-	public SignedIntegerArray(int[] data) {
-		this.integers = new SignedInteger[data.length];
-		for (int i = 0; i < data.length; i++) {
-			integers[i] = new SignedInteger(data[i]);
-		}
-	}
+  /**
+   * Creates a new SignedIntegerArray object.
+   *
+   * @param length of array
+   */
+  public SignedIntegerArray(int length) {
+    integers = new SignedInteger[length];
+  }
 
-	/**
-	 * first 16 bits of LLRPBitlist must indicate number of entries that follow
-	 * 
-	 * @param bits
-	 *            to be decoded
-	 */
-	public SignedIntegerArray(LLRPBitList bits) {
-		decodeBinary(bits);
-	}
+  public SignedIntegerArray(int[] data) {
+    this.integers = new SignedInteger[data.length];
+    for (int i = 0; i < data.length; i++) {
+      integers[i] = new SignedInteger(data[i]);
+    }
+  }
 
-	/**
-	 * @param string
-	 */
-	public SignedIntegerArray(String string) {
-		Element element = new Element("foo", "ns");
-		element.setText(string);
-		decodeXML(element);
-	}
+  /**
+   * first 16 bits of LLRPBitlist must indicate number of entries that follow
+   *
+   * @param bits to be decoded
+   */
+  public SignedIntegerArray(LLRPBitList bits) {
+    decodeBinary(bits);
+  }
 
-	/**
-	 * Creates an empty SignedIntegerArray. Do not call methood 'set' on an
-	 * empty array. Add SignedInteger by calling the add method
-	 */
-	public SignedIntegerArray() {
-		integers = new SignedInteger[0];
-	}
+  /**
+   * @param string
+   */
+  public SignedIntegerArray(String string) {
+    Element element = new Element("foo", "ns");
+    element.setText(string);
+    decodeXML(element);
+  }
 
-	/**
-	 * encodes length before encoding containing values
-	 * 
-	 * @return LLRPBitList
-	 */
-	public LLRPBitList encodeBinary() {
-		LLRPBitList result = new LLRPBitList();
-		result.append(new UnsignedShort(integers.length).encodeBinary());
+  /**
+   * Creates an empty SignedIntegerArray. Do not call methood 'set' on an empty array. Add SignedInteger by calling the add method
+   */
+  public SignedIntegerArray() {
+    integers = new SignedInteger[0];
+  }
 
-		for (int i = 0; i < integers.length; i++) {
-			result.append(integers[i].encodeBinary());
-		}
+  /**
+   * encodes length before encoding containing values
+   *
+   * @return LLRPBitList
+   */
+  public LLRPBitList encodeBinary() {
+    LLRPBitList result = new LLRPBitList();
+    result.append(new UnsignedShort(integers.length).encodeBinary());
 
-		return result;
-	}
+    for (int i = 0; i < integers.length; i++) {
+      result.append(integers[i].encodeBinary());
+    }
 
-	/**
-	 * number of bytes used to represent this type
-	 * 
-	 * @return Integer
-	 */
-	public int getByteLength() {
-		return integers.length * 2;
-	}
+    return result;
+  }
 
-	/**
-	 * length of BaseType not array - for array length call size()
-	 * 
-	 * @return int
-	 */
-	public static int length() {
-		return SignedInteger.length();
-	}
+  /**
+   * number of bytes used to represent this type
+   *
+   * @return Integer
+   */
+  public int getByteLength() {
+    return integers.length * 2;
+  }
 
-	/**
-	 * first 16 bits of LLRPBitlist must indicate number of entries that follow
-	 * 
-	 * @param list
-	 *            to be decoded
-	 */
-	public void decodeBinary(LLRPBitList list) {
-		Integer length = new SignedShort(list.subList(0, SignedShort.length()))
-				.toInteger();
-		integers = new SignedInteger[length];
+  /**
+   * length of BaseType not array - for array length call size()
+   *
+   * @return int
+   */
+  public static int length() {
+    return SignedInteger.length();
+  }
 
-		for (int i = 0; i < length; i++) {
-			integers[i] = new SignedInteger(list.subList(i
-					* SignedInteger.length() + SignedShort.length(),
-					SignedInteger.length()));
-		}
-	}
+  /**
+   * first 16 bits of LLRPBitlist must indicate number of entries that follow
+   *
+   * @param list to be decoded
+   */
+  public void decodeBinary(LLRPBitList list) {
+    Integer length = new SignedShort(list.subList(0, SignedShort.length()))
+      .toInteger();
+    integers = new SignedInteger[length];
 
-	/**
-	 * get SignedInteger at specified position
-	 * 
-	 * @param i
-	 *            position
-	 * 
-	 * @return SignedInteger
-	 */
-	public SignedInteger get(int i) {
-		return integers[i];
-	}
+    for (int i = 0; i < length; i++) {
+      integers[i] = new SignedInteger(list.subList(i
+        * SignedInteger.length() + SignedShort.length(),
+        SignedInteger.length()));
+    }
+  }
 
-	/**
-	 * set SignedInteger at i to b
-	 * 
-	 * @param i
-	 *            position
-	 * @param b
-	 *            SignedInteger to be set
-	 */
-	public void set(int i, SignedInteger b) {
-		if ((i < 0) || (i > integers.length)) {
-			return;
-		} else {
-			integers[i] = b;
-		}
-	}
+  /**
+   * get SignedInteger at specified position
+   *
+   * @param i position
+   *
+   * @return SignedInteger
+   */
+  public SignedInteger get(int i) {
+    return integers[i];
+  }
 
-	/**
-	 * number of elements in array
-	 * 
-	 * @return int
-	 */
-	public int size() {
-		return integers.length;
-	}
+  /**
+   * set SignedInteger at i to b
+   *
+   * @param i position
+   * @param b SignedInteger to be set
+   */
+  public void set(int i, SignedInteger b) {
+    if ((i < 0) || (i > integers.length)) {
+      return;
+    } else {
+      integers[i] = b;
+    }
+  }
 
-	@Override
-	public Content encodeXML(String name, Namespace ns) {
+  /**
+   * number of elements in array
+   *
+   * @return int
+   */
+  public int size() {
+    return integers.length;
+  }
 
-		Element element = new Element(name, ns);
-		element.setContent(new Text(toString()));
+  @Override
+  public Content encodeXML(String name, Namespace ns) {
 
-		return element;
-	}
+    Element element = new Element(name, ns);
+    element.setContent(new Text(toString()));
 
-	@Override
-	public void decodeXML(Element element) {
-		String text = element.getText();
-		if (!text.equals("")) {
-			String[] strings = text.split(" ");
-			integers = new SignedInteger[strings.length];
+    return element;
+  }
 
-			for (int i = 0; i < strings.length; i++) {
-				integers[i] = new SignedInteger(strings[i]);
-			}
-		} else {
-			integers = new SignedInteger[0];
-		}
-	}
+  @Override
+  public void decodeXML(Element element) {
+    String text = element.getText();
+    if (!text.equals("")) {
+      String[] strings = text.split(" ");
+      integers = new SignedInteger[strings.length];
 
-	public void add(SignedInteger aInteger) {
-		SignedInteger[] newIntegers = new SignedInteger[integers.length + 1];
-		System.arraycopy(integers, 0, newIntegers, 0, integers.length);
-		newIntegers[integers.length] = aInteger;
-		integers = newIntegers;
-	}
+      for (int i = 0; i < strings.length; i++) {
+        integers[i] = new SignedInteger(strings[i]);
+      }
+    } else {
+      integers = new SignedInteger[0];
+    }
+  }
 
-	public String toString(int radix) {
-		String s = "";
+  public void add(SignedInteger aInteger) {
+    SignedInteger[] newIntegers = new SignedInteger[integers.length + 1];
+    System.arraycopy(integers, 0, newIntegers, 0, integers.length);
+    newIntegers[integers.length] = aInteger;
+    integers = newIntegers;
+  }
 
-		for (SignedInteger b : integers) {
-			s += b.toString(radix);
-		}
-		return s;
+  public String toString(int radix) {
+    String s = "";
 
-	}
+    for (SignedInteger b : integers) {
+      s += b.toString(radix);
+    }
+    return s;
 
-	public String toString() {
-		String s = "";
+  }
 
-		for (SignedInteger b : integers) {
-			s += " ";
-			s += b.toInteger();
-		}
+  public String toString() {
+    String s = "";
 
-		s = s.replaceFirst(" ", "");
-		return s;
-	}
+    for (SignedInteger b : integers) {
+      s += " ";
+      s += b.toInteger();
+    }
 
-	/**
-	 * expects a string as formated for XML
-	 */
-	public boolean inRange(String valueString) {
-		String[] strings = valueString.split(" ");
-		// try do create each element. If one failes, the whole string is
-		// illegal
-		for (int i = 0; i < strings.length; i++) {
-			try {
-				new SignedInteger(strings[i]);
-			} catch (IllegalArgumentException e) {
-				return false;
-			}
-		}
-		return true;
-	}
+    s = s.replaceFirst(" ", "");
+    return s;
+  }
 
-	/**
-	 * compare each element
-	 * 
-	 * @param other
-	 *            to compare
-	 * 
-	 * @return boolean
-	 */
-	public boolean equals(LLRPType other) {
-		if (!(other instanceof SignedIntegerArray)) {
-			throw new IllegalArgumentException(
-					"Argument not SignedIntegerArray");
-		}
-		SignedIntegerArray ba = (SignedIntegerArray) other;
+  /**
+   * expects a string as formated for XML
+   */
+  public boolean inRange(String valueString) {
+    String[] strings = valueString.split(" ");
+    // try do create each element. If one failes, the whole string is
+    // illegal
+    for (int i = 0; i < strings.length; i++) {
+      try {
+        new SignedInteger(strings[i]);
+      } catch (IllegalArgumentException e) {
+        return false;
+      }
+    }
+    return true;
+  }
 
-		if (ba.size() != (this.size())) {
-			return false;
-		}
+  /**
+   * compare each element
+   *
+   * @param other to compare
+   *
+   * @return boolean
+   */
+  public boolean equals(LLRPType other) {
+    if (!(other instanceof SignedIntegerArray)) {
+      throw new IllegalArgumentException(
+        "Argument not SignedIntegerArray");
+    }
+    SignedIntegerArray ba = (SignedIntegerArray) other;
 
-		for (int i = 0; i < integers.length; i++) {
-			if (!ba.get(i).equals(this.get(i))) {
-				return false;
-			}
-		}
+    if (ba.size() != (this.size())) {
+      return false;
+    }
 
-		return true;
-	}
+    for (int i = 0; i < integers.length; i++) {
+      if (!ba.get(i).equals(this.get(i))) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
 }

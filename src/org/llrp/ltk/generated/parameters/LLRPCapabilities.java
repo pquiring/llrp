@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,707 +50,734 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This parameter describes the LLRP protocol capabilities of the Reader. These include optional LLRP commands and parameters, capacities of data structures used in LLRP operations, and air protocol specific capabilities used by LLRP.Readers MAY support RFSurvey, MAY support tag inventory state aware singulation, MAY support UTC clocks, MAY support buffer fill warning reports, MAY support EventAndReportHolding upon reconnect, and MAY support ClientRequestOpspec. Readers SHALL support at least one ROSpec, one AISpec per ROSpec, one InventoryParameterSpec per AISpec, one AccessSpec, and one OpSpec per AccessSpec.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=47&view=fit">LLRP Specification Section 9.2.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=133&view=fit">LLRP Specification Section 16.2.3.2</a>}
-
-
+ * This parameter describes the LLRP protocol capabilities of the Reader. These include optional LLRP commands and parameters, capacities of data structures used in LLRP
+ * operations, and air protocol specific capabilities used by LLRP.Readers MAY support RFSurvey, MAY support tag inventory state aware singulation, MAY support UTC clocks, MAY
+ * support buffer fill warning reports, MAY support EventAndReportHolding upon reconnect, and MAY support ClientRequestOpspec. Readers SHALL support at least one ROSpec, one AISpec
+ * per ROSpec, one InventoryParameterSpec per AISpec, one AccessSpec, and one OpSpec per AccessSpec.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=47&view=fit">LLRP Specification Section 9.2.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=133&view=fit">LLRP Specification Section 16.2.3.2</a>}
+ *
+ *
  */
-
 /**
- * This parameter describes the LLRP protocol capabilities of the Reader. These include optional LLRP commands and parameters, capacities of data structures used in LLRP operations, and air protocol specific capabilities used by LLRP.Readers MAY support RFSurvey, MAY support tag inventory state aware singulation, MAY support UTC clocks, MAY support buffer fill warning reports, MAY support EventAndReportHolding upon reconnect, and MAY support ClientRequestOpspec. Readers SHALL support at least one ROSpec, one AISpec per ROSpec, one InventoryParameterSpec per AISpec, one AccessSpec, and one OpSpec per AccessSpec.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=47&view=fit">LLRP Specification Section 9.2.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=133&view=fit">LLRP Specification Section 16.2.3.2</a>}
-
-      .
+ * This parameter describes the LLRP protocol capabilities of the Reader. These include optional LLRP commands and parameters, capacities of data structures used in LLRP
+ * operations, and air protocol specific capabilities used by LLRP.Readers MAY support RFSurvey, MAY support tag inventory state aware singulation, MAY support UTC clocks, MAY
+ * support buffer fill warning reports, MAY support EventAndReportHolding upon reconnect, and MAY support ClientRequestOpspec. Readers SHALL support at least one ROSpec, one AISpec
+ * per ROSpec, one InventoryParameterSpec per AISpec, one AccessSpec, and one OpSpec per AccessSpec.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=47&view=fit">LLRP Specification Section 9.2.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=133&view=fit">LLRP Specification Section 16.2.3.2</a>}
+ *
+ * .
  */
 public class LLRPCapabilities extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(142);
-    private static final Logger LOGGER = Logger.getLogger(LLRPCapabilities.class);
-    protected Bit canDoRFSurvey;
-    protected Bit canReportBufferFillWarning;
-    protected Bit supportsClientRequestOpSpec;
-    protected Bit canDoTagInventoryStateAwareSingulation;
-    protected Bit supportsEventAndReportHolding;
-    protected BitList reserved0 = new BitList(3);
-    protected UnsignedByte maxNumPriorityLevelsSupported;
-    protected UnsignedShort clientRequestOpSpecTimeout;
-    protected UnsignedInteger maxNumROSpecs;
-    protected UnsignedInteger maxNumSpecsPerROSpec;
-    protected UnsignedInteger maxNumInventoryParameterSpecsPerAISpec;
-    protected UnsignedInteger maxNumAccessSpecs;
-    protected UnsignedInteger maxNumOpSpecsPerAccessSpec;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public LLRPCapabilities() {
+  public static final SignedShort TYPENUM = new SignedShort(142);
+  private static final Logger LOGGER = Logger.getLogger(LLRPCapabilities.class);
+  protected Bit canDoRFSurvey;
+  protected Bit canReportBufferFillWarning;
+  protected Bit supportsClientRequestOpSpec;
+  protected Bit canDoTagInventoryStateAwareSingulation;
+  protected Bit supportsEventAndReportHolding;
+  protected BitList reserved0 = new BitList(3);
+  protected UnsignedByte maxNumPriorityLevelsSupported;
+  protected UnsignedShort clientRequestOpSpecTimeout;
+  protected UnsignedInteger maxNumROSpecs;
+  protected UnsignedInteger maxNumSpecsPerROSpec;
+  protected UnsignedInteger maxNumInventoryParameterSpecsPerAISpec;
+  protected UnsignedInteger maxNumAccessSpecs;
+  protected UnsignedInteger maxNumOpSpecsPerAccessSpec;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public LLRPCapabilities() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public LLRPCapabilities(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public LLRPCapabilities(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (canDoRFSurvey == null) {
+      LOGGER.warn(" canDoRFSurvey not set");
+      throw new MissingParameterException(
+        " canDoRFSurvey not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public LLRPCapabilities(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(canDoRFSurvey.encodeBinary());
+
+    if (canReportBufferFillWarning == null) {
+      LOGGER.warn(" canReportBufferFillWarning not set");
+      throw new MissingParameterException(
+        " canReportBufferFillWarning not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public LLRPCapabilities(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(canReportBufferFillWarning.encodeBinary());
+
+    if (supportsClientRequestOpSpec == null) {
+      LOGGER.warn(" supportsClientRequestOpSpec not set");
+      throw new MissingParameterException(
+        " supportsClientRequestOpSpec not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(supportsClientRequestOpSpec.encodeBinary());
 
-        if (canDoRFSurvey == null) {
-            LOGGER.warn(" canDoRFSurvey not set");
-            throw new MissingParameterException(
-                " canDoRFSurvey not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(canDoRFSurvey.encodeBinary());
-
-        if (canReportBufferFillWarning == null) {
-            LOGGER.warn(" canReportBufferFillWarning not set");
-            throw new MissingParameterException(
-                " canReportBufferFillWarning not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(canReportBufferFillWarning.encodeBinary());
-
-        if (supportsClientRequestOpSpec == null) {
-            LOGGER.warn(" supportsClientRequestOpSpec not set");
-            throw new MissingParameterException(
-                " supportsClientRequestOpSpec not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(supportsClientRequestOpSpec.encodeBinary());
-
-        if (canDoTagInventoryStateAwareSingulation == null) {
-            LOGGER.warn(" canDoTagInventoryStateAwareSingulation not set");
-            throw new MissingParameterException(
-                " canDoTagInventoryStateAwareSingulation not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(canDoTagInventoryStateAwareSingulation.encodeBinary());
-
-        if (supportsEventAndReportHolding == null) {
-            LOGGER.warn(" supportsEventAndReportHolding not set");
-            throw new MissingParameterException(
-                " supportsEventAndReportHolding not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(supportsEventAndReportHolding.encodeBinary());
-        resultBits.append(reserved0.encodeBinary());
-
-        if (maxNumPriorityLevelsSupported == null) {
-            LOGGER.warn(" maxNumPriorityLevelsSupported not set");
-            throw new MissingParameterException(
-                " maxNumPriorityLevelsSupported not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(maxNumPriorityLevelsSupported.encodeBinary());
-
-        if (clientRequestOpSpecTimeout == null) {
-            LOGGER.warn(" clientRequestOpSpecTimeout not set");
-            throw new MissingParameterException(
-                " clientRequestOpSpecTimeout not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(clientRequestOpSpecTimeout.encodeBinary());
-
-        if (maxNumROSpecs == null) {
-            LOGGER.warn(" maxNumROSpecs not set");
-            throw new MissingParameterException(
-                " maxNumROSpecs not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(maxNumROSpecs.encodeBinary());
-
-        if (maxNumSpecsPerROSpec == null) {
-            LOGGER.warn(" maxNumSpecsPerROSpec not set");
-            throw new MissingParameterException(
-                " maxNumSpecsPerROSpec not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(maxNumSpecsPerROSpec.encodeBinary());
-
-        if (maxNumInventoryParameterSpecsPerAISpec == null) {
-            LOGGER.warn(" maxNumInventoryParameterSpecsPerAISpec not set");
-            throw new MissingParameterException(
-                " maxNumInventoryParameterSpecsPerAISpec not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(maxNumInventoryParameterSpecsPerAISpec.encodeBinary());
-
-        if (maxNumAccessSpecs == null) {
-            LOGGER.warn(" maxNumAccessSpecs not set");
-            throw new MissingParameterException(
-                " maxNumAccessSpecs not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(maxNumAccessSpecs.encodeBinary());
-
-        if (maxNumOpSpecsPerAccessSpec == null) {
-            LOGGER.warn(" maxNumOpSpecsPerAccessSpec not set");
-            throw new MissingParameterException(
-                " maxNumOpSpecsPerAccessSpec not set  for Parameter of Type LLRPCapabilities");
-        }
-
-        resultBits.append(maxNumOpSpecsPerAccessSpec.encodeBinary());
-
-        return resultBits;
+    if (canDoTagInventoryStateAwareSingulation == null) {
+      LOGGER.warn(" canDoTagInventoryStateAwareSingulation not set");
+      throw new MissingParameterException(
+        " canDoTagInventoryStateAwareSingulation not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    resultBits.append(canDoTagInventoryStateAwareSingulation.encodeBinary());
 
-        if (canDoRFSurvey == null) {
-            LOGGER.warn(" canDoRFSurvey not set");
-            throw new MissingParameterException(" canDoRFSurvey not set");
-        } else {
-            element.addContent(canDoRFSurvey.encodeXML("CanDoRFSurvey", ns));
-        }
-
-        if (canReportBufferFillWarning == null) {
-            LOGGER.warn(" canReportBufferFillWarning not set");
-            throw new MissingParameterException(
-                " canReportBufferFillWarning not set");
-        } else {
-            element.addContent(canReportBufferFillWarning.encodeXML(
-                    "CanReportBufferFillWarning", ns));
-        }
-
-        if (supportsClientRequestOpSpec == null) {
-            LOGGER.warn(" supportsClientRequestOpSpec not set");
-            throw new MissingParameterException(
-                " supportsClientRequestOpSpec not set");
-        } else {
-            element.addContent(supportsClientRequestOpSpec.encodeXML(
-                    "SupportsClientRequestOpSpec", ns));
-        }
-
-        if (canDoTagInventoryStateAwareSingulation == null) {
-            LOGGER.warn(" canDoTagInventoryStateAwareSingulation not set");
-            throw new MissingParameterException(
-                " canDoTagInventoryStateAwareSingulation not set");
-        } else {
-            element.addContent(canDoTagInventoryStateAwareSingulation.encodeXML(
-                    "CanDoTagInventoryStateAwareSingulation", ns));
-        }
-
-        if (supportsEventAndReportHolding == null) {
-            LOGGER.warn(" supportsEventAndReportHolding not set");
-            throw new MissingParameterException(
-                " supportsEventAndReportHolding not set");
-        } else {
-            element.addContent(supportsEventAndReportHolding.encodeXML(
-                    "SupportsEventAndReportHolding", ns));
-        }
-
-        //element.addContent(reserved0.encodeXML("reserved",ns));
-        if (maxNumPriorityLevelsSupported == null) {
-            LOGGER.warn(" maxNumPriorityLevelsSupported not set");
-            throw new MissingParameterException(
-                " maxNumPriorityLevelsSupported not set");
-        } else {
-            element.addContent(maxNumPriorityLevelsSupported.encodeXML(
-                    "MaxNumPriorityLevelsSupported", ns));
-        }
-
-        if (clientRequestOpSpecTimeout == null) {
-            LOGGER.warn(" clientRequestOpSpecTimeout not set");
-            throw new MissingParameterException(
-                " clientRequestOpSpecTimeout not set");
-        } else {
-            element.addContent(clientRequestOpSpecTimeout.encodeXML(
-                    "ClientRequestOpSpecTimeout", ns));
-        }
-
-        if (maxNumROSpecs == null) {
-            LOGGER.warn(" maxNumROSpecs not set");
-            throw new MissingParameterException(" maxNumROSpecs not set");
-        } else {
-            element.addContent(maxNumROSpecs.encodeXML("MaxNumROSpecs", ns));
-        }
-
-        if (maxNumSpecsPerROSpec == null) {
-            LOGGER.warn(" maxNumSpecsPerROSpec not set");
-            throw new MissingParameterException(" maxNumSpecsPerROSpec not set");
-        } else {
-            element.addContent(maxNumSpecsPerROSpec.encodeXML(
-                    "MaxNumSpecsPerROSpec", ns));
-        }
-
-        if (maxNumInventoryParameterSpecsPerAISpec == null) {
-            LOGGER.warn(" maxNumInventoryParameterSpecsPerAISpec not set");
-            throw new MissingParameterException(
-                " maxNumInventoryParameterSpecsPerAISpec not set");
-        } else {
-            element.addContent(maxNumInventoryParameterSpecsPerAISpec.encodeXML(
-                    "MaxNumInventoryParameterSpecsPerAISpec", ns));
-        }
-
-        if (maxNumAccessSpecs == null) {
-            LOGGER.warn(" maxNumAccessSpecs not set");
-            throw new MissingParameterException(" maxNumAccessSpecs not set");
-        } else {
-            element.addContent(maxNumAccessSpecs.encodeXML(
-                    "MaxNumAccessSpecs", ns));
-        }
-
-        if (maxNumOpSpecsPerAccessSpec == null) {
-            LOGGER.warn(" maxNumOpSpecsPerAccessSpec not set");
-            throw new MissingParameterException(
-                " maxNumOpSpecsPerAccessSpec not set");
-        } else {
-            element.addContent(maxNumOpSpecsPerAccessSpec.encodeXML(
-                    "MaxNumOpSpecsPerAccessSpec", ns));
-        }
-
-        //parameters
-        return element;
+    if (supportsEventAndReportHolding == null) {
+      LOGGER.warn(" supportsEventAndReportHolding not set");
+      throw new MissingParameterException(
+        " supportsEventAndReportHolding not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        canDoRFSurvey = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        canReportBufferFillWarning = new Bit(binary.subList(position,
-                    Bit.length()));
-        position += Bit.length();
-        supportsClientRequestOpSpec = new Bit(binary.subList(position,
-                    Bit.length()));
-        position += Bit.length();
-        canDoTagInventoryStateAwareSingulation = new Bit(binary.subList(
-                    position, Bit.length()));
-        position += Bit.length();
-        supportsEventAndReportHolding = new Bit(binary.subList(position,
-                    Bit.length()));
-        position += Bit.length();
-        position += reserved0.length();
-        maxNumPriorityLevelsSupported = new UnsignedByte(binary.subList(
-                    position, UnsignedByte.length()));
-        position += UnsignedByte.length();
-        clientRequestOpSpecTimeout = new UnsignedShort(binary.subList(
-                    position, UnsignedShort.length()));
-        position += UnsignedShort.length();
-        maxNumROSpecs = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        maxNumSpecsPerROSpec = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        maxNumInventoryParameterSpecsPerAISpec = new UnsignedInteger(binary.subList(
-                    position, UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        maxNumAccessSpecs = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        maxNumOpSpecsPerAccessSpec = new UnsignedInteger(binary.subList(
-                    position, UnsignedInteger.length()));
-        position += UnsignedInteger.length();
+    resultBits.append(supportsEventAndReportHolding.encodeBinary());
+    resultBits.append(reserved0.encodeBinary());
+
+    if (maxNumPriorityLevelsSupported == null) {
+      LOGGER.warn(" maxNumPriorityLevelsSupported not set");
+      throw new MissingParameterException(
+        " maxNumPriorityLevelsSupported not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    resultBits.append(maxNumPriorityLevelsSupported.encodeBinary());
 
-        Element temp = null;
-
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
-
-        temp = element.getChild("CanDoRFSurvey", ns);
-
-        if (temp != null) {
-            canDoRFSurvey = new Bit(temp);
-        }
-
-        element.removeChild("CanDoRFSurvey", ns);
-        temp = element.getChild("CanReportBufferFillWarning", ns);
-
-        if (temp != null) {
-            canReportBufferFillWarning = new Bit(temp);
-        }
-
-        element.removeChild("CanReportBufferFillWarning", ns);
-        temp = element.getChild("SupportsClientRequestOpSpec", ns);
-
-        if (temp != null) {
-            supportsClientRequestOpSpec = new Bit(temp);
-        }
-
-        element.removeChild("SupportsClientRequestOpSpec", ns);
-        temp = element.getChild("CanDoTagInventoryStateAwareSingulation", ns);
-
-        if (temp != null) {
-            canDoTagInventoryStateAwareSingulation = new Bit(temp);
-        }
-
-        element.removeChild("CanDoTagInventoryStateAwareSingulation", ns);
-        temp = element.getChild("SupportsEventAndReportHolding", ns);
-
-        if (temp != null) {
-            supportsEventAndReportHolding = new Bit(temp);
-        }
-
-        element.removeChild("SupportsEventAndReportHolding", ns);
-        temp = element.getChild("MaxNumPriorityLevelsSupported", ns);
-
-        if (temp != null) {
-            maxNumPriorityLevelsSupported = new UnsignedByte(temp);
-        }
-
-        element.removeChild("MaxNumPriorityLevelsSupported", ns);
-        temp = element.getChild("ClientRequestOpSpecTimeout", ns);
-
-        if (temp != null) {
-            clientRequestOpSpecTimeout = new UnsignedShort(temp);
-        }
-
-        element.removeChild("ClientRequestOpSpecTimeout", ns);
-        temp = element.getChild("MaxNumROSpecs", ns);
-
-        if (temp != null) {
-            maxNumROSpecs = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("MaxNumROSpecs", ns);
-        temp = element.getChild("MaxNumSpecsPerROSpec", ns);
-
-        if (temp != null) {
-            maxNumSpecsPerROSpec = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("MaxNumSpecsPerROSpec", ns);
-        temp = element.getChild("MaxNumInventoryParameterSpecsPerAISpec", ns);
-
-        if (temp != null) {
-            maxNumInventoryParameterSpecsPerAISpec = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("MaxNumInventoryParameterSpecsPerAISpec", ns);
-        temp = element.getChild("MaxNumAccessSpecs", ns);
-
-        if (temp != null) {
-            maxNumAccessSpecs = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("MaxNumAccessSpecs", ns);
-        temp = element.getChild("MaxNumOpSpecsPerAccessSpec", ns);
-
-        if (temp != null) {
-            maxNumOpSpecsPerAccessSpec = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("MaxNumOpSpecsPerAccessSpec", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "LLRPCapabilities has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (clientRequestOpSpecTimeout == null) {
+      LOGGER.warn(" clientRequestOpSpecTimeout not set");
+      throw new MissingParameterException(
+        " clientRequestOpSpecTimeout not set  for Parameter of Type LLRPCapabilities");
     }
 
-    //setters
-    /**
-    * set   canDoRFSurvey of type Bit .
-    * @param   canDoRFSurvey to be set
-    */
-    public void setCanDoRFSurvey(final Bit canDoRFSurvey) {
-        this.canDoRFSurvey = canDoRFSurvey;
+    resultBits.append(clientRequestOpSpecTimeout.encodeBinary());
+
+    if (maxNumROSpecs == null) {
+      LOGGER.warn(" maxNumROSpecs not set");
+      throw new MissingParameterException(
+        " maxNumROSpecs not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-    * set   canReportBufferFillWarning of type Bit .
-    * @param   canReportBufferFillWarning to be set
-    */
-    public void setCanReportBufferFillWarning(
-        final Bit canReportBufferFillWarning) {
-        this.canReportBufferFillWarning = canReportBufferFillWarning;
+    resultBits.append(maxNumROSpecs.encodeBinary());
+
+    if (maxNumSpecsPerROSpec == null) {
+      LOGGER.warn(" maxNumSpecsPerROSpec not set");
+      throw new MissingParameterException(
+        " maxNumSpecsPerROSpec not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-    * set   supportsClientRequestOpSpec of type Bit .
-    * @param   supportsClientRequestOpSpec to be set
-    */
-    public void setSupportsClientRequestOpSpec(
-        final Bit supportsClientRequestOpSpec) {
-        this.supportsClientRequestOpSpec = supportsClientRequestOpSpec;
+    resultBits.append(maxNumSpecsPerROSpec.encodeBinary());
+
+    if (maxNumInventoryParameterSpecsPerAISpec == null) {
+      LOGGER.warn(" maxNumInventoryParameterSpecsPerAISpec not set");
+      throw new MissingParameterException(
+        " maxNumInventoryParameterSpecsPerAISpec not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-    * set   canDoTagInventoryStateAwareSingulation of type Bit .
-    * @param   canDoTagInventoryStateAwareSingulation to be set
-    */
-    public void setCanDoTagInventoryStateAwareSingulation(
-        final Bit canDoTagInventoryStateAwareSingulation) {
-        this.canDoTagInventoryStateAwareSingulation = canDoTagInventoryStateAwareSingulation;
+    resultBits.append(maxNumInventoryParameterSpecsPerAISpec.encodeBinary());
+
+    if (maxNumAccessSpecs == null) {
+      LOGGER.warn(" maxNumAccessSpecs not set");
+      throw new MissingParameterException(
+        " maxNumAccessSpecs not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-    * set   supportsEventAndReportHolding of type Bit .
-    * @param   supportsEventAndReportHolding to be set
-    */
-    public void setSupportsEventAndReportHolding(
-        final Bit supportsEventAndReportHolding) {
-        this.supportsEventAndReportHolding = supportsEventAndReportHolding;
+    resultBits.append(maxNumAccessSpecs.encodeBinary());
+
+    if (maxNumOpSpecsPerAccessSpec == null) {
+      LOGGER.warn(" maxNumOpSpecsPerAccessSpec not set");
+      throw new MissingParameterException(
+        " maxNumOpSpecsPerAccessSpec not set  for Parameter of Type LLRPCapabilities");
     }
 
-    /**
-    * set   maxNumPriorityLevelsSupported of type UnsignedByte .
-    * @param   maxNumPriorityLevelsSupported to be set
-    */
-    public void setMaxNumPriorityLevelsSupported(
-        final UnsignedByte maxNumPriorityLevelsSupported) {
-        this.maxNumPriorityLevelsSupported = maxNumPriorityLevelsSupported;
+    resultBits.append(maxNumOpSpecsPerAccessSpec.encodeBinary());
+
+    return resultBits;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+
+    if (canDoRFSurvey == null) {
+      LOGGER.warn(" canDoRFSurvey not set");
+      throw new MissingParameterException(" canDoRFSurvey not set");
+    } else {
+      element.addContent(canDoRFSurvey.encodeXML("CanDoRFSurvey", ns));
     }
 
-    /**
-    * set   clientRequestOpSpecTimeout of type UnsignedShort .
-    * @param   clientRequestOpSpecTimeout to be set
-    */
-    public void setClientRequestOpSpecTimeout(
-        final UnsignedShort clientRequestOpSpecTimeout) {
-        this.clientRequestOpSpecTimeout = clientRequestOpSpecTimeout;
+    if (canReportBufferFillWarning == null) {
+      LOGGER.warn(" canReportBufferFillWarning not set");
+      throw new MissingParameterException(
+        " canReportBufferFillWarning not set");
+    } else {
+      element.addContent(canReportBufferFillWarning.encodeXML(
+        "CanReportBufferFillWarning", ns));
     }
 
-    /**
-    * set   maxNumROSpecs of type UnsignedInteger .
-    * @param   maxNumROSpecs to be set
-    */
-    public void setMaxNumROSpecs(final UnsignedInteger maxNumROSpecs) {
-        this.maxNumROSpecs = maxNumROSpecs;
+    if (supportsClientRequestOpSpec == null) {
+      LOGGER.warn(" supportsClientRequestOpSpec not set");
+      throw new MissingParameterException(
+        " supportsClientRequestOpSpec not set");
+    } else {
+      element.addContent(supportsClientRequestOpSpec.encodeXML(
+        "SupportsClientRequestOpSpec", ns));
     }
 
-    /**
-    * set   maxNumSpecsPerROSpec of type UnsignedInteger .
-    * @param   maxNumSpecsPerROSpec to be set
-    */
-    public void setMaxNumSpecsPerROSpec(
-        final UnsignedInteger maxNumSpecsPerROSpec) {
-        this.maxNumSpecsPerROSpec = maxNumSpecsPerROSpec;
+    if (canDoTagInventoryStateAwareSingulation == null) {
+      LOGGER.warn(" canDoTagInventoryStateAwareSingulation not set");
+      throw new MissingParameterException(
+        " canDoTagInventoryStateAwareSingulation not set");
+    } else {
+      element.addContent(canDoTagInventoryStateAwareSingulation.encodeXML(
+        "CanDoTagInventoryStateAwareSingulation", ns));
     }
 
-    /**
-    * set   maxNumInventoryParameterSpecsPerAISpec of type UnsignedInteger .
-    * @param   maxNumInventoryParameterSpecsPerAISpec to be set
-    */
-    public void setMaxNumInventoryParameterSpecsPerAISpec(
-        final UnsignedInteger maxNumInventoryParameterSpecsPerAISpec) {
-        this.maxNumInventoryParameterSpecsPerAISpec = maxNumInventoryParameterSpecsPerAISpec;
+    if (supportsEventAndReportHolding == null) {
+      LOGGER.warn(" supportsEventAndReportHolding not set");
+      throw new MissingParameterException(
+        " supportsEventAndReportHolding not set");
+    } else {
+      element.addContent(supportsEventAndReportHolding.encodeXML(
+        "SupportsEventAndReportHolding", ns));
     }
 
-    /**
-    * set   maxNumAccessSpecs of type UnsignedInteger .
-    * @param   maxNumAccessSpecs to be set
-    */
-    public void setMaxNumAccessSpecs(final UnsignedInteger maxNumAccessSpecs) {
-        this.maxNumAccessSpecs = maxNumAccessSpecs;
+    //element.addContent(reserved0.encodeXML("reserved",ns));
+    if (maxNumPriorityLevelsSupported == null) {
+      LOGGER.warn(" maxNumPriorityLevelsSupported not set");
+      throw new MissingParameterException(
+        " maxNumPriorityLevelsSupported not set");
+    } else {
+      element.addContent(maxNumPriorityLevelsSupported.encodeXML(
+        "MaxNumPriorityLevelsSupported", ns));
     }
 
-    /**
-    * set   maxNumOpSpecsPerAccessSpec of type UnsignedInteger .
-    * @param   maxNumOpSpecsPerAccessSpec to be set
-    */
-    public void setMaxNumOpSpecsPerAccessSpec(
-        final UnsignedInteger maxNumOpSpecsPerAccessSpec) {
-        this.maxNumOpSpecsPerAccessSpec = maxNumOpSpecsPerAccessSpec;
+    if (clientRequestOpSpecTimeout == null) {
+      LOGGER.warn(" clientRequestOpSpecTimeout not set");
+      throw new MissingParameterException(
+        " clientRequestOpSpecTimeout not set");
+    } else {
+      element.addContent(clientRequestOpSpecTimeout.encodeXML(
+        "ClientRequestOpSpecTimeout", ns));
     }
 
-    // end setter
-
-    //getters
-    /**
-    * get   canDoRFSurvey of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getCanDoRFSurvey() {
-        return this.canDoRFSurvey;
+    if (maxNumROSpecs == null) {
+      LOGGER.warn(" maxNumROSpecs not set");
+      throw new MissingParameterException(" maxNumROSpecs not set");
+    } else {
+      element.addContent(maxNumROSpecs.encodeXML("MaxNumROSpecs", ns));
     }
 
-    /**
-    * get   canReportBufferFillWarning of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getCanReportBufferFillWarning() {
-        return this.canReportBufferFillWarning;
+    if (maxNumSpecsPerROSpec == null) {
+      LOGGER.warn(" maxNumSpecsPerROSpec not set");
+      throw new MissingParameterException(" maxNumSpecsPerROSpec not set");
+    } else {
+      element.addContent(maxNumSpecsPerROSpec.encodeXML(
+        "MaxNumSpecsPerROSpec", ns));
     }
 
-    /**
-    * get   supportsClientRequestOpSpec of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getSupportsClientRequestOpSpec() {
-        return this.supportsClientRequestOpSpec;
+    if (maxNumInventoryParameterSpecsPerAISpec == null) {
+      LOGGER.warn(" maxNumInventoryParameterSpecsPerAISpec not set");
+      throw new MissingParameterException(
+        " maxNumInventoryParameterSpecsPerAISpec not set");
+    } else {
+      element.addContent(maxNumInventoryParameterSpecsPerAISpec.encodeXML(
+        "MaxNumInventoryParameterSpecsPerAISpec", ns));
     }
 
-    /**
-    * get   canDoTagInventoryStateAwareSingulation of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getCanDoTagInventoryStateAwareSingulation() {
-        return this.canDoTagInventoryStateAwareSingulation;
+    if (maxNumAccessSpecs == null) {
+      LOGGER.warn(" maxNumAccessSpecs not set");
+      throw new MissingParameterException(" maxNumAccessSpecs not set");
+    } else {
+      element.addContent(maxNumAccessSpecs.encodeXML(
+        "MaxNumAccessSpecs", ns));
     }
 
-    /**
-    * get   supportsEventAndReportHolding of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getSupportsEventAndReportHolding() {
-        return this.supportsEventAndReportHolding;
+    if (maxNumOpSpecsPerAccessSpec == null) {
+      LOGGER.warn(" maxNumOpSpecsPerAccessSpec not set");
+      throw new MissingParameterException(
+        " maxNumOpSpecsPerAccessSpec not set");
+    } else {
+      element.addContent(maxNumOpSpecsPerAccessSpec.encodeXML(
+        "MaxNumOpSpecsPerAccessSpec", ns));
     }
 
-    /**
-    * get   maxNumPriorityLevelsSupported of type UnsignedByte.
-    * @return   type UnsignedByte to be set
-    */
-    public UnsignedByte getMaxNumPriorityLevelsSupported() {
-        return this.maxNumPriorityLevelsSupported;
+    //parameters
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    canDoRFSurvey = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    canReportBufferFillWarning = new Bit(binary.subList(position,
+      Bit.length()));
+    position += Bit.length();
+    supportsClientRequestOpSpec = new Bit(binary.subList(position,
+      Bit.length()));
+    position += Bit.length();
+    canDoTagInventoryStateAwareSingulation = new Bit(binary.subList(
+      position, Bit.length()));
+    position += Bit.length();
+    supportsEventAndReportHolding = new Bit(binary.subList(position,
+      Bit.length()));
+    position += Bit.length();
+    position += reserved0.length();
+    maxNumPriorityLevelsSupported = new UnsignedByte(binary.subList(
+      position, UnsignedByte.length()));
+    position += UnsignedByte.length();
+    clientRequestOpSpecTimeout = new UnsignedShort(binary.subList(
+      position, UnsignedShort.length()));
+    position += UnsignedShort.length();
+    maxNumROSpecs = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    maxNumSpecsPerROSpec = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    maxNumInventoryParameterSpecsPerAISpec = new UnsignedInteger(binary.subList(
+      position, UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    maxNumAccessSpecs = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    maxNumOpSpecsPerAccessSpec = new UnsignedInteger(binary.subList(
+      position, UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
+
+    Element temp = null;
+
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+
+    temp = element.getChild("CanDoRFSurvey", ns);
+
+    if (temp != null) {
+      canDoRFSurvey = new Bit(temp);
     }
 
-    /**
-    * get   clientRequestOpSpecTimeout of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getClientRequestOpSpecTimeout() {
-        return this.clientRequestOpSpecTimeout;
+    element.removeChild("CanDoRFSurvey", ns);
+    temp = element.getChild("CanReportBufferFillWarning", ns);
+
+    if (temp != null) {
+      canReportBufferFillWarning = new Bit(temp);
     }
 
-    /**
-    * get   maxNumROSpecs of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getMaxNumROSpecs() {
-        return this.maxNumROSpecs;
+    element.removeChild("CanReportBufferFillWarning", ns);
+    temp = element.getChild("SupportsClientRequestOpSpec", ns);
+
+    if (temp != null) {
+      supportsClientRequestOpSpec = new Bit(temp);
     }
 
-    /**
-    * get   maxNumSpecsPerROSpec of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getMaxNumSpecsPerROSpec() {
-        return this.maxNumSpecsPerROSpec;
+    element.removeChild("SupportsClientRequestOpSpec", ns);
+    temp = element.getChild("CanDoTagInventoryStateAwareSingulation", ns);
+
+    if (temp != null) {
+      canDoTagInventoryStateAwareSingulation = new Bit(temp);
     }
 
-    /**
-    * get   maxNumInventoryParameterSpecsPerAISpec of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getMaxNumInventoryParameterSpecsPerAISpec() {
-        return this.maxNumInventoryParameterSpecsPerAISpec;
+    element.removeChild("CanDoTagInventoryStateAwareSingulation", ns);
+    temp = element.getChild("SupportsEventAndReportHolding", ns);
+
+    if (temp != null) {
+      supportsEventAndReportHolding = new Bit(temp);
     }
 
-    /**
-    * get   maxNumAccessSpecs of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getMaxNumAccessSpecs() {
-        return this.maxNumAccessSpecs;
+    element.removeChild("SupportsEventAndReportHolding", ns);
+    temp = element.getChild("MaxNumPriorityLevelsSupported", ns);
+
+    if (temp != null) {
+      maxNumPriorityLevelsSupported = new UnsignedByte(temp);
     }
 
-    /**
-    * get   maxNumOpSpecsPerAccessSpec of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getMaxNumOpSpecsPerAccessSpec() {
-        return this.maxNumOpSpecsPerAccessSpec;
+    element.removeChild("MaxNumPriorityLevelsSupported", ns);
+    temp = element.getChild("ClientRequestOpSpecTimeout", ns);
+
+    if (temp != null) {
+      clientRequestOpSpecTimeout = new UnsignedShort(temp);
     }
 
-    // end getters
+    element.removeChild("ClientRequestOpSpecTimeout", ns);
+    temp = element.getChild("MaxNumROSpecs", ns);
 
-    //add methods
-
-    // end add
-
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
+    if (temp != null) {
+      maxNumROSpecs = new UnsignedInteger(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
+    element.removeChild("MaxNumROSpecs", ns);
+    temp = element.getChild("MaxNumSpecsPerROSpec", ns);
+
+    if (temp != null) {
+      maxNumSpecsPerROSpec = new UnsignedInteger(temp);
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "LLRPCapabilities";
+    element.removeChild("MaxNumSpecsPerROSpec", ns);
+    temp = element.getChild("MaxNumInventoryParameterSpecsPerAISpec", ns);
+
+    if (temp != null) {
+      maxNumInventoryParameterSpecsPerAISpec = new UnsignedInteger(temp);
     }
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "LLRPCapabilities: ";
-        result += ", canDoRFSurvey: ";
-        result += canDoRFSurvey;
-        result += ", canReportBufferFillWarning: ";
-        result += canReportBufferFillWarning;
-        result += ", supportsClientRequestOpSpec: ";
-        result += supportsClientRequestOpSpec;
-        result += ", canDoTagInventoryStateAwareSingulation: ";
-        result += canDoTagInventoryStateAwareSingulation;
-        result += ", supportsEventAndReportHolding: ";
-        result += supportsEventAndReportHolding;
+    element.removeChild("MaxNumInventoryParameterSpecsPerAISpec", ns);
+    temp = element.getChild("MaxNumAccessSpecs", ns);
 
-        result += ", maxNumPriorityLevelsSupported: ";
-        result += maxNumPriorityLevelsSupported;
-        result += ", clientRequestOpSpecTimeout: ";
-        result += clientRequestOpSpecTimeout;
-        result += ", maxNumROSpecs: ";
-        result += maxNumROSpecs;
-        result += ", maxNumSpecsPerROSpec: ";
-        result += maxNumSpecsPerROSpec;
-        result += ", maxNumInventoryParameterSpecsPerAISpec: ";
-        result += maxNumInventoryParameterSpecsPerAISpec;
-        result += ", maxNumAccessSpecs: ";
-        result += maxNumAccessSpecs;
-        result += ", maxNumOpSpecsPerAccessSpec: ";
-        result += maxNumOpSpecsPerAccessSpec;
-        result = result.replaceFirst(", ", "");
-
-        return result;
+    if (temp != null) {
+      maxNumAccessSpecs = new UnsignedInteger(temp);
     }
+
+    element.removeChild("MaxNumAccessSpecs", ns);
+    temp = element.getChild("MaxNumOpSpecsPerAccessSpec", ns);
+
+    if (temp != null) {
+      maxNumOpSpecsPerAccessSpec = new UnsignedInteger(temp);
+    }
+
+    element.removeChild("MaxNumOpSpecsPerAccessSpec", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "LLRPCapabilities has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
+    }
+  }
+
+  //setters
+  /**
+   * set canDoRFSurvey of type Bit .
+   *
+   * @param canDoRFSurvey to be set
+   */
+  public void setCanDoRFSurvey(final Bit canDoRFSurvey) {
+    this.canDoRFSurvey = canDoRFSurvey;
+  }
+
+  /**
+   * set canReportBufferFillWarning of type Bit .
+   *
+   * @param canReportBufferFillWarning to be set
+   */
+  public void setCanReportBufferFillWarning(
+    final Bit canReportBufferFillWarning) {
+    this.canReportBufferFillWarning = canReportBufferFillWarning;
+  }
+
+  /**
+   * set supportsClientRequestOpSpec of type Bit .
+   *
+   * @param supportsClientRequestOpSpec to be set
+   */
+  public void setSupportsClientRequestOpSpec(
+    final Bit supportsClientRequestOpSpec) {
+    this.supportsClientRequestOpSpec = supportsClientRequestOpSpec;
+  }
+
+  /**
+   * set canDoTagInventoryStateAwareSingulation of type Bit .
+   *
+   * @param canDoTagInventoryStateAwareSingulation to be set
+   */
+  public void setCanDoTagInventoryStateAwareSingulation(
+    final Bit canDoTagInventoryStateAwareSingulation) {
+    this.canDoTagInventoryStateAwareSingulation = canDoTagInventoryStateAwareSingulation;
+  }
+
+  /**
+   * set supportsEventAndReportHolding of type Bit .
+   *
+   * @param supportsEventAndReportHolding to be set
+   */
+  public void setSupportsEventAndReportHolding(
+    final Bit supportsEventAndReportHolding) {
+    this.supportsEventAndReportHolding = supportsEventAndReportHolding;
+  }
+
+  /**
+   * set maxNumPriorityLevelsSupported of type UnsignedByte .
+   *
+   * @param maxNumPriorityLevelsSupported to be set
+   */
+  public void setMaxNumPriorityLevelsSupported(
+    final UnsignedByte maxNumPriorityLevelsSupported) {
+    this.maxNumPriorityLevelsSupported = maxNumPriorityLevelsSupported;
+  }
+
+  /**
+   * set clientRequestOpSpecTimeout of type UnsignedShort .
+   *
+   * @param clientRequestOpSpecTimeout to be set
+   */
+  public void setClientRequestOpSpecTimeout(
+    final UnsignedShort clientRequestOpSpecTimeout) {
+    this.clientRequestOpSpecTimeout = clientRequestOpSpecTimeout;
+  }
+
+  /**
+   * set maxNumROSpecs of type UnsignedInteger .
+   *
+   * @param maxNumROSpecs to be set
+   */
+  public void setMaxNumROSpecs(final UnsignedInteger maxNumROSpecs) {
+    this.maxNumROSpecs = maxNumROSpecs;
+  }
+
+  /**
+   * set maxNumSpecsPerROSpec of type UnsignedInteger .
+   *
+   * @param maxNumSpecsPerROSpec to be set
+   */
+  public void setMaxNumSpecsPerROSpec(
+    final UnsignedInteger maxNumSpecsPerROSpec) {
+    this.maxNumSpecsPerROSpec = maxNumSpecsPerROSpec;
+  }
+
+  /**
+   * set maxNumInventoryParameterSpecsPerAISpec of type UnsignedInteger .
+   *
+   * @param maxNumInventoryParameterSpecsPerAISpec to be set
+   */
+  public void setMaxNumInventoryParameterSpecsPerAISpec(
+    final UnsignedInteger maxNumInventoryParameterSpecsPerAISpec) {
+    this.maxNumInventoryParameterSpecsPerAISpec = maxNumInventoryParameterSpecsPerAISpec;
+  }
+
+  /**
+   * set maxNumAccessSpecs of type UnsignedInteger .
+   *
+   * @param maxNumAccessSpecs to be set
+   */
+  public void setMaxNumAccessSpecs(final UnsignedInteger maxNumAccessSpecs) {
+    this.maxNumAccessSpecs = maxNumAccessSpecs;
+  }
+
+  /**
+   * set maxNumOpSpecsPerAccessSpec of type UnsignedInteger .
+   *
+   * @param maxNumOpSpecsPerAccessSpec to be set
+   */
+  public void setMaxNumOpSpecsPerAccessSpec(
+    final UnsignedInteger maxNumOpSpecsPerAccessSpec) {
+    this.maxNumOpSpecsPerAccessSpec = maxNumOpSpecsPerAccessSpec;
+  }
+
+  // end setter
+  //getters
+  /**
+   * get canDoRFSurvey of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getCanDoRFSurvey() {
+    return this.canDoRFSurvey;
+  }
+
+  /**
+   * get canReportBufferFillWarning of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getCanReportBufferFillWarning() {
+    return this.canReportBufferFillWarning;
+  }
+
+  /**
+   * get supportsClientRequestOpSpec of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getSupportsClientRequestOpSpec() {
+    return this.supportsClientRequestOpSpec;
+  }
+
+  /**
+   * get canDoTagInventoryStateAwareSingulation of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getCanDoTagInventoryStateAwareSingulation() {
+    return this.canDoTagInventoryStateAwareSingulation;
+  }
+
+  /**
+   * get supportsEventAndReportHolding of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getSupportsEventAndReportHolding() {
+    return this.supportsEventAndReportHolding;
+  }
+
+  /**
+   * get maxNumPriorityLevelsSupported of type UnsignedByte.
+   *
+   * @return type UnsignedByte to be set
+   */
+  public UnsignedByte getMaxNumPriorityLevelsSupported() {
+    return this.maxNumPriorityLevelsSupported;
+  }
+
+  /**
+   * get clientRequestOpSpecTimeout of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getClientRequestOpSpecTimeout() {
+    return this.clientRequestOpSpecTimeout;
+  }
+
+  /**
+   * get maxNumROSpecs of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getMaxNumROSpecs() {
+    return this.maxNumROSpecs;
+  }
+
+  /**
+   * get maxNumSpecsPerROSpec of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getMaxNumSpecsPerROSpec() {
+    return this.maxNumSpecsPerROSpec;
+  }
+
+  /**
+   * get maxNumInventoryParameterSpecsPerAISpec of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getMaxNumInventoryParameterSpecsPerAISpec() {
+    return this.maxNumInventoryParameterSpecsPerAISpec;
+  }
+
+  /**
+   * get maxNumAccessSpecs of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getMaxNumAccessSpecs() {
+    return this.maxNumAccessSpecs;
+  }
+
+  /**
+   * get maxNumOpSpecsPerAccessSpec of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getMaxNumOpSpecsPerAccessSpec() {
+    return this.maxNumOpSpecsPerAccessSpec;
+  }
+
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "LLRPCapabilities";
+  }
+
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "LLRPCapabilities: ";
+    result += ", canDoRFSurvey: ";
+    result += canDoRFSurvey;
+    result += ", canReportBufferFillWarning: ";
+    result += canReportBufferFillWarning;
+    result += ", supportsClientRequestOpSpec: ";
+    result += supportsClientRequestOpSpec;
+    result += ", canDoTagInventoryStateAwareSingulation: ";
+    result += canDoTagInventoryStateAwareSingulation;
+    result += ", supportsEventAndReportHolding: ";
+    result += supportsEventAndReportHolding;
+
+    result += ", maxNumPriorityLevelsSupported: ";
+    result += maxNumPriorityLevelsSupported;
+    result += ", clientRequestOpSpecTimeout: ";
+    result += clientRequestOpSpecTimeout;
+    result += ", maxNumROSpecs: ";
+    result += maxNumROSpecs;
+    result += ", maxNumSpecsPerROSpec: ";
+    result += maxNumSpecsPerROSpec;
+    result += ", maxNumInventoryParameterSpecsPerAISpec: ";
+    result += maxNumInventoryParameterSpecsPerAISpec;
+    result += ", maxNumAccessSpecs: ";
+    result += maxNumAccessSpecs;
+    result += ", maxNumOpSpecsPerAccessSpec: ";
+    result += maxNumOpSpecsPerAccessSpec;
+    result = result.replaceFirst(", ", "");
+
+    return result;
+  }
 }

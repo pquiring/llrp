@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,381 +46,367 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * GetReaderConfigRequestedData is Enumeration of Type UnsignedByte
  */
 public class GetReaderConfigRequestedData extends UnsignedByte
-    implements LLRPEnumeration {
-    public static final int All = 0;
-    public static final int Identification = 1;
-    public static final int AntennaProperties = 2;
-    public static final int AntennaConfiguration = 3;
-    public static final int ROReportSpec = 4;
-    public static final int ReaderEventNotificationSpec = 5;
-    public static final int AccessReportSpec = 6;
-    public static final int LLRPConfigurationStateValue = 7;
-    public static final int KeepaliveSpec = 8;
-    public static final int GPIPortCurrentState = 9;
-    public static final int GPOWriteData = 10;
-    public static final int EventsAndReports = 11;
-    Logger logger = Logger.getLogger(GetReaderConfigRequestedData.class);
+  implements LLRPEnumeration {
 
-    public GetReaderConfigRequestedData() {
-        super(0);
+  public static final int All = 0;
+  public static final int Identification = 1;
+  public static final int AntennaProperties = 2;
+  public static final int AntennaConfiguration = 3;
+  public static final int ROReportSpec = 4;
+  public static final int ReaderEventNotificationSpec = 5;
+  public static final int AccessReportSpec = 6;
+  public static final int LLRPConfigurationStateValue = 7;
+  public static final int KeepaliveSpec = 8;
+  public static final int GPIPortCurrentState = 9;
+  public static final int GPOWriteData = 10;
+  public static final int EventsAndReports = 11;
+  Logger logger = Logger.getLogger(GetReaderConfigRequestedData.class);
+
+  public GetReaderConfigRequestedData() {
+    super(0);
+  }
+
+  /**
+   * Create new GetReaderConfigRequestedData by passing integer value.
+   *
+   * @throws IllegalArgumentException if the value is not allowed for this enumeration
+   * @param value an Integer value allowed - might check first with isValidValue it it is an allowed value
+   */
+  public GetReaderConfigRequestedData(int value) {
+    super(value);
+
+    if (!isValidValue(value)) {
+      throw new IllegalArgumentException("Value not allowed");
+    }
+  }
+
+  /**
+   * Create new GetReaderConfigRequestedData by passing jdom element.
+   *
+   * @throws IllegalArgumentException if the value found in element is not allowed for this enumeration.
+   * @param element - jdom element where the child is a string that is the name for a value of the enumeration.
+   */
+  public GetReaderConfigRequestedData(final Element element) {
+    this(element.getText());
+  }
+
+  /**
+   * Create new GetReaderConfigRequestedData by passing a string.
+   *
+   * @throws IllegalArgumentException if the string does not stand for a valid value.
+   */
+  public GetReaderConfigRequestedData(final String name) {
+    if (!isValidName(name)) {
+      throw new IllegalArgumentException("Name not allowed");
     }
 
-    /**
-     * Create new GetReaderConfigRequestedData by passing integer value.
-     *
-     * @throws IllegalArgumentException
-     * if the value is not allowed for this enumeration
-     * @param value an Integer value allowed - might check first
-     * with isValidValue it it is an allowed value
-     */
-    public GetReaderConfigRequestedData(int value) {
-        super(value);
+    this.value = getValue(name);
+    signed = false;
+  }
 
-        if (!isValidValue(value)) {
-            throw new IllegalArgumentException("Value not allowed");
-        }
+  /**
+   * Create new GetReaderConfigRequestedData by passing LLRPBitList.
+   *
+   * @throws IllegalArgumentException if the value found in the BitList is not allowed for this enumeration.
+   * @param list - LLRPBitList
+   */
+  public GetReaderConfigRequestedData(final LLRPBitList list) {
+    decodeBinary(list);
+
+    if (!isValidValue(toInteger())) {
+      throw new IllegalArgumentException("Value not allowed");
+    }
+  }
+
+  /**
+   * set the current value of this enumeration to the value identified by given string.
+   *
+   * @throws IllegalArgumentException if the value found for given String is not allowed for this enumeration.
+   * @param name set this enumeration to hold one of the allowed values
+   */
+  public final void set(final String name) {
+    if (!isValidName(name)) {
+      throw new IllegalArgumentException("name not allowed");
     }
 
-    /**
-    * Create new GetReaderConfigRequestedData by passing jdom element.
-    *
-    * @throws IllegalArgumentException
-    * if the value found in element is not allowed
-    * for this enumeration.
-    * @param element - jdom element where the child is a string
-    * that is the name for a value of the enumeration.
-    */
-    public GetReaderConfigRequestedData(final Element element) {
-        this(element.getText());
+    this.value = getValue(name);
+  }
+
+  /**
+   * set the current value of this enumeration to the value given.
+   *
+   * @throws IllegalArgumentException if the value is not allowed for this enumeration.
+   * @param value to be set
+   */
+  public final void set(final int value) {
+    if (!isValidValue(value)) {
+      throw new IllegalArgumentException("value not allowed");
     }
 
-    /**
-    * Create new GetReaderConfigRequestedData by passing a string.
-    *
-    * @throws IllegalArgumentException
-    * if the string does not stand for a valid value.
-    */
-    public GetReaderConfigRequestedData(final String name) {
-        if (!isValidName(name)) {
-            throw new IllegalArgumentException("Name not allowed");
-        }
+    this.value = value;
+  }
 
-        this.value = getValue(name);
-        signed = false;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(final String name, Namespace ns) {
+    Element element = new Element(name, ns);
+    //Element element = new Element(name, Namespace.getNamespace("llrp",LLRPConstants.LLRPNAMESPACE));
+    element.setContent(new Text(toString()));
 
-    /**
-     * Create new GetReaderConfigRequestedData by passing LLRPBitList.
-     *
-     * @throws IllegalArgumentException
-     * if the value found in the BitList is not allowed
-     * for this enumeration.
-     * @param list - LLRPBitList
-     */
-    public GetReaderConfigRequestedData(final LLRPBitList list) {
-        decodeBinary(list);
+    return element;
+  }
 
-        if (!isValidValue(new Integer(toInteger()))) {
-            throw new IllegalArgumentException("Value not allowed");
-        }
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String toString() {
+    return getName(toInteger());
+  }
 
-    /**
-    * set the current value of this enumeration to the
-    * value identified by given string.
-    *
-    * @throws IllegalArgumentException
-    * if the value found for given String is not allowed
-    * for this enumeration.
-    * @param name set this enumeration to hold one of the allowed values
-    */
-    public final void set(final String name) {
-        if (!isValidName(name)) {
-            throw new IllegalArgumentException("name not allowed");
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isValidValue(final int value) {
+    switch (value) {
+      case 0:
+        return true;
 
-        this.value = getValue(name);
-    }
+      case 1:
+        return true;
 
-    /**
-    * set the current value of this enumeration to the
-    * value given.
-    *
-    * @throws IllegalArgumentException
-    * if the value is not allowed
-    * for this enumeration.
-    * @param value to be set
-    */
-    public final void set(final int value) {
-        if (!isValidValue(value)) {
-            throw new IllegalArgumentException("value not allowed");
-        }
+      case 2:
+        return true;
 
-        this.value = value;
-    }
+      case 3:
+        return true;
 
-    /**
-            * {@inheritDoc}
-     */
-    public Content encodeXML(final String name, Namespace ns) {
-        Element element = new Element(name, ns);
-        //Element element = new Element(name, Namespace.getNamespace("llrp",LLRPConstants.LLRPNAMESPACE));
-        element.setContent(new Text(toString()));
+      case 4:
+        return true;
 
-        return element;
-    }
+      case 5:
+        return true;
 
-    /**
-    * {@inheritDoc}
-    */
-    public String toString() {
-        return getName(toInteger());
-    }
+      case 6:
+        return true;
 
-    /**
-            * {@inheritDoc}
-     */
-    public boolean isValidValue(final int value) {
-        switch (value) {
-        case 0:
-            return true;
+      case 7:
+        return true;
 
-        case 1:
-            return true;
+      case 8:
+        return true;
 
-        case 2:
-            return true;
+      case 9:
+        return true;
 
-        case 3:
-            return true;
+      case 10:
+        return true;
 
-        case 4:
-            return true;
+      case 11:
+        return true;
 
-        case 5:
-            return true;
-
-        case 6:
-            return true;
-
-        case 7:
-            return true;
-
-        case 8:
-            return true;
-
-        case 9:
-            return true;
-
-        case 10:
-            return true;
-
-        case 11:
-            return true;
-
-        default:
-            return false;
-        }
-    }
-
-    /**
-            * {@inheritDoc}
-     */
-    public final int getValue(final String name) {
-        if (name.equalsIgnoreCase("All")) {
-            return 0;
-        }
-
-        if (name.equalsIgnoreCase("Identification")) {
-            return 1;
-        }
-
-        if (name.equalsIgnoreCase("AntennaProperties")) {
-            return 2;
-        }
-
-        if (name.equalsIgnoreCase("AntennaConfiguration")) {
-            return 3;
-        }
-
-        if (name.equalsIgnoreCase("ROReportSpec")) {
-            return 4;
-        }
-
-        if (name.equalsIgnoreCase("ReaderEventNotificationSpec")) {
-            return 5;
-        }
-
-        if (name.equalsIgnoreCase("AccessReportSpec")) {
-            return 6;
-        }
-
-        if (name.equalsIgnoreCase("LLRPConfigurationStateValue")) {
-            return 7;
-        }
-
-        if (name.equalsIgnoreCase("KeepaliveSpec")) {
-            return 8;
-        }
-
-        if (name.equalsIgnoreCase("GPIPortCurrentState")) {
-            return 9;
-        }
-
-        if (name.equalsIgnoreCase("GPOWriteData")) {
-            return 10;
-        }
-
-        if (name.equalsIgnoreCase("EventsAndReports")) {
-            return 11;
-        }
-
-        return -1;
-    }
-
-    /**
-             * {@inheritDoc}
-     */
-    public final String getName(final int value) {
-        if (0 == value) {
-            return "All";
-        }
-
-        if (1 == value) {
-            return "Identification";
-        }
-
-        if (2 == value) {
-            return "AntennaProperties";
-        }
-
-        if (3 == value) {
-            return "AntennaConfiguration";
-        }
-
-        if (4 == value) {
-            return "ROReportSpec";
-        }
-
-        if (5 == value) {
-            return "ReaderEventNotificationSpec";
-        }
-
-        if (6 == value) {
-            return "AccessReportSpec";
-        }
-
-        if (7 == value) {
-            return "LLRPConfigurationStateValue";
-        }
-
-        if (8 == value) {
-            return "KeepaliveSpec";
-        }
-
-        if (9 == value) {
-            return "GPIPortCurrentState";
-        }
-
-        if (10 == value) {
-            return "GPOWriteData";
-        }
-
-        if (11 == value) {
-            return "EventsAndReports";
-        }
-
-        return "";
-    }
-
-    /**
-             * {@inheritDoc}
-     */
-    public boolean isValidName(final String name) {
-        if (name.equals("All")) {
-            return true;
-        }
-
-        if (name.equals("Identification")) {
-            return true;
-        }
-
-        if (name.equals("AntennaProperties")) {
-            return true;
-        }
-
-        if (name.equals("AntennaConfiguration")) {
-            return true;
-        }
-
-        if (name.equals("ROReportSpec")) {
-            return true;
-        }
-
-        if (name.equals("ReaderEventNotificationSpec")) {
-            return true;
-        }
-
-        if (name.equals("AccessReportSpec")) {
-            return true;
-        }
-
-        if (name.equals("LLRPConfigurationStateValue")) {
-            return true;
-        }
-
-        if (name.equals("KeepaliveSpec")) {
-            return true;
-        }
-
-        if (name.equals("GPIPortCurrentState")) {
-            return true;
-        }
-
-        if (name.equals("GPOWriteData")) {
-            return true;
-        }
-
-        if (name.equals("EventsAndReports")) {
-            return true;
-        }
-
+      default:
         return false;
     }
+  }
 
-    /**
-    * number of bits used to represent this type.
-    *
-    * @return Integer
-    */
-    public static int length() {
-        return UnsignedByte.length();
+  /**
+   * {@inheritDoc}
+   */
+  public final int getValue(final String name) {
+    if (name.equalsIgnoreCase("All")) {
+      return 0;
     }
 
-    /**
-          * wrapper method for UnsignedIntegers that use BigIntegers to store value
-    *
-    */
-    private final String getName(final BigInteger value) {
-        logger.warn("GetReaderConfigRequestedData must convert BigInteger " +
-            value + " to Integer value " + value.intValue());
-
-        return getName(value.intValue());
+    if (name.equalsIgnoreCase("Identification")) {
+      return 1;
     }
 
-    /**
-    * wrapper method for UnsignedIntegers that use BigIntegers to store value
-    *
-    */
-    private final boolean isValidValue(final BigInteger value) {
-        logger.warn("GetReaderConfigRequestedData must convert BigInteger " +
-            value + " to Integer value " + value.intValue());
-
-        return isValidValue(value.intValue());
+    if (name.equalsIgnoreCase("AntennaProperties")) {
+      return 2;
     }
+
+    if (name.equalsIgnoreCase("AntennaConfiguration")) {
+      return 3;
+    }
+
+    if (name.equalsIgnoreCase("ROReportSpec")) {
+      return 4;
+    }
+
+    if (name.equalsIgnoreCase("ReaderEventNotificationSpec")) {
+      return 5;
+    }
+
+    if (name.equalsIgnoreCase("AccessReportSpec")) {
+      return 6;
+    }
+
+    if (name.equalsIgnoreCase("LLRPConfigurationStateValue")) {
+      return 7;
+    }
+
+    if (name.equalsIgnoreCase("KeepaliveSpec")) {
+      return 8;
+    }
+
+    if (name.equalsIgnoreCase("GPIPortCurrentState")) {
+      return 9;
+    }
+
+    if (name.equalsIgnoreCase("GPOWriteData")) {
+      return 10;
+    }
+
+    if (name.equalsIgnoreCase("EventsAndReports")) {
+      return 11;
+    }
+
+    return -1;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public final String getName(final int value) {
+    if (0 == value) {
+      return "All";
+    }
+
+    if (1 == value) {
+      return "Identification";
+    }
+
+    if (2 == value) {
+      return "AntennaProperties";
+    }
+
+    if (3 == value) {
+      return "AntennaConfiguration";
+    }
+
+    if (4 == value) {
+      return "ROReportSpec";
+    }
+
+    if (5 == value) {
+      return "ReaderEventNotificationSpec";
+    }
+
+    if (6 == value) {
+      return "AccessReportSpec";
+    }
+
+    if (7 == value) {
+      return "LLRPConfigurationStateValue";
+    }
+
+    if (8 == value) {
+      return "KeepaliveSpec";
+    }
+
+    if (9 == value) {
+      return "GPIPortCurrentState";
+    }
+
+    if (10 == value) {
+      return "GPOWriteData";
+    }
+
+    if (11 == value) {
+      return "EventsAndReports";
+    }
+
+    return "";
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isValidName(final String name) {
+    if (name.equals("All")) {
+      return true;
+    }
+
+    if (name.equals("Identification")) {
+      return true;
+    }
+
+    if (name.equals("AntennaProperties")) {
+      return true;
+    }
+
+    if (name.equals("AntennaConfiguration")) {
+      return true;
+    }
+
+    if (name.equals("ROReportSpec")) {
+      return true;
+    }
+
+    if (name.equals("ReaderEventNotificationSpec")) {
+      return true;
+    }
+
+    if (name.equals("AccessReportSpec")) {
+      return true;
+    }
+
+    if (name.equals("LLRPConfigurationStateValue")) {
+      return true;
+    }
+
+    if (name.equals("KeepaliveSpec")) {
+      return true;
+    }
+
+    if (name.equals("GPIPortCurrentState")) {
+      return true;
+    }
+
+    if (name.equals("GPOWriteData")) {
+      return true;
+    }
+
+    if (name.equals("EventsAndReports")) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * number of bits used to represent this type.
+   *
+   * @return Integer
+   */
+  public static int length() {
+    return UnsignedByte.length();
+  }
+
+  /**
+   * wrapper method for UnsignedIntegers that use BigIntegers to store value
+   *
+   */
+  private final String getName(final BigInteger value) {
+    logger.warn("GetReaderConfigRequestedData must convert BigInteger "
+      + value + " to Integer value " + value.intValue());
+
+    return getName(value.intValue());
+  }
+
+  /**
+   * wrapper method for UnsignedIntegers that use BigIntegers to store value
+   *
+   */
+  private final boolean isValidValue(final BigInteger value) {
+    logger.warn("GetReaderConfigRequestedData must convert BigInteger "
+      + value + " to Integer value " + value.intValue());
+
+    return isValidValue(value.intValue());
+  }
 }

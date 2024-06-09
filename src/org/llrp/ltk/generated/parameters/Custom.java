@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,281 +51,288 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * Certain Messages and Parameter Sets within LLRP allow for the insertion of vendor defined parametersClients SHALL accept messages (except for CUSTOM_MESSAGE) that contain custom parameters but MAY ignore all custom parameters within these messages. Readers SHALL accept messages (except for CUSTOM_MESSAGE) that contain custom parameters and SHALL return an error when such parameters are unsupported.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=42&view=fit">LLRP Specification Section 8.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=152&view=fit">LLRP Specification Section 16.2.9</a>}
-
-
+ * Certain Messages and Parameter Sets within LLRP allow for the insertion of vendor defined parametersClients SHALL accept messages (except for CUSTOM_MESSAGE) that contain custom
+ * parameters but MAY ignore all custom parameters within these messages. Readers SHALL accept messages (except for CUSTOM_MESSAGE) that contain custom parameters and SHALL return
+ * an error when such parameters are unsupported.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=42&view=fit">LLRP Specification Section 8.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=152&view=fit">LLRP Specification Section 16.2.9</a>}
+ *
+ *
  */
-
 /**
- * Certain Messages and Parameter Sets within LLRP allow for the insertion of vendor defined parametersClients SHALL accept messages (except for CUSTOM_MESSAGE) that contain custom parameters but MAY ignore all custom parameters within these messages. Readers SHALL accept messages (except for CUSTOM_MESSAGE) that contain custom parameters and SHALL return an error when such parameters are unsupported.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=42&view=fit">LLRP Specification Section 8.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=152&view=fit">LLRP Specification Section 16.2.9</a>}
-
-      .
+ * Certain Messages and Parameter Sets within LLRP allow for the insertion of vendor defined parametersClients SHALL accept messages (except for CUSTOM_MESSAGE) that contain custom
+ * parameters but MAY ignore all custom parameters within these messages. Readers SHALL accept messages (except for CUSTOM_MESSAGE) that contain custom parameters and SHALL return
+ * an error when such parameters are unsupported.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=42&view=fit">LLRP Specification Section 8.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=152&view=fit">LLRP Specification Section 16.2.9</a>}
+ *
+ * .
  */
 public class Custom extends TLVParameter implements SpecParameter,
-    AccessCommandOpSpec, AccessCommandOpSpecResult {
-    public static final SignedShort TYPENUM = new SignedShort(1023);
-    private static final Logger LOGGER = Logger.getLogger(Custom.class);
-    protected UnsignedInteger vendorIdentifier;
-    protected UnsignedInteger parameterSubtype;
-    protected BytesToEnd_HEX data;
+  AccessCommandOpSpec, AccessCommandOpSpecResult {
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public Custom() {
+  public static final SignedShort TYPENUM = new SignedShort(1023);
+  private static final Logger LOGGER = Logger.getLogger(Custom.class);
+  protected UnsignedInteger vendorIdentifier;
+  protected UnsignedInteger parameterSubtype;
+  protected BytesToEnd_HEX data;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public Custom() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public Custom(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public Custom(Element element) throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (vendorIdentifier == null) {
+      LOGGER.warn(" vendorIdentifier not set");
+      throw new MissingParameterException(
+        " vendorIdentifier not set  for Parameter of Type Custom");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public Custom(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(vendorIdentifier.encodeBinary());
+
+    if (parameterSubtype == null) {
+      LOGGER.warn(" parameterSubtype not set");
+      throw new MissingParameterException(
+        " parameterSubtype not set  for Parameter of Type Custom");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public Custom(Element element) throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(parameterSubtype.encodeBinary());
+
+    if (data == null) {
+      LOGGER.warn(" data not set");
+      throw new MissingParameterException(
+        " data not set  for Parameter of Type Custom");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(data.encodeBinary());
 
-        if (vendorIdentifier == null) {
-            LOGGER.warn(" vendorIdentifier not set");
-            throw new MissingParameterException(
-                " vendorIdentifier not set  for Parameter of Type Custom");
-        }
+    return resultBits;
+  }
 
-        resultBits.append(vendorIdentifier.encodeBinary());
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        if (parameterSubtype == null) {
-            LOGGER.warn(" parameterSubtype not set");
-            throw new MissingParameterException(
-                " parameterSubtype not set  for Parameter of Type Custom");
-        }
-
-        resultBits.append(parameterSubtype.encodeBinary());
-
-        if (data == null) {
-            LOGGER.warn(" data not set");
-            throw new MissingParameterException(
-                " data not set  for Parameter of Type Custom");
-        }
-
-        resultBits.append(data.encodeBinary());
-
-        return resultBits;
+    if (vendorIdentifier == null) {
+      LOGGER.warn(" vendorIdentifier not set");
+      throw new MissingParameterException(" vendorIdentifier not set");
+    } else {
+      element.addContent(vendorIdentifier.encodeXML("VendorIdentifier", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        if (vendorIdentifier == null) {
-            LOGGER.warn(" vendorIdentifier not set");
-            throw new MissingParameterException(" vendorIdentifier not set");
-        } else {
-            element.addContent(vendorIdentifier.encodeXML("VendorIdentifier", ns));
-        }
-
-        if (parameterSubtype == null) {
-            LOGGER.warn(" parameterSubtype not set");
-            throw new MissingParameterException(" parameterSubtype not set");
-        } else {
-            element.addContent(parameterSubtype.encodeXML("ParameterSubtype", ns));
-        }
-
-        if (data == null) {
-            LOGGER.warn(" data not set");
-            throw new MissingParameterException(" data not set");
-        } else {
-            element.addContent(data.encodeXML("Data", ns));
-        }
-
-        //parameters
-        return element;
+    if (parameterSubtype == null) {
+      LOGGER.warn(" parameterSubtype not set");
+      throw new MissingParameterException(" parameterSubtype not set");
+    } else {
+      element.addContent(parameterSubtype.encodeXML("ParameterSubtype", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        vendorIdentifier = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        parameterSubtype = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        data = new BytesToEnd_HEX(binary.subList(position,
-                    binary.length() - position));
-        position += (binary.length() - position);
+    if (data == null) {
+      LOGGER.warn(" data not set");
+      throw new MissingParameterException(" data not set");
+    } else {
+      element.addContent(data.encodeXML("Data", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    //parameters
+    return element;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    vendorIdentifier = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    parameterSubtype = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    data = new BytesToEnd_HEX(binary.subList(position,
+      binary.length() - position));
+    position += (binary.length() - position);
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        temp = element.getChild("VendorIdentifier", ns);
+    Element temp = null;
 
-        if (temp != null) {
-            vendorIdentifier = new UnsignedInteger(temp);
-        }
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
 
-        element.removeChild("VendorIdentifier", ns);
-        temp = element.getChild("ParameterSubtype", ns);
+    temp = element.getChild("VendorIdentifier", ns);
 
-        if (temp != null) {
-            parameterSubtype = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("ParameterSubtype", ns);
-        temp = element.getChild("Data", ns);
-
-        if (temp != null) {
-            data = new BytesToEnd_HEX(temp);
-        }
-
-        element.removeChild("Data", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "Custom has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (temp != null) {
+      vendorIdentifier = new UnsignedInteger(temp);
     }
 
-    //setters
-    /**
-    * set   vendorIdentifier of type UnsignedInteger .
-    * @param   vendorIdentifier to be set
-    */
-    public void setVendorIdentifier(final UnsignedInteger vendorIdentifier) {
-        this.vendorIdentifier = vendorIdentifier;
+    element.removeChild("VendorIdentifier", ns);
+    temp = element.getChild("ParameterSubtype", ns);
+
+    if (temp != null) {
+      parameterSubtype = new UnsignedInteger(temp);
     }
 
-    /**
-    * set   parameterSubtype of type UnsignedInteger .
-    * @param   parameterSubtype to be set
-    */
-    public void setParameterSubtype(final UnsignedInteger parameterSubtype) {
-        this.parameterSubtype = parameterSubtype;
+    element.removeChild("ParameterSubtype", ns);
+    temp = element.getChild("Data", ns);
+
+    if (temp != null) {
+      data = new BytesToEnd_HEX(temp);
     }
 
-    /**
-    * set data of type BytesToEnd_HEX .
-    * @param  data to be set
-    */
-    public void setData(final BytesToEnd_HEX data) {
-        this.data = data;
+    element.removeChild("Data", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "Custom has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    // end setter
+  //setters
+  /**
+   * set vendorIdentifier of type UnsignedInteger .
+   *
+   * @param vendorIdentifier to be set
+   */
+  public void setVendorIdentifier(final UnsignedInteger vendorIdentifier) {
+    this.vendorIdentifier = vendorIdentifier;
+  }
 
-    //getters
-    /**
-    * get   vendorIdentifier of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getVendorIdentifier() {
-        return this.vendorIdentifier;
-    }
+  /**
+   * set parameterSubtype of type UnsignedInteger .
+   *
+   * @param parameterSubtype to be set
+   */
+  public void setParameterSubtype(final UnsignedInteger parameterSubtype) {
+    this.parameterSubtype = parameterSubtype;
+  }
 
-    /**
-    * get   parameterSubtype of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getParameterSubtype() {
-        return this.parameterSubtype;
-    }
+  /**
+   * set data of type BytesToEnd_HEX .
+   *
+   * @param data to be set
+   */
+  public void setData(final BytesToEnd_HEX data) {
+    this.data = data;
+  }
 
-    /**
-    * get data of type  BytesToEnd_HEX.
-    * @return  BytesToEnd_HEX
-    */
-    public BytesToEnd_HEX getData() {
-        return data;
-    }
+  // end setter
+  //getters
+  /**
+   * get vendorIdentifier of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getVendorIdentifier() {
+    return this.vendorIdentifier;
+  }
 
-    // end getters
+  /**
+   * get parameterSubtype of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getParameterSubtype() {
+    return this.parameterSubtype;
+  }
 
-    //add methods
+  /**
+   * get data of type BytesToEnd_HEX.
+   *
+   * @return BytesToEnd_HEX
+   */
+  public BytesToEnd_HEX getData() {
+    return data;
+  }
 
-    // end add
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "Custom";
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "Custom";
-    }
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "Custom: ";
+    result += ", vendorIdentifier: ";
+    result += vendorIdentifier;
+    result += ", parameterSubtype: ";
+    result += parameterSubtype;
+    result += ", data: ";
+    result += data;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "Custom: ";
-        result += ", vendorIdentifier: ";
-        result += vendorIdentifier;
-        result += ", parameterSubtype: ";
-        result += parameterSubtype;
-        result += ", data: ";
-        result += data;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

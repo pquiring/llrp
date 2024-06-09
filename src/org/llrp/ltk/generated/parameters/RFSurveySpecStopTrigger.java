@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,282 +48,285 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * This parameter defines the stop trigger for RF Survey operations.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=60&view=fit">LLRP Specification Section 10.2.3.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=138&view=fit">LLRP Specification Section 16.2.4.3.1</a>}
-
-
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=60&view=fit">LLRP Specification Section 10.2.3.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=138&view=fit">LLRP Specification Section 16.2.4.3.1</a>}
+ *
+ *
  */
-
 /**
  * This parameter defines the stop trigger for RF Survey operations.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=60&view=fit">LLRP Specification Section 10.2.3.1</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=138&view=fit">LLRP Specification Section 16.2.4.3.1</a>}
-
-      .
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=60&view=fit">LLRP Specification Section 10.2.3.1</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=138&view=fit">LLRP Specification Section 16.2.4.3.1</a>}
+ *
+ * .
  */
 public class RFSurveySpecStopTrigger extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(188);
-    private static final Logger LOGGER = Logger.getLogger(RFSurveySpecStopTrigger.class);
-    protected RFSurveySpecStopTriggerType stopTriggerType;
-    protected UnsignedInteger durationPeriod;
-    protected UnsignedInteger n;
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public RFSurveySpecStopTrigger() {
+  public static final SignedShort TYPENUM = new SignedShort(188);
+  private static final Logger LOGGER = Logger.getLogger(RFSurveySpecStopTrigger.class);
+  protected RFSurveySpecStopTriggerType stopTriggerType;
+  protected UnsignedInteger durationPeriod;
+  protected UnsignedInteger n;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public RFSurveySpecStopTrigger() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public RFSurveySpecStopTrigger(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public RFSurveySpecStopTrigger(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (stopTriggerType == null) {
+      LOGGER.warn(" stopTriggerType not set");
+      throw new MissingParameterException(
+        " stopTriggerType not set  for Parameter of Type RFSurveySpecStopTrigger");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public RFSurveySpecStopTrigger(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(stopTriggerType.encodeBinary());
+
+    if (durationPeriod == null) {
+      LOGGER.warn(" durationPeriod not set");
+      throw new MissingParameterException(
+        " durationPeriod not set  for Parameter of Type RFSurveySpecStopTrigger");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public RFSurveySpecStopTrigger(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(durationPeriod.encodeBinary());
+
+    if (n == null) {
+      LOGGER.warn(" n not set");
+      throw new MissingParameterException(
+        " n not set  for Parameter of Type RFSurveySpecStopTrigger");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(n.encodeBinary());
 
-        if (stopTriggerType == null) {
-            LOGGER.warn(" stopTriggerType not set");
-            throw new MissingParameterException(
-                " stopTriggerType not set  for Parameter of Type RFSurveySpecStopTrigger");
-        }
+    return resultBits;
+  }
 
-        resultBits.append(stopTriggerType.encodeBinary());
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        if (durationPeriod == null) {
-            LOGGER.warn(" durationPeriod not set");
-            throw new MissingParameterException(
-                " durationPeriod not set  for Parameter of Type RFSurveySpecStopTrigger");
-        }
-
-        resultBits.append(durationPeriod.encodeBinary());
-
-        if (n == null) {
-            LOGGER.warn(" n not set");
-            throw new MissingParameterException(
-                " n not set  for Parameter of Type RFSurveySpecStopTrigger");
-        }
-
-        resultBits.append(n.encodeBinary());
-
-        return resultBits;
+    if (stopTriggerType == null) {
+      LOGGER.warn(" stopTriggerType not set");
+      throw new MissingParameterException(" stopTriggerType not set");
+    } else {
+      element.addContent(stopTriggerType.encodeXML("StopTriggerType", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        if (stopTriggerType == null) {
-            LOGGER.warn(" stopTriggerType not set");
-            throw new MissingParameterException(" stopTriggerType not set");
-        } else {
-            element.addContent(stopTriggerType.encodeXML("StopTriggerType", ns));
-        }
-
-        if (durationPeriod == null) {
-            LOGGER.warn(" durationPeriod not set");
-            throw new MissingParameterException(" durationPeriod not set");
-        } else {
-            element.addContent(durationPeriod.encodeXML("DurationPeriod", ns));
-        }
-
-        if (n == null) {
-            LOGGER.warn(" n not set");
-            throw new MissingParameterException(" n not set");
-        } else {
-            element.addContent(n.encodeXML("N", ns));
-        }
-
-        //parameters
-        return element;
+    if (durationPeriod == null) {
+      LOGGER.warn(" durationPeriod not set");
+      throw new MissingParameterException(" durationPeriod not set");
+    } else {
+      element.addContent(durationPeriod.encodeXML("DurationPeriod", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        stopTriggerType = new RFSurveySpecStopTriggerType(binary.subList(
-                    position, RFSurveySpecStopTriggerType.length()));
-        position += RFSurveySpecStopTriggerType.length();
-        durationPeriod = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        n = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
+    if (n == null) {
+      LOGGER.warn(" n not set");
+      throw new MissingParameterException(" n not set");
+    } else {
+      element.addContent(n.encodeXML("N", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    //parameters
+    return element;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    stopTriggerType = new RFSurveySpecStopTriggerType(binary.subList(
+      position, RFSurveySpecStopTriggerType.length()));
+    position += RFSurveySpecStopTriggerType.length();
+    durationPeriod = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    n = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        temp = element.getChild("StopTriggerType", ns);
+    Element temp = null;
 
-        if (temp != null) {
-            stopTriggerType = new RFSurveySpecStopTriggerType(temp);
-        }
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
 
-        element.removeChild("StopTriggerType", ns);
-        temp = element.getChild("DurationPeriod", ns);
+    temp = element.getChild("StopTriggerType", ns);
 
-        if (temp != null) {
-            durationPeriod = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("DurationPeriod", ns);
-        temp = element.getChild("N", ns);
-
-        if (temp != null) {
-            n = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("N", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "RFSurveySpecStopTrigger has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (temp != null) {
+      stopTriggerType = new RFSurveySpecStopTriggerType(temp);
     }
 
-    //setters
-    /**
-    * set stopTriggerType of type RFSurveySpecStopTriggerType .
-    * @param  stopTriggerType to be set
-    */
-    public void setStopTriggerType(
-        final RFSurveySpecStopTriggerType stopTriggerType) {
-        this.stopTriggerType = stopTriggerType;
+    element.removeChild("StopTriggerType", ns);
+    temp = element.getChild("DurationPeriod", ns);
+
+    if (temp != null) {
+      durationPeriod = new UnsignedInteger(temp);
     }
 
-    /**
-    * set   durationPeriod of type UnsignedInteger .
-    * @param   durationPeriod to be set
-    */
-    public void setDurationPeriod(final UnsignedInteger durationPeriod) {
-        this.durationPeriod = durationPeriod;
+    element.removeChild("DurationPeriod", ns);
+    temp = element.getChild("N", ns);
+
+    if (temp != null) {
+      n = new UnsignedInteger(temp);
     }
 
-    /**
-    * set   n of type UnsignedInteger .
-    * @param   n to be set
-    */
-    public void setN(final UnsignedInteger n) {
-        this.n = n;
+    element.removeChild("N", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "RFSurveySpecStopTrigger has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    // end setter
+  //setters
+  /**
+   * set stopTriggerType of type RFSurveySpecStopTriggerType .
+   *
+   * @param stopTriggerType to be set
+   */
+  public void setStopTriggerType(
+    final RFSurveySpecStopTriggerType stopTriggerType) {
+    this.stopTriggerType = stopTriggerType;
+  }
 
-    //getters
-    /**
-    * get stopTriggerType of type RFSurveySpecStopTriggerType.
-    * @return  RFSurveySpecStopTriggerType
-    */
-    public RFSurveySpecStopTriggerType getStopTriggerType() {
-        return stopTriggerType;
-    }
+  /**
+   * set durationPeriod of type UnsignedInteger .
+   *
+   * @param durationPeriod to be set
+   */
+  public void setDurationPeriod(final UnsignedInteger durationPeriod) {
+    this.durationPeriod = durationPeriod;
+  }
 
-    /**
-    * get   durationPeriod of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getDurationPeriod() {
-        return this.durationPeriod;
-    }
+  /**
+   * set n of type UnsignedInteger .
+   *
+   * @param n to be set
+   */
+  public void setN(final UnsignedInteger n) {
+    this.n = n;
+  }
 
-    /**
-    * get   n of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getN() {
-        return this.n;
-    }
+  // end setter
+  //getters
+  /**
+   * get stopTriggerType of type RFSurveySpecStopTriggerType.
+   *
+   * @return RFSurveySpecStopTriggerType
+   */
+  public RFSurveySpecStopTriggerType getStopTriggerType() {
+    return stopTriggerType;
+  }
 
-    // end getters
+  /**
+   * get durationPeriod of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getDurationPeriod() {
+    return this.durationPeriod;
+  }
 
-    //add methods
+  /**
+   * get n of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getN() {
+    return this.n;
+  }
 
-    // end add
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "RFSurveySpecStopTrigger";
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "RFSurveySpecStopTrigger";
-    }
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "RFSurveySpecStopTrigger: ";
+    result += ", stopTriggerType: ";
+    result += stopTriggerType;
+    result += ", durationPeriod: ";
+    result += durationPeriod;
+    result += ", n: ";
+    result += n;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "RFSurveySpecStopTrigger: ";
-        result += ", stopTriggerType: ";
-        result += stopTriggerType;
-        result += ", durationPeriod: ";
-        result += durationPeriod;
-        result += ", n: ";
-        result += n;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

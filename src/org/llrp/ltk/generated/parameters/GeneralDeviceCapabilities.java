@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,916 +54,938 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * This parameter carries the general capabilities of the device like supported air protocols, version of the Reader firmware, device hardware and software information, and receive sensitivity table.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=45&view=fit">LLRP Specification Section 9.1.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=131&view=fit">LLRP Specification Section 16.2.3.1</a>}
-
-
+ * This parameter carries the general capabilities of the device like supported air protocols, version of the Reader firmware, device hardware and software information, and receive
+ * sensitivity table.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=45&view=fit">LLRP Specification Section 9.1.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=131&view=fit">LLRP Specification Section 16.2.3.1</a>}
+ *
+ *
  */
-
 /**
- * This parameter carries the general capabilities of the device like supported air protocols, version of the Reader firmware, device hardware and software information, and receive sensitivity table.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=45&view=fit">LLRP Specification Section 9.1.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=131&view=fit">LLRP Specification Section 16.2.3.1</a>}
-
-      .
+ * This parameter carries the general capabilities of the device like supported air protocols, version of the Reader firmware, device hardware and software information, and receive
+ * sensitivity table.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=45&view=fit">LLRP Specification Section 9.1.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=131&view=fit">LLRP Specification Section 16.2.3.1</a>}
+ *
+ * .
  */
 public class GeneralDeviceCapabilities extends TLVParameter {
-    public static final SignedShort TYPENUM = new SignedShort(137);
-    private static final Logger LOGGER = Logger.getLogger(GeneralDeviceCapabilities.class);
-    protected UnsignedShort maxNumberOfAntennaSupported;
-    protected Bit canSetAntennaProperties;
-    protected Bit hasUTCClockCapability;
-    protected BitList reserved0 = new BitList(14);
-    protected UnsignedInteger deviceManufacturerName;
-    protected UnsignedInteger modelName;
-    protected UTF8String_UTF_8 readerFirmwareVersion;
-    protected List<ReceiveSensitivityTableEntry> receiveSensitivityTableEntryList =
-        new LinkedList<ReceiveSensitivityTableEntry>();
-    protected List<PerAntennaReceiveSensitivityRange> perAntennaReceiveSensitivityRangeList =
-        new LinkedList<PerAntennaReceiveSensitivityRange>();
-    protected GPIOCapabilities gPIOCapabilities;
-    protected List<PerAntennaAirProtocol> perAntennaAirProtocolList = new LinkedList<PerAntennaAirProtocol>();
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public GeneralDeviceCapabilities() {
+  public static final SignedShort TYPENUM = new SignedShort(137);
+  private static final Logger LOGGER = Logger.getLogger(GeneralDeviceCapabilities.class);
+  protected UnsignedShort maxNumberOfAntennaSupported;
+  protected Bit canSetAntennaProperties;
+  protected Bit hasUTCClockCapability;
+  protected BitList reserved0 = new BitList(14);
+  protected UnsignedInteger deviceManufacturerName;
+  protected UnsignedInteger modelName;
+  protected UTF8String_UTF_8 readerFirmwareVersion;
+  protected List<ReceiveSensitivityTableEntry> receiveSensitivityTableEntryList
+    = new LinkedList<ReceiveSensitivityTableEntry>();
+  protected List<PerAntennaReceiveSensitivityRange> perAntennaReceiveSensitivityRangeList
+    = new LinkedList<PerAntennaReceiveSensitivityRange>();
+  protected GPIOCapabilities gPIOCapabilities;
+  protected List<PerAntennaAirProtocol> perAntennaAirProtocolList = new LinkedList<PerAntennaAirProtocol>();
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public GeneralDeviceCapabilities() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public GeneralDeviceCapabilities(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public GeneralDeviceCapabilities(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (maxNumberOfAntennaSupported == null) {
+      LOGGER.warn(" maxNumberOfAntennaSupported not set");
+      throw new MissingParameterException(
+        " maxNumberOfAntennaSupported not set  for Parameter of Type GeneralDeviceCapabilities");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public GeneralDeviceCapabilities(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(maxNumberOfAntennaSupported.encodeBinary());
+
+    if (canSetAntennaProperties == null) {
+      LOGGER.warn(" canSetAntennaProperties not set");
+      throw new MissingParameterException(
+        " canSetAntennaProperties not set  for Parameter of Type GeneralDeviceCapabilities");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public GeneralDeviceCapabilities(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(canSetAntennaProperties.encodeBinary());
+
+    if (hasUTCClockCapability == null) {
+      LOGGER.warn(" hasUTCClockCapability not set");
+      throw new MissingParameterException(
+        " hasUTCClockCapability not set  for Parameter of Type GeneralDeviceCapabilities");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(hasUTCClockCapability.encodeBinary());
+    resultBits.append(reserved0.encodeBinary());
 
-        if (maxNumberOfAntennaSupported == null) {
-            LOGGER.warn(" maxNumberOfAntennaSupported not set");
-            throw new MissingParameterException(
-                " maxNumberOfAntennaSupported not set  for Parameter of Type GeneralDeviceCapabilities");
-        }
-
-        resultBits.append(maxNumberOfAntennaSupported.encodeBinary());
-
-        if (canSetAntennaProperties == null) {
-            LOGGER.warn(" canSetAntennaProperties not set");
-            throw new MissingParameterException(
-                " canSetAntennaProperties not set  for Parameter of Type GeneralDeviceCapabilities");
-        }
-
-        resultBits.append(canSetAntennaProperties.encodeBinary());
-
-        if (hasUTCClockCapability == null) {
-            LOGGER.warn(" hasUTCClockCapability not set");
-            throw new MissingParameterException(
-                " hasUTCClockCapability not set  for Parameter of Type GeneralDeviceCapabilities");
-        }
-
-        resultBits.append(hasUTCClockCapability.encodeBinary());
-        resultBits.append(reserved0.encodeBinary());
-
-        if (deviceManufacturerName == null) {
-            LOGGER.warn(" deviceManufacturerName not set");
-            throw new MissingParameterException(
-                " deviceManufacturerName not set  for Parameter of Type GeneralDeviceCapabilities");
-        }
-
-        resultBits.append(deviceManufacturerName.encodeBinary());
-
-        if (modelName == null) {
-            LOGGER.warn(" modelName not set");
-            throw new MissingParameterException(
-                " modelName not set  for Parameter of Type GeneralDeviceCapabilities");
-        }
-
-        resultBits.append(modelName.encodeBinary());
-
-        if (readerFirmwareVersion == null) {
-            LOGGER.warn(" readerFirmwareVersion not set");
-            throw new MissingParameterException(
-                " readerFirmwareVersion not set  for Parameter of Type GeneralDeviceCapabilities");
-        }
-
-        resultBits.append(readerFirmwareVersion.encodeBinary());
-
-        if (receiveSensitivityTableEntryList == null) {
-            LOGGER.warn(" receiveSensitivityTableEntryList not set");
-
-            //parameter has to be set - throw exception
-            throw new MissingParameterException(
-                " receiveSensitivityTableEntryList not set");
-        } else {
-            for (ReceiveSensitivityTableEntry field : receiveSensitivityTableEntryList) {
-                resultBits.append(field.encodeBinary());
-            }
-        }
-
-        if (perAntennaReceiveSensitivityRangeList == null) {
-            //just warn - it is optional 
-            LOGGER.info(" perAntennaReceiveSensitivityRangeList not set");
-        } else {
-            for (PerAntennaReceiveSensitivityRange field : perAntennaReceiveSensitivityRangeList) {
-                resultBits.append(field.encodeBinary());
-            }
-        }
-
-        if (gPIOCapabilities == null) {
-            // single parameter, may not be null
-            LOGGER.warn(" gPIOCapabilities not set");
-            throw new MissingParameterException(" gPIOCapabilities not set");
-        } else {
-            resultBits.append(gPIOCapabilities.encodeBinary());
-        }
-
-        if (perAntennaAirProtocolList == null) {
-            LOGGER.warn(" perAntennaAirProtocolList not set");
-
-            //parameter has to be set - throw exception
-            throw new MissingParameterException(
-                " perAntennaAirProtocolList not set");
-        } else {
-            for (PerAntennaAirProtocol field : perAntennaAirProtocolList) {
-                resultBits.append(field.encodeBinary());
-            }
-        }
-
-        return resultBits;
+    if (deviceManufacturerName == null) {
+      LOGGER.warn(" deviceManufacturerName not set");
+      throw new MissingParameterException(
+        " deviceManufacturerName not set  for Parameter of Type GeneralDeviceCapabilities");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
+    resultBits.append(deviceManufacturerName.encodeBinary());
 
-        if (maxNumberOfAntennaSupported == null) {
-            LOGGER.warn(" maxNumberOfAntennaSupported not set");
-            throw new MissingParameterException(
-                " maxNumberOfAntennaSupported not set");
-        } else {
-            element.addContent(maxNumberOfAntennaSupported.encodeXML(
-                    "MaxNumberOfAntennaSupported", ns));
-        }
-
-        if (canSetAntennaProperties == null) {
-            LOGGER.warn(" canSetAntennaProperties not set");
-            throw new MissingParameterException(
-                " canSetAntennaProperties not set");
-        } else {
-            element.addContent(canSetAntennaProperties.encodeXML(
-                    "CanSetAntennaProperties", ns));
-        }
-
-        if (hasUTCClockCapability == null) {
-            LOGGER.warn(" hasUTCClockCapability not set");
-            throw new MissingParameterException(
-                " hasUTCClockCapability not set");
-        } else {
-            element.addContent(hasUTCClockCapability.encodeXML(
-                    "HasUTCClockCapability", ns));
-        }
-
-        //element.addContent(reserved0.encodeXML("reserved",ns));
-        if (deviceManufacturerName == null) {
-            LOGGER.warn(" deviceManufacturerName not set");
-            throw new MissingParameterException(
-                " deviceManufacturerName not set");
-        } else {
-            element.addContent(deviceManufacturerName.encodeXML(
-                    "DeviceManufacturerName", ns));
-        }
-
-        if (modelName == null) {
-            LOGGER.warn(" modelName not set");
-            throw new MissingParameterException(" modelName not set");
-        } else {
-            element.addContent(modelName.encodeXML("ModelName", ns));
-        }
-
-        if (readerFirmwareVersion == null) {
-            LOGGER.warn(" readerFirmwareVersion not set");
-            throw new MissingParameterException(
-                " readerFirmwareVersion not set");
-        } else {
-            element.addContent(readerFirmwareVersion.encodeXML(
-                    "ReaderFirmwareVersion", ns));
-        }
-
-        //parameters
-        if (receiveSensitivityTableEntryList == null) {
-            LOGGER.warn(" receiveSensitivityTableEntryList not set");
-            throw new MissingParameterException(
-                "  receiveSensitivityTableEntryList not set");
-        }
-
-        for (ReceiveSensitivityTableEntry field : receiveSensitivityTableEntryList) {
-            element.addContent(field.encodeXML(field.getClass().getName()
-                                                    .replaceAll(field.getClass()
-                                                                     .getPackage()
-                                                                     .getName() +
-                        ".", ""), ns));
-        }
-
-        if (perAntennaReceiveSensitivityRangeList == null) {
-            LOGGER.info("perAntennaReceiveSensitivityRangeList not set");
-        } else {
-            for (PerAntennaReceiveSensitivityRange field : perAntennaReceiveSensitivityRangeList) {
-                element.addContent(field.encodeXML(field.getClass().getName()
-                                                        .replaceAll(field.getClass()
-                                                                         .getPackage()
-                                                                         .getName() +
-                            ".", ""), ns));
-            }
-        }
-
-        if (gPIOCapabilities == null) {
-            LOGGER.info("gPIOCapabilities not set");
-            throw new MissingParameterException("gPIOCapabilities not set");
-        } else {
-            element.addContent(gPIOCapabilities.encodeXML(
-                    gPIOCapabilities.getClass().getSimpleName(), ns));
-        }
-
-        if (perAntennaAirProtocolList == null) {
-            LOGGER.warn(" perAntennaAirProtocolList not set");
-            throw new MissingParameterException(
-                "  perAntennaAirProtocolList not set");
-        }
-
-        for (PerAntennaAirProtocol field : perAntennaAirProtocolList) {
-            element.addContent(field.encodeXML(field.getClass().getName()
-                                                    .replaceAll(field.getClass()
-                                                                     .getPackage()
-                                                                     .getName() +
-                        ".", ""), ns));
-        }
-
-        return element;
+    if (modelName == null) {
+      LOGGER.warn(" modelName not set");
+      throw new MissingParameterException(
+        " modelName not set  for Parameter of Type GeneralDeviceCapabilities");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        maxNumberOfAntennaSupported = new UnsignedShort(binary.subList(
-                    position, UnsignedShort.length()));
-        position += UnsignedShort.length();
-        canSetAntennaProperties = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        hasUTCClockCapability = new Bit(binary.subList(position, Bit.length()));
-        position += Bit.length();
-        position += reserved0.length();
-        deviceManufacturerName = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        modelName = new UnsignedInteger(binary.subList(position,
-                    UnsignedInteger.length()));
-        position += UnsignedInteger.length();
-        // array. first 16 bits indicate length of array
-        fieldCount = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length())).toShort();
-        tempLength = (UTF8String_UTF_8.length() * fieldCount) +
-            UnsignedShort.length();
-        readerFirmwareVersion = new UTF8String_UTF_8(binary.subList(position,
-                    tempLength));
-        position += tempLength;
-        LOGGER.debug("decoding array of type: UTF8String_UTF_8 with " +
-            tempLength + " length");
+    resultBits.append(modelName.encodeBinary());
 
-        //might need padding
-        // must always be blocks of 8 bites, if it is a bitlist, this might not be automatically the case
-        if ((tempLength % 8) > 0) {
-            position += (8 - (tempLength % 8));
-            LOGGER.info("padding needed for readerFirmwareVersion ");
-        }
+    if (readerFirmwareVersion == null) {
+      LOGGER.warn(" readerFirmwareVersion not set");
+      throw new MissingParameterException(
+        " readerFirmwareVersion not set  for Parameter of Type GeneralDeviceCapabilities");
+    }
 
-        // list of parameters
-        receiveSensitivityTableEntryList = new LinkedList<ReceiveSensitivityTableEntry>();
-        LOGGER.debug("decoding parameter receiveSensitivityTableEntryList ");
+    resultBits.append(readerFirmwareVersion.encodeBinary());
 
-        while (position < binary.length()) {
-            // store if one parameter matched
-            boolean atLeastOnce = false;
+    if (receiveSensitivityTableEntryList == null) {
+      LOGGER.warn(" receiveSensitivityTableEntryList not set");
 
-            // look ahead to see type
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
+      //parameter has to be set - throw exception
+      throw new MissingParameterException(
+        " receiveSensitivityTableEntryList not set");
+    } else {
+      for (ReceiveSensitivityTableEntry field : receiveSensitivityTableEntryList) {
+        resultBits.append(field.encodeBinary());
+      }
+    }
 
-            //add parameter to list if type number matches
-            if ((type != null) &&
-                    type.equals(ReceiveSensitivityTableEntry.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = ReceiveSensitivityTableEntry.length();
-                }
+    if (perAntennaReceiveSensitivityRangeList == null) {
+      //just warn - it is optional
+      LOGGER.info(" perAntennaReceiveSensitivityRangeList not set");
+    } else {
+      for (PerAntennaReceiveSensitivityRange field : perAntennaReceiveSensitivityRangeList) {
+        resultBits.append(field.encodeBinary());
+      }
+    }
 
-                receiveSensitivityTableEntryList.add(new ReceiveSensitivityTableEntry(
-                        binary.subList(position, tempLength)));
-                LOGGER.debug(
-                    "adding ReceiveSensitivityTableEntry to receiveSensitivityTableEntryList ");
-                atLeastOnce = true;
-                position += tempLength;
-            }
+    if (gPIOCapabilities == null) {
+      // single parameter, may not be null
+      LOGGER.warn(" gPIOCapabilities not set");
+      throw new MissingParameterException(" gPIOCapabilities not set");
+    } else {
+      resultBits.append(gPIOCapabilities.encodeBinary());
+    }
 
-            if (!atLeastOnce) {
-                //no parameter matched therefore we jump out of the loop
-                break;
-            }
-        }
+    if (perAntennaAirProtocolList == null) {
+      LOGGER.warn(" perAntennaAirProtocolList not set");
 
-        //if list is still empty no parameter matched
-        if (receiveSensitivityTableEntryList.isEmpty()) {
-            LOGGER.warn(
-                "encoded message does not contain parameter for non optional receiveSensitivityTableEntryList");
-            throw new MissingParameterException(
-                "GeneralDeviceCapabilities misses non optional parameter of type ReceiveSensitivityTableEntry");
-        }
+      //parameter has to be set - throw exception
+      throw new MissingParameterException(
+        " perAntennaAirProtocolList not set");
+    } else {
+      for (PerAntennaAirProtocol field : perAntennaAirProtocolList) {
+        resultBits.append(field.encodeBinary());
+      }
+    }
 
-        // list of parameters
-        perAntennaReceiveSensitivityRangeList = new LinkedList<PerAntennaReceiveSensitivityRange>();
-        LOGGER.debug(
-            "decoding parameter perAntennaReceiveSensitivityRangeList ");
+    return resultBits;
+  }
 
-        while (position < binary.length()) {
-            // store if one parameter matched
-            boolean atLeastOnce = false;
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-            // look ahead to see type
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
+    if (maxNumberOfAntennaSupported == null) {
+      LOGGER.warn(" maxNumberOfAntennaSupported not set");
+      throw new MissingParameterException(
+        " maxNumberOfAntennaSupported not set");
+    } else {
+      element.addContent(maxNumberOfAntennaSupported.encodeXML(
+        "MaxNumberOfAntennaSupported", ns));
+    }
 
-            //add parameter to list if type number matches
-            if ((type != null) &&
-                    type.equals(PerAntennaReceiveSensitivityRange.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = PerAntennaReceiveSensitivityRange.length();
-                }
+    if (canSetAntennaProperties == null) {
+      LOGGER.warn(" canSetAntennaProperties not set");
+      throw new MissingParameterException(
+        " canSetAntennaProperties not set");
+    } else {
+      element.addContent(canSetAntennaProperties.encodeXML(
+        "CanSetAntennaProperties", ns));
+    }
 
-                perAntennaReceiveSensitivityRangeList.add(new PerAntennaReceiveSensitivityRange(
-                        binary.subList(position, tempLength)));
-                LOGGER.debug(
-                    "adding PerAntennaReceiveSensitivityRange to perAntennaReceiveSensitivityRangeList ");
-                atLeastOnce = true;
-                position += tempLength;
-            }
+    if (hasUTCClockCapability == null) {
+      LOGGER.warn(" hasUTCClockCapability not set");
+      throw new MissingParameterException(
+        " hasUTCClockCapability not set");
+    } else {
+      element.addContent(hasUTCClockCapability.encodeXML(
+        "HasUTCClockCapability", ns));
+    }
 
-            if (!atLeastOnce) {
-                //no parameter matched therefore we jump out of the loop
-                break;
-            }
-        }
+    //element.addContent(reserved0.encodeXML("reserved",ns));
+    if (deviceManufacturerName == null) {
+      LOGGER.warn(" deviceManufacturerName not set");
+      throw new MissingParameterException(
+        " deviceManufacturerName not set");
+    } else {
+      element.addContent(deviceManufacturerName.encodeXML(
+        "DeviceManufacturerName", ns));
+    }
 
-        //if list is still empty no parameter matched
-        if (perAntennaReceiveSensitivityRangeList.isEmpty()) {
-            LOGGER.info(
-                "encoded message does not contain parameter for optional perAntennaReceiveSensitivityRangeList");
-        }
+    if (modelName == null) {
+      LOGGER.warn(" modelName not set");
+      throw new MissingParameterException(" modelName not set");
+    } else {
+      element.addContent(modelName.encodeXML("ModelName", ns));
+    }
 
-        // look ahead to see type
-        // may be optional or exactly once
-        type = null;
-        tempByteLength = 0;
-        tempLength = 0;
+    if (readerFirmwareVersion == null) {
+      LOGGER.warn(" readerFirmwareVersion not set");
+      throw new MissingParameterException(
+        " readerFirmwareVersion not set");
+    } else {
+      element.addContent(readerFirmwareVersion.encodeXML(
+        "ReaderFirmwareVersion", ns));
+    }
 
-        try {
-            // if first bit is one it is a TV Parameter
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
-        } catch (IllegalArgumentException le) {
-            // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
-            LOGGER.warn(
-                "GeneralDeviceCapabilities misses non optional parameter of type GPIOCapabilities");
-            throw new MissingParameterException(
-                "GeneralDeviceCapabilities misses non optional parameter of type GPIOCapabilities");
-        }
+    //parameters
+    if (receiveSensitivityTableEntryList == null) {
+      LOGGER.warn(" receiveSensitivityTableEntryList not set");
+      throw new MissingParameterException(
+        "  receiveSensitivityTableEntryList not set");
+    }
 
+    for (ReceiveSensitivityTableEntry field : receiveSensitivityTableEntryList) {
+      element.addContent(field.encodeXML(field.getClass().getName()
+        .replaceAll(field.getClass()
+          .getPackage()
+          .getName()
+          + ".", ""), ns));
+    }
+
+    if (perAntennaReceiveSensitivityRangeList == null) {
+      LOGGER.info("perAntennaReceiveSensitivityRangeList not set");
+    } else {
+      for (PerAntennaReceiveSensitivityRange field : perAntennaReceiveSensitivityRangeList) {
+        element.addContent(field.encodeXML(field.getClass().getName()
+          .replaceAll(field.getClass()
+            .getPackage()
+            .getName()
+            + ".", ""), ns));
+      }
+    }
+
+    if (gPIOCapabilities == null) {
+      LOGGER.info("gPIOCapabilities not set");
+      throw new MissingParameterException("gPIOCapabilities not set");
+    } else {
+      element.addContent(gPIOCapabilities.encodeXML(
+        gPIOCapabilities.getClass().getSimpleName(), ns));
+    }
+
+    if (perAntennaAirProtocolList == null) {
+      LOGGER.warn(" perAntennaAirProtocolList not set");
+      throw new MissingParameterException(
+        "  perAntennaAirProtocolList not set");
+    }
+
+    for (PerAntennaAirProtocol field : perAntennaAirProtocolList) {
+      element.addContent(field.encodeXML(field.getClass().getName()
+        .replaceAll(field.getClass()
+          .getPackage()
+          .getName()
+          + ".", ""), ns));
+    }
+
+    return element;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    maxNumberOfAntennaSupported = new UnsignedShort(binary.subList(
+      position, UnsignedShort.length()));
+    position += UnsignedShort.length();
+    canSetAntennaProperties = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    hasUTCClockCapability = new Bit(binary.subList(position, Bit.length()));
+    position += Bit.length();
+    position += reserved0.length();
+    deviceManufacturerName = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    modelName = new UnsignedInteger(binary.subList(position,
+      UnsignedInteger.length()));
+    position += UnsignedInteger.length();
+    // array. first 16 bits indicate length of array
+    fieldCount = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length())).toShort();
+    tempLength = (UTF8String_UTF_8.length() * fieldCount)
+      + UnsignedShort.length();
+    readerFirmwareVersion = new UTF8String_UTF_8(binary.subList(position,
+      tempLength));
+    position += tempLength;
+    LOGGER.debug("decoding array of type: UTF8String_UTF_8 with "
+      + tempLength + " length");
+
+    //might need padding
+    // must always be blocks of 8 bites, if it is a bitlist, this might not be automatically the case
+    if ((tempLength % 8) > 0) {
+      position += (8 - (tempLength % 8));
+      LOGGER.info("padding needed for readerFirmwareVersion ");
+    }
+
+    // list of parameters
+    receiveSensitivityTableEntryList = new LinkedList<ReceiveSensitivityTableEntry>();
+    LOGGER.debug("decoding parameter receiveSensitivityTableEntryList ");
+
+    while (position < binary.length()) {
+      // store if one parameter matched
+      boolean atLeastOnce = false;
+
+      // look ahead to see type
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+
+      //add parameter to list if type number matches
+      if ((type != null)
+        && type.equals(ReceiveSensitivityTableEntry.TYPENUM)) {
         if (binary.get(position)) {
-            // length can statically be determined for TV Parameters
-            tempLength = gPIOCapabilities.length();
+          // length can statically be determined for TV Parameters
+          tempLength = ReceiveSensitivityTableEntry.length();
         }
 
-        if ((type != null) && type.equals(GPIOCapabilities.TYPENUM)) {
-            gPIOCapabilities = new GPIOCapabilities(binary.subList(position,
-                        tempLength));
-            position += tempLength;
-            LOGGER.debug(
-                " gPIOCapabilities is instantiated with GPIOCapabilities with length" +
-                tempLength);
-        } else {
-            LOGGER.warn(
-                "GeneralDeviceCapabilities misses non optional parameter of type GPIOCapabilities");
-            throw new MissingParameterException(
-                "GeneralDeviceCapabilities misses non optional parameter of type GPIOCapabilities");
+        receiveSensitivityTableEntryList.add(new ReceiveSensitivityTableEntry(
+          binary.subList(position, tempLength)));
+        LOGGER.debug(
+          "adding ReceiveSensitivityTableEntry to receiveSensitivityTableEntryList ");
+        atLeastOnce = true;
+        position += tempLength;
+      }
+
+      if (!atLeastOnce) {
+        //no parameter matched therefore we jump out of the loop
+        break;
+      }
+    }
+
+    //if list is still empty no parameter matched
+    if (receiveSensitivityTableEntryList.isEmpty()) {
+      LOGGER.warn(
+        "encoded message does not contain parameter for non optional receiveSensitivityTableEntryList");
+      throw new MissingParameterException(
+        "GeneralDeviceCapabilities misses non optional parameter of type ReceiveSensitivityTableEntry");
+    }
+
+    // list of parameters
+    perAntennaReceiveSensitivityRangeList = new LinkedList<PerAntennaReceiveSensitivityRange>();
+    LOGGER.debug(
+      "decoding parameter perAntennaReceiveSensitivityRangeList ");
+
+    while (position < binary.length()) {
+      // store if one parameter matched
+      boolean atLeastOnce = false;
+
+      // look ahead to see type
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+
+      //add parameter to list if type number matches
+      if ((type != null)
+        && type.equals(PerAntennaReceiveSensitivityRange.TYPENUM)) {
+        if (binary.get(position)) {
+          // length can statically be determined for TV Parameters
+          tempLength = PerAntennaReceiveSensitivityRange.length();
         }
 
-        // list of parameters
-        perAntennaAirProtocolList = new LinkedList<PerAntennaAirProtocol>();
-        LOGGER.debug("decoding parameter perAntennaAirProtocolList ");
+        perAntennaReceiveSensitivityRangeList.add(new PerAntennaReceiveSensitivityRange(
+          binary.subList(position, tempLength)));
+        LOGGER.debug(
+          "adding PerAntennaReceiveSensitivityRange to perAntennaReceiveSensitivityRangeList ");
+        atLeastOnce = true;
+        position += tempLength;
+      }
 
-        while (position < binary.length()) {
-            // store if one parameter matched
-            boolean atLeastOnce = false;
+      if (!atLeastOnce) {
+        //no parameter matched therefore we jump out of the loop
+        break;
+      }
+    }
 
-            // look ahead to see type
-            if (binary.get(position)) {
-                // do not take the first bit as it is always 1
-                type = new SignedShort(binary.subList(position + 1, 7));
-            } else {
-                type = new SignedShort(binary.subList(position +
-                            RESERVEDLENGTH, TYPENUMBERLENGTH));
-                tempByteLength = new UnsignedShort(binary.subList(position +
-                            RESERVEDLENGTH + TYPENUMBERLENGTH,
-                            UnsignedShort.length())).toShort();
-                tempLength = 8 * tempByteLength;
-            }
+    //if list is still empty no parameter matched
+    if (perAntennaReceiveSensitivityRangeList.isEmpty()) {
+      LOGGER.info(
+        "encoded message does not contain parameter for optional perAntennaReceiveSensitivityRangeList");
+    }
 
-            //add parameter to list if type number matches
-            if ((type != null) && type.equals(PerAntennaAirProtocol.TYPENUM)) {
-                if (binary.get(position)) {
-                    // length can statically be determined for TV Parameters
-                    tempLength = PerAntennaAirProtocol.length();
-                }
+    // look ahead to see type
+    // may be optional or exactly once
+    type = null;
+    tempByteLength = 0;
+    tempLength = 0;
 
-                perAntennaAirProtocolList.add(new PerAntennaAirProtocol(
-                        binary.subList(position, tempLength)));
-                LOGGER.debug(
-                    "adding PerAntennaAirProtocol to perAntennaAirProtocolList ");
-                atLeastOnce = true;
-                position += tempLength;
-            }
+    try {
+      // if first bit is one it is a TV Parameter
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+    } catch (IllegalArgumentException le) {
+      // if an IllegalArgumentException is thrown, list was not long enough so the parameter is missing
+      LOGGER.warn(
+        "GeneralDeviceCapabilities misses non optional parameter of type GPIOCapabilities");
+      throw new MissingParameterException(
+        "GeneralDeviceCapabilities misses non optional parameter of type GPIOCapabilities");
+    }
 
-            if (!atLeastOnce) {
-                //no parameter matched therefore we jump out of the loop
-                break;
-            }
+    if (binary.get(position)) {
+      // length can statically be determined for TV Parameters
+      tempLength = gPIOCapabilities.length();
+    }
+
+    if ((type != null) && type.equals(GPIOCapabilities.TYPENUM)) {
+      gPIOCapabilities = new GPIOCapabilities(binary.subList(position,
+        tempLength));
+      position += tempLength;
+      LOGGER.debug(
+        " gPIOCapabilities is instantiated with GPIOCapabilities with length"
+        + tempLength);
+    } else {
+      LOGGER.warn(
+        "GeneralDeviceCapabilities misses non optional parameter of type GPIOCapabilities");
+      throw new MissingParameterException(
+        "GeneralDeviceCapabilities misses non optional parameter of type GPIOCapabilities");
+    }
+
+    // list of parameters
+    perAntennaAirProtocolList = new LinkedList<PerAntennaAirProtocol>();
+    LOGGER.debug("decoding parameter perAntennaAirProtocolList ");
+
+    while (position < binary.length()) {
+      // store if one parameter matched
+      boolean atLeastOnce = false;
+
+      // look ahead to see type
+      if (binary.get(position)) {
+        // do not take the first bit as it is always 1
+        type = new SignedShort(binary.subList(position + 1, 7));
+      } else {
+        type = new SignedShort(binary.subList(position
+          + RESERVEDLENGTH, TYPENUMBERLENGTH));
+        tempByteLength = new UnsignedShort(binary.subList(position
+          + RESERVEDLENGTH + TYPENUMBERLENGTH,
+          UnsignedShort.length())).toShort();
+        tempLength = 8 * tempByteLength;
+      }
+
+      //add parameter to list if type number matches
+      if ((type != null) && type.equals(PerAntennaAirProtocol.TYPENUM)) {
+        if (binary.get(position)) {
+          // length can statically be determined for TV Parameters
+          tempLength = PerAntennaAirProtocol.length();
         }
 
-        //if list is still empty no parameter matched
-        if (perAntennaAirProtocolList.isEmpty()) {
-            LOGGER.warn(
-                "encoded message does not contain parameter for non optional perAntennaAirProtocolList");
-            throw new MissingParameterException(
-                "GeneralDeviceCapabilities misses non optional parameter of type PerAntennaAirProtocol");
-        }
+        perAntennaAirProtocolList.add(new PerAntennaAirProtocol(
+          binary.subList(position, tempLength)));
+        LOGGER.debug(
+          "adding PerAntennaAirProtocol to perAntennaAirProtocolList ");
+        atLeastOnce = true;
+        position += tempLength;
+      }
+
+      if (!atLeastOnce) {
+        //no parameter matched therefore we jump out of the loop
+        break;
+      }
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    //if list is still empty no parameter matched
+    if (perAntennaAirProtocolList.isEmpty()) {
+      LOGGER.warn(
+        "encoded message does not contain parameter for non optional perAntennaAirProtocolList");
+      throw new MissingParameterException(
+        "GeneralDeviceCapabilities misses non optional parameter of type PerAntennaAirProtocol");
+    }
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+    Element temp = null;
 
-        temp = element.getChild("MaxNumberOfAntennaSupported", ns);
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
 
-        if (temp != null) {
-            maxNumberOfAntennaSupported = new UnsignedShort(temp);
-        }
+    temp = element.getChild("MaxNumberOfAntennaSupported", ns);
 
-        element.removeChild("MaxNumberOfAntennaSupported", ns);
-        temp = element.getChild("CanSetAntennaProperties", ns);
-
-        if (temp != null) {
-            canSetAntennaProperties = new Bit(temp);
-        }
-
-        element.removeChild("CanSetAntennaProperties", ns);
-        temp = element.getChild("HasUTCClockCapability", ns);
-
-        if (temp != null) {
-            hasUTCClockCapability = new Bit(temp);
-        }
-
-        element.removeChild("HasUTCClockCapability", ns);
-        temp = element.getChild("DeviceManufacturerName", ns);
-
-        if (temp != null) {
-            deviceManufacturerName = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("DeviceManufacturerName", ns);
-        temp = element.getChild("ModelName", ns);
-
-        if (temp != null) {
-            modelName = new UnsignedInteger(temp);
-        }
-
-        element.removeChild("ModelName", ns);
-        temp = element.getChild("ReaderFirmwareVersion", ns);
-
-        if (temp != null) {
-            readerFirmwareVersion = new UTF8String_UTF_8(temp);
-        }
-
-        element.removeChild("ReaderFirmwareVersion", ns);
-
-        //parameter - not choices - no special actions needed
-        //we expect a list of parameters
-        receiveSensitivityTableEntryList = new LinkedList<ReceiveSensitivityTableEntry>();
-        tempList = element.getChildren("ReceiveSensitivityTableEntry", ns);
-
-        if ((tempList == null) || tempList.isEmpty()) {
-            LOGGER.warn(
-                "GeneralDeviceCapabilities misses non optional parameter of type receiveSensitivityTableEntryList");
-            throw new MissingParameterException(
-                "GeneralDeviceCapabilities misses non optional parameter of type receiveSensitivityTableEntryList");
-        } else {
-            for (Element e : tempList) {
-                receiveSensitivityTableEntryList.add(new ReceiveSensitivityTableEntry(
-                        e));
-                LOGGER.debug(
-                    "adding ReceiveSensitivityTableEntry to receiveSensitivityTableEntryList ");
-            }
-        }
-
-        element.removeChildren("ReceiveSensitivityTableEntry", ns);
-        //parameter - not choices - no special actions needed
-        //we expect a list of parameters
-        perAntennaReceiveSensitivityRangeList = new LinkedList<PerAntennaReceiveSensitivityRange>();
-        tempList = element.getChildren("PerAntennaReceiveSensitivityRange", ns);
-
-        if ((tempList == null) || tempList.isEmpty()) {
-            LOGGER.info(
-                "GeneralDeviceCapabilities misses optional parameter of type perAntennaReceiveSensitivityRangeList");
-        } else {
-            for (Element e : tempList) {
-                perAntennaReceiveSensitivityRangeList.add(new PerAntennaReceiveSensitivityRange(
-                        e));
-                LOGGER.debug(
-                    "adding PerAntennaReceiveSensitivityRange to perAntennaReceiveSensitivityRangeList ");
-            }
-        }
-
-        element.removeChildren("PerAntennaReceiveSensitivityRange", ns);
-        //parameter - not choices - no special actions needed
-        temp = element.getChild("GPIOCapabilities", ns);
-
-        if (temp != null) {
-            gPIOCapabilities = new GPIOCapabilities(temp);
-            LOGGER.info(
-                "setting parameter gPIOCapabilities for parameter GeneralDeviceCapabilities");
-        }
-
-        if (temp == null) {
-            LOGGER.warn(
-                "GeneralDeviceCapabilities misses non optional parameter of type gPIOCapabilities");
-            throw new MissingParameterException(
-                "GeneralDeviceCapabilities misses non optional parameter of type gPIOCapabilities");
-        }
-
-        element.removeChild("GPIOCapabilities", ns);
-        //parameter - not choices - no special actions needed
-        //we expect a list of parameters
-        perAntennaAirProtocolList = new LinkedList<PerAntennaAirProtocol>();
-        tempList = element.getChildren("PerAntennaAirProtocol", ns);
-
-        if ((tempList == null) || tempList.isEmpty()) {
-            LOGGER.warn(
-                "GeneralDeviceCapabilities misses non optional parameter of type perAntennaAirProtocolList");
-            throw new MissingParameterException(
-                "GeneralDeviceCapabilities misses non optional parameter of type perAntennaAirProtocolList");
-        } else {
-            for (Element e : tempList) {
-                perAntennaAirProtocolList.add(new PerAntennaAirProtocol(e));
-                LOGGER.debug(
-                    "adding PerAntennaAirProtocol to perAntennaAirProtocolList ");
-            }
-        }
-
-        element.removeChildren("PerAntennaAirProtocol", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "GeneralDeviceCapabilities has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (temp != null) {
+      maxNumberOfAntennaSupported = new UnsignedShort(temp);
     }
 
-    //setters
-    /**
-    * set   maxNumberOfAntennaSupported of type UnsignedShort .
-    * @param   maxNumberOfAntennaSupported to be set
-    */
-    public void setMaxNumberOfAntennaSupported(
-        final UnsignedShort maxNumberOfAntennaSupported) {
-        this.maxNumberOfAntennaSupported = maxNumberOfAntennaSupported;
+    element.removeChild("MaxNumberOfAntennaSupported", ns);
+    temp = element.getChild("CanSetAntennaProperties", ns);
+
+    if (temp != null) {
+      canSetAntennaProperties = new Bit(temp);
     }
 
-    /**
-    * set   canSetAntennaProperties of type Bit .
-    * @param   canSetAntennaProperties to be set
-    */
-    public void setCanSetAntennaProperties(final Bit canSetAntennaProperties) {
-        this.canSetAntennaProperties = canSetAntennaProperties;
+    element.removeChild("CanSetAntennaProperties", ns);
+    temp = element.getChild("HasUTCClockCapability", ns);
+
+    if (temp != null) {
+      hasUTCClockCapability = new Bit(temp);
     }
 
-    /**
-    * set   hasUTCClockCapability of type Bit .
-    * @param   hasUTCClockCapability to be set
-    */
-    public void setHasUTCClockCapability(final Bit hasUTCClockCapability) {
-        this.hasUTCClockCapability = hasUTCClockCapability;
+    element.removeChild("HasUTCClockCapability", ns);
+    temp = element.getChild("DeviceManufacturerName", ns);
+
+    if (temp != null) {
+      deviceManufacturerName = new UnsignedInteger(temp);
     }
 
-    /**
-    * set   deviceManufacturerName of type UnsignedInteger .
-    * @param   deviceManufacturerName to be set
-    */
-    public void setDeviceManufacturerName(
-        final UnsignedInteger deviceManufacturerName) {
-        this.deviceManufacturerName = deviceManufacturerName;
+    element.removeChild("DeviceManufacturerName", ns);
+    temp = element.getChild("ModelName", ns);
+
+    if (temp != null) {
+      modelName = new UnsignedInteger(temp);
     }
 
-    /**
-    * set   modelName of type UnsignedInteger .
-    * @param   modelName to be set
-    */
-    public void setModelName(final UnsignedInteger modelName) {
-        this.modelName = modelName;
+    element.removeChild("ModelName", ns);
+    temp = element.getChild("ReaderFirmwareVersion", ns);
+
+    if (temp != null) {
+      readerFirmwareVersion = new UTF8String_UTF_8(temp);
     }
 
-    /**
-    * set readerFirmwareVersion of type UTF8String_UTF_8 .
-    * @param  readerFirmwareVersion to be set
-    */
-    public void setReaderFirmwareVersion(
-        final UTF8String_UTF_8 readerFirmwareVersion) {
-        this.readerFirmwareVersion = readerFirmwareVersion;
+    element.removeChild("ReaderFirmwareVersion", ns);
+
+    //parameter - not choices - no special actions needed
+    //we expect a list of parameters
+    receiveSensitivityTableEntryList = new LinkedList<ReceiveSensitivityTableEntry>();
+    tempList = element.getChildren("ReceiveSensitivityTableEntry", ns);
+
+    if ((tempList == null) || tempList.isEmpty()) {
+      LOGGER.warn(
+        "GeneralDeviceCapabilities misses non optional parameter of type receiveSensitivityTableEntryList");
+      throw new MissingParameterException(
+        "GeneralDeviceCapabilities misses non optional parameter of type receiveSensitivityTableEntryList");
+    } else {
+      for (Element e : tempList) {
+        receiveSensitivityTableEntryList.add(new ReceiveSensitivityTableEntry(
+          e));
+        LOGGER.debug(
+          "adding ReceiveSensitivityTableEntry to receiveSensitivityTableEntryList ");
+      }
     }
 
-    /**
-    * set receiveSensitivityTableEntryList of type  List &lt;ReceiveSensitivityTableEntry>.
-    * @param  receiveSensitivityTableEntryList to be set
-    */
-    public void setReceiveSensitivityTableEntryList(
-        final List<ReceiveSensitivityTableEntry> receiveSensitivityTableEntryList) {
-        this.receiveSensitivityTableEntryList = receiveSensitivityTableEntryList;
+    element.removeChildren("ReceiveSensitivityTableEntry", ns);
+    //parameter - not choices - no special actions needed
+    //we expect a list of parameters
+    perAntennaReceiveSensitivityRangeList = new LinkedList<PerAntennaReceiveSensitivityRange>();
+    tempList = element.getChildren("PerAntennaReceiveSensitivityRange", ns);
+
+    if ((tempList == null) || tempList.isEmpty()) {
+      LOGGER.info(
+        "GeneralDeviceCapabilities misses optional parameter of type perAntennaReceiveSensitivityRangeList");
+    } else {
+      for (Element e : tempList) {
+        perAntennaReceiveSensitivityRangeList.add(new PerAntennaReceiveSensitivityRange(
+          e));
+        LOGGER.debug(
+          "adding PerAntennaReceiveSensitivityRange to perAntennaReceiveSensitivityRangeList ");
+      }
     }
 
-    /**
-    * set perAntennaReceiveSensitivityRangeList of type  List &lt;PerAntennaReceiveSensitivityRange>.
-    * @param  perAntennaReceiveSensitivityRangeList to be set
-    */
-    public void setPerAntennaReceiveSensitivityRangeList(
-        final List<PerAntennaReceiveSensitivityRange> perAntennaReceiveSensitivityRangeList) {
-        this.perAntennaReceiveSensitivityRangeList = perAntennaReceiveSensitivityRangeList;
+    element.removeChildren("PerAntennaReceiveSensitivityRange", ns);
+    //parameter - not choices - no special actions needed
+    temp = element.getChild("GPIOCapabilities", ns);
+
+    if (temp != null) {
+      gPIOCapabilities = new GPIOCapabilities(temp);
+      LOGGER.info(
+        "setting parameter gPIOCapabilities for parameter GeneralDeviceCapabilities");
     }
 
-    /**
-    * set gPIOCapabilities of type GPIOCapabilities.
-    * @param  gPIOCapabilities to be set
-    */
-    public void setGPIOCapabilities(final GPIOCapabilities gPIOCapabilities) {
-        this.gPIOCapabilities = gPIOCapabilities;
+    if (temp == null) {
+      LOGGER.warn(
+        "GeneralDeviceCapabilities misses non optional parameter of type gPIOCapabilities");
+      throw new MissingParameterException(
+        "GeneralDeviceCapabilities misses non optional parameter of type gPIOCapabilities");
     }
 
-    /**
-    * set perAntennaAirProtocolList of type  List &lt;PerAntennaAirProtocol>.
-    * @param  perAntennaAirProtocolList to be set
-    */
-    public void setPerAntennaAirProtocolList(
-        final List<PerAntennaAirProtocol> perAntennaAirProtocolList) {
-        this.perAntennaAirProtocolList = perAntennaAirProtocolList;
+    element.removeChild("GPIOCapabilities", ns);
+    //parameter - not choices - no special actions needed
+    //we expect a list of parameters
+    perAntennaAirProtocolList = new LinkedList<PerAntennaAirProtocol>();
+    tempList = element.getChildren("PerAntennaAirProtocol", ns);
+
+    if ((tempList == null) || tempList.isEmpty()) {
+      LOGGER.warn(
+        "GeneralDeviceCapabilities misses non optional parameter of type perAntennaAirProtocolList");
+      throw new MissingParameterException(
+        "GeneralDeviceCapabilities misses non optional parameter of type perAntennaAirProtocolList");
+    } else {
+      for (Element e : tempList) {
+        perAntennaAirProtocolList.add(new PerAntennaAirProtocol(e));
+        LOGGER.debug(
+          "adding PerAntennaAirProtocol to perAntennaAirProtocolList ");
+      }
     }
 
-    // end setter
+    element.removeChildren("PerAntennaAirProtocol", ns);
 
-    //getters
-    /**
-    * get   maxNumberOfAntennaSupported of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getMaxNumberOfAntennaSupported() {
-        return this.maxNumberOfAntennaSupported;
+    if (element.getChildren().size() > 0) {
+      String message = "GeneralDeviceCapabilities has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
+    }
+  }
+
+  //setters
+  /**
+   * set maxNumberOfAntennaSupported of type UnsignedShort .
+   *
+   * @param maxNumberOfAntennaSupported to be set
+   */
+  public void setMaxNumberOfAntennaSupported(
+    final UnsignedShort maxNumberOfAntennaSupported) {
+    this.maxNumberOfAntennaSupported = maxNumberOfAntennaSupported;
+  }
+
+  /**
+   * set canSetAntennaProperties of type Bit .
+   *
+   * @param canSetAntennaProperties to be set
+   */
+  public void setCanSetAntennaProperties(final Bit canSetAntennaProperties) {
+    this.canSetAntennaProperties = canSetAntennaProperties;
+  }
+
+  /**
+   * set hasUTCClockCapability of type Bit .
+   *
+   * @param hasUTCClockCapability to be set
+   */
+  public void setHasUTCClockCapability(final Bit hasUTCClockCapability) {
+    this.hasUTCClockCapability = hasUTCClockCapability;
+  }
+
+  /**
+   * set deviceManufacturerName of type UnsignedInteger .
+   *
+   * @param deviceManufacturerName to be set
+   */
+  public void setDeviceManufacturerName(
+    final UnsignedInteger deviceManufacturerName) {
+    this.deviceManufacturerName = deviceManufacturerName;
+  }
+
+  /**
+   * set modelName of type UnsignedInteger .
+   *
+   * @param modelName to be set
+   */
+  public void setModelName(final UnsignedInteger modelName) {
+    this.modelName = modelName;
+  }
+
+  /**
+   * set readerFirmwareVersion of type UTF8String_UTF_8 .
+   *
+   * @param readerFirmwareVersion to be set
+   */
+  public void setReaderFirmwareVersion(
+    final UTF8String_UTF_8 readerFirmwareVersion) {
+    this.readerFirmwareVersion = readerFirmwareVersion;
+  }
+
+  /**
+   * set receiveSensitivityTableEntryList of type List &lt;ReceiveSensitivityTableEntry>.
+   *
+   * @param receiveSensitivityTableEntryList to be set
+   */
+  public void setReceiveSensitivityTableEntryList(
+    final List<ReceiveSensitivityTableEntry> receiveSensitivityTableEntryList) {
+    this.receiveSensitivityTableEntryList = receiveSensitivityTableEntryList;
+  }
+
+  /**
+   * set perAntennaReceiveSensitivityRangeList of type List &lt;PerAntennaReceiveSensitivityRange>.
+   *
+   * @param perAntennaReceiveSensitivityRangeList to be set
+   */
+  public void setPerAntennaReceiveSensitivityRangeList(
+    final List<PerAntennaReceiveSensitivityRange> perAntennaReceiveSensitivityRangeList) {
+    this.perAntennaReceiveSensitivityRangeList = perAntennaReceiveSensitivityRangeList;
+  }
+
+  /**
+   * set gPIOCapabilities of type GPIOCapabilities.
+   *
+   * @param gPIOCapabilities to be set
+   */
+  public void setGPIOCapabilities(final GPIOCapabilities gPIOCapabilities) {
+    this.gPIOCapabilities = gPIOCapabilities;
+  }
+
+  /**
+   * set perAntennaAirProtocolList of type List &lt;PerAntennaAirProtocol>.
+   *
+   * @param perAntennaAirProtocolList to be set
+   */
+  public void setPerAntennaAirProtocolList(
+    final List<PerAntennaAirProtocol> perAntennaAirProtocolList) {
+    this.perAntennaAirProtocolList = perAntennaAirProtocolList;
+  }
+
+  // end setter
+  //getters
+  /**
+   * get maxNumberOfAntennaSupported of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getMaxNumberOfAntennaSupported() {
+    return this.maxNumberOfAntennaSupported;
+  }
+
+  /**
+   * get canSetAntennaProperties of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getCanSetAntennaProperties() {
+    return this.canSetAntennaProperties;
+  }
+
+  /**
+   * get hasUTCClockCapability of type Bit.
+   *
+   * @return type Bit to be set
+   */
+  public Bit getHasUTCClockCapability() {
+    return this.hasUTCClockCapability;
+  }
+
+  /**
+   * get deviceManufacturerName of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getDeviceManufacturerName() {
+    return this.deviceManufacturerName;
+  }
+
+  /**
+   * get modelName of type UnsignedInteger.
+   *
+   * @return type UnsignedInteger to be set
+   */
+  public UnsignedInteger getModelName() {
+    return this.modelName;
+  }
+
+  /**
+   * get readerFirmwareVersion of type UTF8String_UTF_8.
+   *
+   * @return UTF8String_UTF_8
+   */
+  public UTF8String_UTF_8 getReaderFirmwareVersion() {
+    return readerFirmwareVersion;
+  }
+
+  /**
+   * get receiveSensitivityTableEntryList of type List &lt;ReceiveSensitivityTableEntry> .
+   *
+   * @return List &lt;ReceiveSensitivityTableEntry>
+   */
+  public List<ReceiveSensitivityTableEntry> getReceiveSensitivityTableEntryList() {
+    return receiveSensitivityTableEntryList;
+  }
+
+  /**
+   * get perAntennaReceiveSensitivityRangeList of type List &lt;PerAntennaReceiveSensitivityRange> .
+   *
+   * @return List &lt;PerAntennaReceiveSensitivityRange>
+   */
+  public List<PerAntennaReceiveSensitivityRange> getPerAntennaReceiveSensitivityRangeList() {
+    return perAntennaReceiveSensitivityRangeList;
+  }
+
+  /**
+   * get gPIOCapabilities of type GPIOCapabilities .
+   *
+   * @return GPIOCapabilities
+   */
+  public GPIOCapabilities getGPIOCapabilities() {
+    return gPIOCapabilities;
+  }
+
+  /**
+   * get perAntennaAirProtocolList of type List &lt;PerAntennaAirProtocol> .
+   *
+   * @return List &lt;PerAntennaAirProtocol>
+   */
+  public List<PerAntennaAirProtocol> getPerAntennaAirProtocolList() {
+    return perAntennaAirProtocolList;
+  }
+
+  // end getters
+  //add methods
+  /**
+   * add element receiveSensitivityTableEntry of type ReceiveSensitivityTableEntry .
+   *
+   * @param receiveSensitivityTableEntry of type ReceiveSensitivityTableEntry
+   */
+  public void addToReceiveSensitivityTableEntryList(
+    ReceiveSensitivityTableEntry receiveSensitivityTableEntry) {
+    if (this.receiveSensitivityTableEntryList == null) {
+      this.receiveSensitivityTableEntryList = new LinkedList<ReceiveSensitivityTableEntry>();
     }
 
-    /**
-    * get   canSetAntennaProperties of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getCanSetAntennaProperties() {
-        return this.canSetAntennaProperties;
+    this.receiveSensitivityTableEntryList.add(receiveSensitivityTableEntry);
+  }
+
+  /**
+   * add element perAntennaReceiveSensitivityRange of type PerAntennaReceiveSensitivityRange .
+   *
+   * @param perAntennaReceiveSensitivityRange of type PerAntennaReceiveSensitivityRange
+   */
+  public void addToPerAntennaReceiveSensitivityRangeList(
+    PerAntennaReceiveSensitivityRange perAntennaReceiveSensitivityRange) {
+    if (this.perAntennaReceiveSensitivityRangeList == null) {
+      this.perAntennaReceiveSensitivityRangeList = new LinkedList<PerAntennaReceiveSensitivityRange>();
     }
 
-    /**
-    * get   hasUTCClockCapability of type Bit.
-    * @return   type Bit to be set
-    */
-    public Bit getHasUTCClockCapability() {
-        return this.hasUTCClockCapability;
+    this.perAntennaReceiveSensitivityRangeList.add(perAntennaReceiveSensitivityRange);
+  }
+
+  /**
+   * add element perAntennaAirProtocol of type PerAntennaAirProtocol .
+   *
+   * @param perAntennaAirProtocol of type PerAntennaAirProtocol
+   */
+  public void addToPerAntennaAirProtocolList(
+    PerAntennaAirProtocol perAntennaAirProtocol) {
+    if (this.perAntennaAirProtocolList == null) {
+      this.perAntennaAirProtocolList = new LinkedList<PerAntennaAirProtocol>();
     }
 
-    /**
-    * get   deviceManufacturerName of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getDeviceManufacturerName() {
-        return this.deviceManufacturerName;
-    }
+    this.perAntennaAirProtocolList.add(perAntennaAirProtocol);
+  }
 
-    /**
-    * get   modelName of type UnsignedInteger.
-    * @return   type UnsignedInteger to be set
-    */
-    public UnsignedInteger getModelName() {
-        return this.modelName;
-    }
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * get readerFirmwareVersion of type  UTF8String_UTF_8.
-    * @return  UTF8String_UTF_8
-    */
-    public UTF8String_UTF_8 getReaderFirmwareVersion() {
-        return readerFirmwareVersion;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    /**
-    * get receiveSensitivityTableEntryList of type List &lt;ReceiveSensitivityTableEntry> .
-    * @return  List &lt;ReceiveSensitivityTableEntry>
-    */
-    public List<ReceiveSensitivityTableEntry> getReceiveSensitivityTableEntryList() {
-        return receiveSensitivityTableEntryList;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "GeneralDeviceCapabilities";
+  }
 
-    /**
-    * get perAntennaReceiveSensitivityRangeList of type List &lt;PerAntennaReceiveSensitivityRange> .
-    * @return  List &lt;PerAntennaReceiveSensitivityRange>
-    */
-    public List<PerAntennaReceiveSensitivityRange> getPerAntennaReceiveSensitivityRangeList() {
-        return perAntennaReceiveSensitivityRangeList;
-    }
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "GeneralDeviceCapabilities: ";
+    result += ", maxNumberOfAntennaSupported: ";
+    result += maxNumberOfAntennaSupported;
+    result += ", canSetAntennaProperties: ";
+    result += canSetAntennaProperties;
+    result += ", hasUTCClockCapability: ";
+    result += hasUTCClockCapability;
 
-    /**
-    * get gPIOCapabilities of type GPIOCapabilities .
-    * @return  GPIOCapabilities
-    */
-    public GPIOCapabilities getGPIOCapabilities() {
-        return gPIOCapabilities;
-    }
+    result += ", deviceManufacturerName: ";
+    result += deviceManufacturerName;
+    result += ", modelName: ";
+    result += modelName;
+    result += ", readerFirmwareVersion: ";
+    result += readerFirmwareVersion;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * get perAntennaAirProtocolList of type List &lt;PerAntennaAirProtocol> .
-    * @return  List &lt;PerAntennaAirProtocol>
-    */
-    public List<PerAntennaAirProtocol> getPerAntennaAirProtocolList() {
-        return perAntennaAirProtocolList;
-    }
-
-    // end getters
-
-    //add methods
-
-    /**
-    * add element receiveSensitivityTableEntry of type ReceiveSensitivityTableEntry .
-    * @param  receiveSensitivityTableEntry of type ReceiveSensitivityTableEntry
-    */
-    public void addToReceiveSensitivityTableEntryList(
-        ReceiveSensitivityTableEntry receiveSensitivityTableEntry) {
-        if (this.receiveSensitivityTableEntryList == null) {
-            this.receiveSensitivityTableEntryList = new LinkedList<ReceiveSensitivityTableEntry>();
-        }
-
-        this.receiveSensitivityTableEntryList.add(receiveSensitivityTableEntry);
-    }
-
-    /**
-    * add element perAntennaReceiveSensitivityRange of type PerAntennaReceiveSensitivityRange .
-    * @param  perAntennaReceiveSensitivityRange of type PerAntennaReceiveSensitivityRange
-    */
-    public void addToPerAntennaReceiveSensitivityRangeList(
-        PerAntennaReceiveSensitivityRange perAntennaReceiveSensitivityRange) {
-        if (this.perAntennaReceiveSensitivityRangeList == null) {
-            this.perAntennaReceiveSensitivityRangeList = new LinkedList<PerAntennaReceiveSensitivityRange>();
-        }
-
-        this.perAntennaReceiveSensitivityRangeList.add(perAntennaReceiveSensitivityRange);
-    }
-
-    /**
-    * add element perAntennaAirProtocol of type PerAntennaAirProtocol .
-    * @param  perAntennaAirProtocol of type PerAntennaAirProtocol
-    */
-    public void addToPerAntennaAirProtocolList(
-        PerAntennaAirProtocol perAntennaAirProtocol) {
-        if (this.perAntennaAirProtocolList == null) {
-            this.perAntennaAirProtocolList = new LinkedList<PerAntennaAirProtocol>();
-        }
-
-        this.perAntennaAirProtocolList.add(perAntennaAirProtocol);
-    }
-
-    // end add
-
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "GeneralDeviceCapabilities";
-    }
-
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "GeneralDeviceCapabilities: ";
-        result += ", maxNumberOfAntennaSupported: ";
-        result += maxNumberOfAntennaSupported;
-        result += ", canSetAntennaProperties: ";
-        result += canSetAntennaProperties;
-        result += ", hasUTCClockCapability: ";
-        result += hasUTCClockCapability;
-
-        result += ", deviceManufacturerName: ";
-        result += deviceManufacturerName;
-        result += ", modelName: ";
-        result += modelName;
-        result += ", readerFirmwareVersion: ";
-        result += readerFirmwareVersion;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }

@@ -7,7 +7,7 @@
  *
  */
 
-/*
+ /*
  * Copyright 2007 ETH Zurich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,282 +48,285 @@ import org.llrp.ltk.types.UnsignedShort;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * Contains the result from a write operation.If the number of words written is not equal to the length of the data pattern to write, the Result  SHALL be non-zero.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=112&view=fit">LLRP Specification Section 15.2.1.5.5.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=160&view=fit">LLRP Specification Section 16.3.1.5.5.2</a>}
-
-
+ * Contains the result from a write operation.If the number of words written is not equal to the length of the data pattern to write, the Result SHALL be non-zero.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=112&view=fit">LLRP Specification Section 15.2.1.5.5.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=160&view=fit">LLRP Specification Section 16.3.1.5.5.2</a>}
+ *
+ *
  */
-
 /**
- * Contains the result from a write operation.If the number of words written is not equal to the length of the data pattern to write, the Result  SHALL be non-zero.
-
-See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=112&view=fit">LLRP Specification Section 15.2.1.5.5.2</a>}
- and {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=160&view=fit">LLRP Specification Section 16.3.1.5.5.2</a>}
-
-      .
+ * Contains the result from a write operation.If the number of words written is not equal to the length of the data pattern to write, the Result SHALL be non-zero.
+ *
+ * See also {@link <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=112&view=fit">LLRP Specification Section 15.2.1.5.5.2</a>} and {@link
+ * <a href="http://www.epcglobalinc.org/standards/llrp/llrp_1_0_1-standard-20070813.pdf#page=160&view=fit">LLRP Specification Section 16.3.1.5.5.2</a>}
+ *
+ * .
  */
 public class C1G2WriteOpSpecResult extends TLVParameter
-    implements AccessCommandOpSpecResult {
-    public static final SignedShort TYPENUM = new SignedShort(350);
-    private static final Logger LOGGER = Logger.getLogger(C1G2WriteOpSpecResult.class);
-    protected C1G2WriteResultType result;
-    protected UnsignedShort opSpecID;
-    protected UnsignedShort numWordsWritten;
+  implements AccessCommandOpSpecResult {
 
-    /**
-     * empty constructor to create new parameter.
-     */
-    public C1G2WriteOpSpecResult() {
+  public static final SignedShort TYPENUM = new SignedShort(350);
+  private static final Logger LOGGER = Logger.getLogger(C1G2WriteOpSpecResult.class);
+  protected C1G2WriteResultType result;
+  protected UnsignedShort opSpecID;
+  protected UnsignedShort numWordsWritten;
+
+  /**
+   * empty constructor to create new parameter.
+   */
+  public C1G2WriteOpSpecResult() {
+  }
+
+  /**
+   * Constructor to create parameter from binary encoded parameter calls decodeBinary to decode parameter.
+   *
+   * @param list to be decoded
+   */
+  public C1G2WriteOpSpecResult(LLRPBitList list) {
+    decodeBinary(list);
+  }
+
+  /**
+   * Constructor to create parameter from xml encoded parameter calls decodeXML to decode parameter.
+   *
+   * @param element to be decoded
+   */
+  public C1G2WriteOpSpecResult(Element element)
+    throws InvalidLLRPMessageException {
+    decodeXML(element);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public LLRPBitList encodeBinarySpecific() {
+    LLRPBitList resultBits = new LLRPBitList();
+
+    if (result == null) {
+      LOGGER.warn(" result not set");
+      throw new MissingParameterException(
+        " result not set  for Parameter of Type C1G2WriteOpSpecResult");
     }
 
-    /**
-     * Constructor to create parameter from binary encoded parameter
-     * calls decodeBinary to decode parameter.
-     * @param list to be decoded
-     */
-    public C1G2WriteOpSpecResult(LLRPBitList list) {
-        decodeBinary(list);
+    resultBits.append(result.encodeBinary());
+
+    if (opSpecID == null) {
+      LOGGER.warn(" opSpecID not set");
+      throw new MissingParameterException(
+        " opSpecID not set  for Parameter of Type C1G2WriteOpSpecResult");
     }
 
-    /**
-    * Constructor to create parameter from xml encoded parameter
-    * calls decodeXML to decode parameter.
-    * @param element to be decoded
-    */
-    public C1G2WriteOpSpecResult(Element element)
-        throws InvalidLLRPMessageException {
-        decodeXML(element);
+    resultBits.append(opSpecID.encodeBinary());
+
+    if (numWordsWritten == null) {
+      LOGGER.warn(" numWordsWritten not set");
+      throw new MissingParameterException(
+        " numWordsWritten not set  for Parameter of Type C1G2WriteOpSpecResult");
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public LLRPBitList encodeBinarySpecific() {
-        LLRPBitList resultBits = new LLRPBitList();
+    resultBits.append(numWordsWritten.encodeBinary());
 
-        if (result == null) {
-            LOGGER.warn(" result not set");
-            throw new MissingParameterException(
-                " result not set  for Parameter of Type C1G2WriteOpSpecResult");
-        }
+    return resultBits;
+  }
 
-        resultBits.append(result.encodeBinary());
+  /**
+   * {@inheritDoc}
+   */
+  public Content encodeXML(String name, Namespace ns) {
+    // element in namespace defined by parent element
+    Element element = new Element(name, ns);
+    // child element are always in default LLRP namespace
+    ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
 
-        if (opSpecID == null) {
-            LOGGER.warn(" opSpecID not set");
-            throw new MissingParameterException(
-                " opSpecID not set  for Parameter of Type C1G2WriteOpSpecResult");
-        }
-
-        resultBits.append(opSpecID.encodeBinary());
-
-        if (numWordsWritten == null) {
-            LOGGER.warn(" numWordsWritten not set");
-            throw new MissingParameterException(
-                " numWordsWritten not set  for Parameter of Type C1G2WriteOpSpecResult");
-        }
-
-        resultBits.append(numWordsWritten.encodeBinary());
-
-        return resultBits;
+    if (result == null) {
+      LOGGER.warn(" result not set");
+      throw new MissingParameterException(" result not set");
+    } else {
+      element.addContent(result.encodeXML("Result", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public Content encodeXML(String name, Namespace ns) {
-        // element in namespace defined by parent element
-        Element element = new Element(name, ns);
-        // child element are always in default LLRP namespace
-        ns = Namespace.getNamespace("llrp", LLRPConstants.LLRPNAMESPACE);
-
-        if (result == null) {
-            LOGGER.warn(" result not set");
-            throw new MissingParameterException(" result not set");
-        } else {
-            element.addContent(result.encodeXML("Result", ns));
-        }
-
-        if (opSpecID == null) {
-            LOGGER.warn(" opSpecID not set");
-            throw new MissingParameterException(" opSpecID not set");
-        } else {
-            element.addContent(opSpecID.encodeXML("OpSpecID", ns));
-        }
-
-        if (numWordsWritten == null) {
-            LOGGER.warn(" numWordsWritten not set");
-            throw new MissingParameterException(" numWordsWritten not set");
-        } else {
-            element.addContent(numWordsWritten.encodeXML("NumWordsWritten", ns));
-        }
-
-        //parameters
-        return element;
+    if (opSpecID == null) {
+      LOGGER.warn(" opSpecID not set");
+      throw new MissingParameterException(" opSpecID not set");
+    } else {
+      element.addContent(opSpecID.encodeXML("OpSpecID", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    protected void decodeBinarySpecific(LLRPBitList binary) {
-        int position = 0;
-        int tempByteLength;
-        int tempLength = 0;
-        int count;
-        SignedShort type;
-        int fieldCount;
-        Custom custom;
-        result = new C1G2WriteResultType(binary.subList(position,
-                    C1G2WriteResultType.length()));
-        position += C1G2WriteResultType.length();
-        opSpecID = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
-        numWordsWritten = new UnsignedShort(binary.subList(position,
-                    UnsignedShort.length()));
-        position += UnsignedShort.length();
+    if (numWordsWritten == null) {
+      LOGGER.warn(" numWordsWritten not set");
+      throw new MissingParameterException(" numWordsWritten not set");
+    } else {
+      element.addContent(numWordsWritten.encodeXML("NumWordsWritten", ns));
     }
 
-    /**
-    * {@inheritDoc}
-    */
-    public void decodeXML(Element element) throws InvalidLLRPMessageException {
-        List<Element> tempList = null;
-        boolean atLeastOnce = false;
-        Custom custom;
+    //parameters
+    return element;
+  }
 
-        Element temp = null;
+  /**
+   * {@inheritDoc}
+   */
+  protected void decodeBinarySpecific(LLRPBitList binary) {
+    int position = 0;
+    int tempByteLength;
+    int tempLength = 0;
+    int count;
+    SignedShort type;
+    int fieldCount;
+    Custom custom;
+    result = new C1G2WriteResultType(binary.subList(position,
+      C1G2WriteResultType.length()));
+    position += C1G2WriteResultType.length();
+    opSpecID = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+    numWordsWritten = new UnsignedShort(binary.subList(position,
+      UnsignedShort.length()));
+    position += UnsignedShort.length();
+  }
 
-        // child element are always in default LLRP namespace
-        Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
+  /**
+   * {@inheritDoc}
+   */
+  public void decodeXML(Element element) throws InvalidLLRPMessageException {
+    List<Element> tempList = null;
+    boolean atLeastOnce = false;
+    Custom custom;
 
-        temp = element.getChild("Result", ns);
+    Element temp = null;
 
-        if (temp != null) {
-            result = new C1G2WriteResultType(temp);
-        }
+    // child element are always in default LLRP namespace
+    Namespace ns = Namespace.getNamespace(LLRPConstants.LLRPNAMESPACE);
 
-        element.removeChild("Result", ns);
-        temp = element.getChild("OpSpecID", ns);
+    temp = element.getChild("Result", ns);
 
-        if (temp != null) {
-            opSpecID = new UnsignedShort(temp);
-        }
-
-        element.removeChild("OpSpecID", ns);
-        temp = element.getChild("NumWordsWritten", ns);
-
-        if (temp != null) {
-            numWordsWritten = new UnsignedShort(temp);
-        }
-
-        element.removeChild("NumWordsWritten", ns);
-
-        if (element.getChildren().size() > 0) {
-            String message = "C1G2WriteOpSpecResult has unknown element " +
-                ((Element) element.getChildren().get(0)).getName();
-            throw new InvalidLLRPMessageException(message);
-        }
+    if (temp != null) {
+      result = new C1G2WriteResultType(temp);
     }
 
-    //setters
-    /**
-    * set result of type C1G2WriteResultType .
-    * @param  result to be set
-    */
-    public void setResult(final C1G2WriteResultType result) {
-        this.result = result;
+    element.removeChild("Result", ns);
+    temp = element.getChild("OpSpecID", ns);
+
+    if (temp != null) {
+      opSpecID = new UnsignedShort(temp);
     }
 
-    /**
-    * set   opSpecID of type UnsignedShort .
-    * @param   opSpecID to be set
-    */
-    public void setOpSpecID(final UnsignedShort opSpecID) {
-        this.opSpecID = opSpecID;
+    element.removeChild("OpSpecID", ns);
+    temp = element.getChild("NumWordsWritten", ns);
+
+    if (temp != null) {
+      numWordsWritten = new UnsignedShort(temp);
     }
 
-    /**
-    * set   numWordsWritten of type UnsignedShort .
-    * @param   numWordsWritten to be set
-    */
-    public void setNumWordsWritten(final UnsignedShort numWordsWritten) {
-        this.numWordsWritten = numWordsWritten;
+    element.removeChild("NumWordsWritten", ns);
+
+    if (element.getChildren().size() > 0) {
+      String message = "C1G2WriteOpSpecResult has unknown element "
+        + ((Element) element.getChildren().get(0)).getName();
+      throw new InvalidLLRPMessageException(message);
     }
+  }
 
-    // end setter
+  //setters
+  /**
+   * set result of type C1G2WriteResultType .
+   *
+   * @param result to be set
+   */
+  public void setResult(final C1G2WriteResultType result) {
+    this.result = result;
+  }
 
-    //getters
-    /**
-    * get result of type C1G2WriteResultType.
-    * @return  C1G2WriteResultType
-    */
-    public C1G2WriteResultType getResult() {
-        return result;
-    }
+  /**
+   * set opSpecID of type UnsignedShort .
+   *
+   * @param opSpecID to be set
+   */
+  public void setOpSpecID(final UnsignedShort opSpecID) {
+    this.opSpecID = opSpecID;
+  }
 
-    /**
-    * get   opSpecID of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getOpSpecID() {
-        return this.opSpecID;
-    }
+  /**
+   * set numWordsWritten of type UnsignedShort .
+   *
+   * @param numWordsWritten to be set
+   */
+  public void setNumWordsWritten(final UnsignedShort numWordsWritten) {
+    this.numWordsWritten = numWordsWritten;
+  }
 
-    /**
-    * get   numWordsWritten of type UnsignedShort.
-    * @return   type UnsignedShort to be set
-    */
-    public UnsignedShort getNumWordsWritten() {
-        return this.numWordsWritten;
-    }
+  // end setter
+  //getters
+  /**
+   * get result of type C1G2WriteResultType.
+   *
+   * @return C1G2WriteResultType
+   */
+  public C1G2WriteResultType getResult() {
+    return result;
+  }
 
-    // end getters
+  /**
+   * get opSpecID of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getOpSpecID() {
+    return this.opSpecID;
+  }
 
-    //add methods
+  /**
+   * get numWordsWritten of type UnsignedShort.
+   *
+   * @return type UnsignedShort to be set
+   */
+  public UnsignedShort getNumWordsWritten() {
+    return this.numWordsWritten;
+  }
 
-    // end add
+  // end getters
+  //add methods
+  // end add
+  /**
+   * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
+   *
+   * @return Integer always zero
+   */
+  public static Integer length() {
+    return 0;
+  }
 
-    /**
-    * For TLV Parameter length can not be determined at compile time. This method therefore always returns 0.
-    * @return Integer always zero
-    */
-    public static Integer length() {
-        return 0;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public SignedShort getTypeNum() {
+    return TYPENUM;
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public SignedShort getTypeNum() {
-        return TYPENUM;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return "C1G2WriteOpSpecResult";
+  }
 
-    /**
-    * {@inheritDoc}
-    */
-    public String getName() {
-        return "C1G2WriteOpSpecResult";
-    }
+  /**
+   * return string representation. All field values but no parameters are included
+   *
+   * @return String
+   */
+  public String toString() {
+    String result = "C1G2WriteOpSpecResult: ";
+    result += ", result: ";
+    result += result;
+    result += ", opSpecID: ";
+    result += opSpecID;
+    result += ", numWordsWritten: ";
+    result += numWordsWritten;
+    result = result.replaceFirst(", ", "");
 
-    /**
-    * return string representation. All field values but no parameters are included
-    * @return String
-    */
-    public String toString() {
-        String result = "C1G2WriteOpSpecResult: ";
-        result += ", result: ";
-        result += result;
-        result += ", opSpecID: ";
-        result += opSpecID;
-        result += ", numWordsWritten: ";
-        result += numWordsWritten;
-        result = result.replaceFirst(", ", "");
-
-        return result;
-    }
+    return result;
+  }
 }
