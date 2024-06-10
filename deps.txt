@@ -5,7 +5,7 @@ RUNTIME DEPENDENCIES
 
 Name            Version        URL
 
-jdom            1.0            http://www.jdom.org
+jdom            2.0            http://www.jdom.org
 log4j-1.2       2.x            http://logging.apache.org/log4j/1.2/download.html
 jargs           1.0            http://sourceforge.net/project/showfiles.php?group_id=33024
 mina            2.x            http://mina.apache.org

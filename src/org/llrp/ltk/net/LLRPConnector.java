@@ -152,11 +152,12 @@ public class LLRPConnector extends LLRPConnection {
   public void disconnect() {
     System.out.println("LLRP Disconnect:" + host + ":" + port);
     if (connector != null) {
-//                        connector.dispose();
+      connector.dispose();
       connector = null;  //make reconnect() impossible
     }
     if (session != null) {
-      session.closeNow();
+      CloseFuture future = session.closeNow();
+      future.awaitUninterruptibly();
       session = null;
     }
   }
@@ -174,9 +175,6 @@ public class LLRPConnector extends LLRPConnection {
       return false;
     }
 
-    // MINA 1.0
-    //future = connector.connect(remoteAddress);
-    //future.join();		// Wait until the connection attempt is finished.
     // MINA 2.0
     future = connector.connect();
     try {
@@ -251,5 +249,4 @@ public class LLRPConnector extends LLRPConnection {
   public void setPort(int port) {
     this.port = port;
   }
-
 }

@@ -1,3 +1,8 @@
+2024/6/? : ?.?
+  - formatted source
+  - fixed deprecated code
+  - upgraded to jdom/2.x
+
 2024/6/8 : 0.3
   - upgraded to slf/2.x
   - fixed connection issues
