@@ -1,4 +1,4 @@
-2024/6/? : ?.?
+2024/6/10 : 2.0
   - formatted source
   - fixed deprecated code
   - upgraded to jdom/2.x
