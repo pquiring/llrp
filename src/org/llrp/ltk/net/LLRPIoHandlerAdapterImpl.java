@@ -65,8 +65,7 @@ public class LLRPIoHandlerAdapterImpl extends LLRPIoHandlerAdapter {
    * getSynMessageQueue() method. All incoming messages except KEEP_ALIVE and those identified as synchronous responses to the LLRPConnection.transact method are passed to the
    * LLRPEndpoint registered.
    */
-  public void messageReceived(IoSession session, Object message)
-    throws Exception {
+  public void messageReceived(IoSession session, Object message) throws Exception {
     LLRPMessage llrpMessage = (LLRPMessage) message;
     log.info("message " + message.getClass() + " received in session " + session);
     if (log.isDebugEnabled()) {
@@ -80,7 +79,6 @@ public class LLRPIoHandlerAdapterImpl extends LLRPIoHandlerAdapter {
         session.write(new KEEPALIVE_ACK());
         return;
       }
-
     }
 
     if (llrpMessage instanceof READER_EVENT_NOTIFICATION) {
@@ -106,14 +104,13 @@ public class LLRPIoHandlerAdapterImpl extends LLRPIoHandlerAdapter {
   /**
    * {@inheritDoc}
    */
-  public void messageSent(IoSession session, Object message) throws java.lang.Exception {
+  public void messageSent(IoSession session, Object message) throws Exception {
     if (log.isInfoEnabled()) {
       log.info("Message " + ((LLRPMessage) message).getName() + " successfully transmitted");
     }
     if (log.isDebugEnabled()) {
       log.debug(((LLRPMessage) message).toXMLString());
     }
-
   }
 
   /**

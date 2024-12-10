@@ -37,8 +37,7 @@ public class LLRPBinaryDecoder extends CumulativeProtocolDecoder {
   private Logger log = Logger.getLogger(LLRPBinaryDecoder.class);
 
   @Override
-  protected boolean doDecode(IoSession session, IoBuffer in,
-    ProtocolDecoderOutput out) throws Exception {
+  protected boolean doDecode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
     // if 6 bytes in the buffer we can determine the next length to see
     // if buffer contains a completely delivered message.
     // in.getInt(2) will throw a BufferUnderflowException if there are not
@@ -46,8 +45,7 @@ public class LLRPBinaryDecoder extends CumulativeProtocolDecoder {
     int length = -1;
     byte[] lengthArray = null;
     byte[] version = null;
-    if (in.remaining() >= 6
-      && session.getAttribute(MESSAGE_LENGTH_KEY) == null) {
+    if (in.remaining() >= 6 && session.getAttribute(MESSAGE_LENGTH_KEY) == null) {
       // enough bytes to decode length
       log.debug("determine length of message");
       version = new byte[2];
@@ -123,7 +121,6 @@ public class LLRPBinaryDecoder extends CumulativeProtocolDecoder {
         }
       } else {
         // not enough bytes to determin length
-
         log.debug("not enough bytes to determine message length");
         return false;
       }

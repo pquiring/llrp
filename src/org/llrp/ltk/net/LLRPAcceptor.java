@@ -134,9 +134,6 @@ public class LLRPAcceptor extends LLRPConnection {
     acceptor.getSessionConfig().setReadBufferSize(2048);
     acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, IDLE_TIME);
 
-    // MINA 1.1
-    //SocketSessionConfig cfg = new SocketSessionConfig();
-    //cfg.setReceiveBufferSize(2048);
     try {
       socketAddress = new InetSocketAddress(port);
       acceptor.bind(socketAddress);
