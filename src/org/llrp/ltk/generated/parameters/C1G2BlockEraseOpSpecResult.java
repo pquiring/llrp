@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -70,7 +71,7 @@ public class C1G2BlockEraseOpSpecResult extends TLVParameter
   implements AccessCommandOpSpecResult {
 
   public static final SignedShort TYPENUM = new SignedShort(353);
-  private static final Logger LOGGER = Logger.getLogger(C1G2BlockEraseOpSpecResult.class);
+  private static final Logger LOGGER = LogManager.getLogger(C1G2BlockEraseOpSpecResult.class);
   protected C1G2BlockEraseResultType result;
   protected UnsignedShort opSpecID;
 

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -55,7 +56,7 @@ public class C1G2MValue extends UnsignedByte implements LLRPEnumeration {
   public static final int MV_2 = 1;
   public static final int MV_4 = 2;
   public static final int MV_8 = 3;
-  Logger logger = Logger.getLogger(C1G2MValue.class);
+  Logger logger = LogManager.getLogger(C1G2MValue.class);
 
   public C1G2MValue() {
     super(0);

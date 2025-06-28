@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -69,7 +70,7 @@ import java.util.List;
 public class AntennaProperties extends TLVParameter {
 
   public static final SignedShort TYPENUM = new SignedShort(221);
-  private static final Logger LOGGER = Logger.getLogger(AntennaProperties.class);
+  private static final Logger LOGGER = LogManager.getLogger(AntennaProperties.class);
   protected Bit antennaConnected;
   protected BitList reserved0 = new BitList(7);
   protected UnsignedShort antennaID;

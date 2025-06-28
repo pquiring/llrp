@@ -19,7 +19,8 @@ package org.llrp.ltk.net;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.llrp.ltk.generated.messages.KEEPALIVE;
@@ -36,7 +37,7 @@ import org.llrp.ltk.types.LLRPMessage;
  */
 public class LLRPIoHandlerAdapterImpl extends LLRPIoHandlerAdapter {
 
-  private Logger log = Logger.getLogger(LLRPIoHandlerAdapterImpl.class);
+  private Logger log = LogManager.getLogger(LLRPIoHandlerAdapterImpl.class);
   private LLRPConnection connection;
   private BlockingQueue<LLRPMessage> synMessageQueue = new LinkedBlockingQueue<LLRPMessage>();
   private BlockingQueue<ConnectionAttemptEvent> connectionAttemptEventQueue = new LinkedBlockingQueue<ConnectionAttemptEvent>(1);

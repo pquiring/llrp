@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -61,7 +62,7 @@ public class NotificationEventType extends UnsignedShort
   public static final int AISpec_Event = 6;
   public static final int AISpec_Event_With_Details = 7;
   public static final int Antenna_Event = 8;
-  Logger logger = Logger.getLogger(NotificationEventType.class);
+  Logger logger = LogManager.getLogger(NotificationEventType.class);
 
   public NotificationEventType() {
     super(0);

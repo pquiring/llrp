@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -68,7 +69,7 @@ public class C1G2UHFRFModeTable extends TLVParameter
   implements AirProtocolUHFRFModeTable {
 
   public static final SignedShort TYPENUM = new SignedShort(328);
-  private static final Logger LOGGER = Logger.getLogger(C1G2UHFRFModeTable.class);
+  private static final Logger LOGGER = LogManager.getLogger(C1G2UHFRFModeTable.class);
   protected List<C1G2UHFRFModeTableEntry> c1G2UHFRFModeTableEntryList = new LinkedList<C1G2UHFRFModeTableEntry>();
 
   /**

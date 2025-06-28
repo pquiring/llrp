@@ -3,7 +3,8 @@ package org.llrp.ltk.util;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.xerces.dom.DOMInputImpl;
 import org.llrp.ltk.generated.LLRPConstants;
 import org.w3c.dom.ls.LSInput;
@@ -11,7 +12,7 @@ import org.w3c.dom.ls.LSResourceResolver;
 
 public class LLRPExternalResourceResolver implements LSResourceResolver {
 
-  private static final Logger LOGGER = Logger.getLogger(LLRPExternalResourceResolver.class);
+  private static final Logger LOGGER = LogManager.getLogger(LLRPExternalResourceResolver.class);
 
   public LSInput resolveResource(String type, String namespaceURI, String publicId,
     String systemId, String baseURI) {

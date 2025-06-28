@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -72,7 +73,7 @@ import java.util.List;
 public class InventoryParameterSpec extends TLVParameter {
 
   public static final SignedShort TYPENUM = new SignedShort(186);
-  private static final Logger LOGGER = Logger.getLogger(InventoryParameterSpec.class);
+  private static final Logger LOGGER = LogManager.getLogger(InventoryParameterSpec.class);
   protected UnsignedShort inventoryParameterSpecID;
   protected AirProtocols protocolID;
   protected List<AntennaConfiguration> antennaConfigurationList = new LinkedList<AntennaConfiguration>();

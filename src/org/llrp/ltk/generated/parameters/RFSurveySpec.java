@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -73,7 +74,7 @@ import java.util.List;
 public class RFSurveySpec extends TLVParameter implements SpecParameter {
 
   public static final SignedShort TYPENUM = new SignedShort(187);
-  private static final Logger LOGGER = Logger.getLogger(RFSurveySpec.class);
+  private static final Logger LOGGER = LogManager.getLogger(RFSurveySpec.class);
   protected UnsignedShort antennaID;
   protected UnsignedInteger startFrequency;
   protected UnsignedInteger endFrequency;

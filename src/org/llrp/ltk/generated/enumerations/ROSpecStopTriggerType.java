@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -55,7 +56,7 @@ public class ROSpecStopTriggerType extends UnsignedByte
   public static final int Null = 0;
   public static final int Duration = 1;
   public static final int GPI_With_Timeout = 2;
-  Logger logger = Logger.getLogger(ROSpecStopTriggerType.class);
+  Logger logger = LogManager.getLogger(ROSpecStopTriggerType.class);
 
   public ROSpecStopTriggerType() {
     super(0);

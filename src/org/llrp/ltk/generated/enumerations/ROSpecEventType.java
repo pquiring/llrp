@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -54,7 +55,7 @@ public class ROSpecEventType extends UnsignedByte implements LLRPEnumeration {
   public static final int Start_Of_ROSpec = 0;
   public static final int End_Of_ROSpec = 1;
   public static final int Preemption_Of_ROSpec = 2;
-  Logger logger = Logger.getLogger(ROSpecEventType.class);
+  Logger logger = LogManager.getLogger(ROSpecEventType.class);
 
   public ROSpecEventType() {
     super(0);

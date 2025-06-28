@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -63,7 +64,7 @@ public class C1G2SingulationDetails extends TVParameter
   implements AirProtocolSingulationDetails {
 
   public static final SignedShort TYPENUM = new SignedShort(18);
-  private static final Logger LOGGER = Logger.getLogger(C1G2SingulationDetails.class);
+  private static final Logger LOGGER = LogManager.getLogger(C1G2SingulationDetails.class);
   protected UnsignedShort numCollisionSlots;
   protected UnsignedShort numEmptySlots;
 

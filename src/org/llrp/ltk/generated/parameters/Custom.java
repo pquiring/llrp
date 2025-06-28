@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -75,7 +76,7 @@ public class Custom extends TLVParameter implements SpecParameter,
   AccessCommandOpSpec, AccessCommandOpSpecResult {
 
   public static final SignedShort TYPENUM = new SignedShort(1023);
-  private static final Logger LOGGER = Logger.getLogger(Custom.class);
+  private static final Logger LOGGER = LogManager.getLogger(Custom.class);
   protected UnsignedInteger vendorIdentifier;
   protected UnsignedInteger parameterSubtype;
   protected BytesToEnd_HEX data;

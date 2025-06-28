@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -64,7 +65,7 @@ public class GetReaderConfigRequestedData extends UnsignedByte
   public static final int GPIPortCurrentState = 9;
   public static final int GPOWriteData = 10;
   public static final int EventsAndReports = 11;
-  Logger logger = Logger.getLogger(GetReaderConfigRequestedData.class);
+  Logger logger = LogManager.getLogger(GetReaderConfigRequestedData.class);
 
   public GetReaderConfigRequestedData() {
     super(0);

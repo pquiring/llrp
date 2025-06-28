@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -54,7 +55,7 @@ public class GPIPortState extends UnsignedByte implements LLRPEnumeration {
   public static final int Low = 0;
   public static final int High = 1;
   public static final int Unknown = 2;
-  Logger logger = Logger.getLogger(GPIPortState.class);
+  Logger logger = LogManager.getLogger(GPIPortState.class);
 
   public GPIPortState() {
     super(0);

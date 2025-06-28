@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.messages;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -59,7 +60,7 @@ import java.util.List;
 public class ENABLE_ROSPEC_RESPONSE extends LLRPMessage {
 
   public static final SignedShort TYPENUM = new SignedShort(34);
-  private static final Logger LOGGER = Logger.getLogger(ENABLE_ROSPEC_RESPONSE.class);
+  private static final Logger LOGGER = LogManager.getLogger(ENABLE_ROSPEC_RESPONSE.class);
   public static final String RESPONSETYPE = "";
   protected LLRPStatus lLRPStatus;
 

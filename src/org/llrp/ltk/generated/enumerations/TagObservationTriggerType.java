@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -55,7 +56,7 @@ public class TagObservationTriggerType extends UnsignedByte
   public static final int Upon_Seeing_N_Tags_Or_Timeout = 0;
   public static final int Upon_Seeing_No_More_New_Tags_For_Tms_Or_Timeout = 1;
   public static final int N_Attempts_To_See_All_Tags_In_FOV_Or_Timeout = 2;
-  Logger logger = Logger.getLogger(TagObservationTriggerType.class);
+  Logger logger = LogManager.getLogger(TagObservationTriggerType.class);
 
   public TagObservationTriggerType() {
     super(0);

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -54,7 +55,7 @@ public class ROReportTriggerType extends UnsignedByte implements LLRPEnumeration
   public static final int None = 0;
   public static final int Upon_N_Tags_Or_End_Of_AISpec = 1;
   public static final int Upon_N_Tags_Or_End_Of_ROSpec = 2;
-  Logger logger = Logger.getLogger(ROReportTriggerType.class);
+  Logger logger = LogManager.getLogger(ROReportTriggerType.class);
 
   public ROReportTriggerType() {
     super(0);

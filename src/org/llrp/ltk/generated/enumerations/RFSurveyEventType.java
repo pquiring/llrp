@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -53,7 +54,7 @@ public class RFSurveyEventType extends UnsignedByte implements LLRPEnumeration {
 
   public static final int Start_Of_RFSurvey = 0;
   public static final int End_Of_RFSurvey = 1;
-  Logger logger = Logger.getLogger(RFSurveyEventType.class);
+  Logger logger = LogManager.getLogger(RFSurveyEventType.class);
 
   public RFSurveyEventType() {
     super(0);

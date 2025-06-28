@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -69,7 +70,7 @@ import java.util.List;
 public class UTCTimestamp extends TLVParameter implements Timestamp {
 
   public static final SignedShort TYPENUM = new SignedShort(128);
-  private static final Logger LOGGER = Logger.getLogger(UTCTimestamp.class);
+  private static final Logger LOGGER = LogManager.getLogger(UTCTimestamp.class);
   protected UnsignedLong_DATETIME microseconds;
 
   /**

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -54,7 +55,7 @@ public class AirProtocolsArray extends UnsignedByteArray
 
   public static final int Unspecified = 0;
   public static final int EPCGlobalClass1Gen2 = 1;
-  Logger logger = Logger.getLogger(AirProtocolsArray.class);
+  Logger logger = LogManager.getLogger(AirProtocolsArray.class);
 
   public AirProtocolsArray() {
     super(0);

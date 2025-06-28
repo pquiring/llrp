@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -55,7 +56,7 @@ public class RFSurveySpecStopTriggerType extends UnsignedByte
   public static final int Null = 0;
   public static final int Duration = 1;
   public static final int N_Iterations_Through_Frequency_Range = 2;
-  Logger logger = Logger.getLogger(RFSurveySpecStopTriggerType.class);
+  Logger logger = LogManager.getLogger(RFSurveySpecStopTriggerType.class);
 
   public RFSurveySpecStopTriggerType() {
     super(0);

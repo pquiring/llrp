@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -70,7 +71,7 @@ import java.util.List;
 public class C1G2TagInventoryStateAwareSingulationAction extends TLVParameter {
 
   public static final SignedShort TYPENUM = new SignedShort(337);
-  private static final Logger LOGGER = Logger.getLogger(C1G2TagInventoryStateAwareSingulationAction.class);
+  private static final Logger LOGGER = LogManager.getLogger(C1G2TagInventoryStateAwareSingulationAction.class);
   protected C1G2TagInventoryStateAwareI i;
   protected C1G2TagInventoryStateAwareS s;
   protected BitList reserved0 = new BitList(6);

@@ -20,7 +20,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.core.future.WriteFuture;
 import org.llrp.ltk.generated.enumerations.ConnectionAttemptStatusType;
@@ -39,7 +40,7 @@ public abstract class LLRPConnection {
   protected LLRPIoHandlerAdapter handler;
   protected IoSession session;
   protected long timeout;
-  private Logger log = Logger.getLogger(LLRPConnection.class);
+  private Logger log = LogManager.getLogger(LLRPConnection.class);
 
   public LLRPConnection() {
     handler = new LLRPIoHandlerAdapterImpl(this);

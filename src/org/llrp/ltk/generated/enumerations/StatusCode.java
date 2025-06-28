@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -77,7 +78,7 @@ public class StatusCode extends UnsignedShort implements LLRPEnumeration {
   public static final int A_Invalid = 300;
   public static final int A_OutOfRange = 301;
   public static final int R_DeviceError = 401;
-  Logger logger = Logger.getLogger(StatusCode.class);
+  Logger logger = LogManager.getLogger(StatusCode.class);
 
   public StatusCode() {
     super(0);

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -74,7 +75,7 @@ import java.util.List;
 public class FrequencyRSSILevelEntry extends TLVParameter {
 
   public static final SignedShort TYPENUM = new SignedShort(243);
-  private static final Logger LOGGER = Logger.getLogger(FrequencyRSSILevelEntry.class);
+  private static final Logger LOGGER = LogManager.getLogger(FrequencyRSSILevelEntry.class);
   protected UnsignedInteger frequency;
   protected UnsignedInteger bandwidth;
   protected SignedByte averageRSSI;

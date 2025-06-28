@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -67,7 +68,7 @@ import java.util.List;
 public class EPC_96 extends TVParameter implements EPCParameter {
 
   public static final SignedShort TYPENUM = new SignedShort(13);
-  private static final Logger LOGGER = Logger.getLogger(EPC_96.class);
+  private static final Logger LOGGER = LogManager.getLogger(EPC_96.class);
   protected Integer96_HEX ePC;
 
   /**

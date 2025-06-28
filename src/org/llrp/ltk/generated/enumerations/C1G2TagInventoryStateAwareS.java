@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -53,7 +54,7 @@ public class C1G2TagInventoryStateAwareS extends Bit implements LLRPEnumeration 
 
   public static final int SL = 0;
   public static final int Not_SL = 1;
-  Logger logger = Logger.getLogger(C1G2TagInventoryStateAwareS.class);
+  Logger logger = LogManager.getLogger(C1G2TagInventoryStateAwareS.class);
 
   public C1G2TagInventoryStateAwareS() {
     super(0);

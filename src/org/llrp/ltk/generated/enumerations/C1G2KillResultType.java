@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -57,7 +58,7 @@ public class C1G2KillResultType extends UnsignedByte implements LLRPEnumeration 
   public static final int Nonspecific_Tag_Error = 3;
   public static final int No_Response_From_Tag = 4;
   public static final int Nonspecific_Reader_Error = 5;
-  Logger logger = Logger.getLogger(C1G2KillResultType.class);
+  Logger logger = LogManager.getLogger(C1G2KillResultType.class);
 
   public C1G2KillResultType() {
     super(0);

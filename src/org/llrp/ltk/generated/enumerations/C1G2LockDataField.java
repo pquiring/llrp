@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -56,7 +57,7 @@ public class C1G2LockDataField extends UnsignedByte implements LLRPEnumeration {
   public static final int EPC_Memory = 2;
   public static final int TID_Memory = 3;
   public static final int User_Memory = 4;
-  Logger logger = Logger.getLogger(C1G2LockDataField.class);
+  Logger logger = LogManager.getLogger(C1G2LockDataField.class);
 
   public C1G2LockDataField() {
     super(0);

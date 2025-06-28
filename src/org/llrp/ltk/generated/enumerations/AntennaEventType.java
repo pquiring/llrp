@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -53,7 +54,7 @@ public class AntennaEventType extends UnsignedByte implements LLRPEnumeration {
 
   public static final int Antenna_Disconnected = 0;
   public static final int Antenna_Connected = 1;
-  Logger logger = Logger.getLogger(AntennaEventType.class);
+  Logger logger = LogManager.getLogger(AntennaEventType.class);
 
   public AntennaEventType() {
     super(0);

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.messages;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -72,7 +73,7 @@ import java.util.List;
 public class SET_READER_CONFIG extends LLRPMessage {
 
   public static final SignedShort TYPENUM = new SignedShort(3);
-  private static final Logger LOGGER = Logger.getLogger(SET_READER_CONFIG.class);
+  private static final Logger LOGGER = LogManager.getLogger(SET_READER_CONFIG.class);
   public static final String RESPONSETYPE = "SET_READER_CONFIG_RESPONSE";
   protected Bit resetToFactoryDefault;
   protected BitList reserved0 = new BitList(7);

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -56,7 +57,7 @@ public class C1G2SpectralMaskIndicator extends UnsignedByte
   public static final int SI = 1;
   public static final int MI = 2;
   public static final int DI = 3;
-  Logger logger = Logger.getLogger(C1G2SpectralMaskIndicator.class);
+  Logger logger = LogManager.getLogger(C1G2SpectralMaskIndicator.class);
 
   public C1G2SpectralMaskIndicator() {
     super(0);

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -52,7 +53,7 @@ import java.util.List;
 public class AISpecEventType extends UnsignedByte implements LLRPEnumeration {
 
   public static final int End_Of_AISpec = 0;
-  Logger logger = Logger.getLogger(AISpecEventType.class);
+  Logger logger = LogManager.getLogger(AISpecEventType.class);
 
   public AISpecEventType() {
     super(0);

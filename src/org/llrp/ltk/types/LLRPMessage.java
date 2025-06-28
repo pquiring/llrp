@@ -29,7 +29,8 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.jdom2.Document;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -51,7 +52,7 @@ import org.xml.sax.SAXException;
  */
 public abstract class LLRPMessage {
 
-  private static final Logger LOGGER = Logger.getLogger(LLRPMessage.class);
+  private static final Logger LOGGER = LogManager.getLogger(LLRPMessage.class);
 
   // reserved length comes from parameter
   public static final int RESERVEDLENGTH = 6;

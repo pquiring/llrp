@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -67,7 +68,7 @@ import java.util.List;
 public class GPIOCapabilities extends TLVParameter {
 
   public static final SignedShort TYPENUM = new SignedShort(141);
-  private static final Logger LOGGER = Logger.getLogger(GPIOCapabilities.class);
+  private static final Logger LOGGER = LogManager.getLogger(GPIOCapabilities.class);
   protected UnsignedShort numGPIs;
   protected UnsignedShort numGPOs;
 

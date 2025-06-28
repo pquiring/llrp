@@ -51,7 +51,7 @@ auxiliary.show.customizer.message=<message>
         <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/5">
             <compilation-unit>
                 <package-root>src</package-root>
-                <classpath mode="compile">jargs.jar;jdom.jar;slf4j-api.jar;xerces.jar;mina-core.jar;log4j-api.jar;log4j-core.jar;log4j-1.2-api.jar</classpath>
+                <classpath mode="compile">jargs.jar;jdom.jar;slf4j-api.jar;xerces.jar;mina-core.jar;log4j-api.jar;log4j-core.jar</classpath>
                 <source-level>11</source-level>
             </compilation-unit>
         </java-data>

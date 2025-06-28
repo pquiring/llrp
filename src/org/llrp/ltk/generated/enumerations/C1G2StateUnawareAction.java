@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -58,7 +59,7 @@ public class C1G2StateUnawareAction extends UnsignedByte
   public static final int Unselect_DoNothing = 3;
   public static final int Unselect_Select = 4;
   public static final int DoNothing_Select = 5;
-  Logger logger = Logger.getLogger(C1G2StateUnawareAction.class);
+  Logger logger = LogManager.getLogger(C1G2StateUnawareAction.class);
 
   public C1G2StateUnawareAction() {
     super(0);

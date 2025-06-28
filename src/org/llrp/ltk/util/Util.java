@@ -8,7 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.output.Format;
@@ -23,7 +24,7 @@ import org.llrp.ltk.types.LLRPMessage;
  */
 public class Util {
 
-  static final Logger LOGGER = Logger.getLogger("Util.class");
+  static final Logger LOGGER = LogManager.getLogger("Util.class");
 
   /**
    * loads a binary file from the file system and returns a LLRPBitList object

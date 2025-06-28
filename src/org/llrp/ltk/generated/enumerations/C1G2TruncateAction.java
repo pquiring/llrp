@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -55,7 +56,7 @@ public class C1G2TruncateAction extends TwoBitEnumeration
   public static final int Unspecified = 0;
   public static final int Do_Not_Truncate = 1;
   public static final int Truncate = 2;
-  Logger logger = Logger.getLogger(C1G2TruncateAction.class);
+  Logger logger = LogManager.getLogger(C1G2TruncateAction.class);
 
   public C1G2TruncateAction() {
     super(0);

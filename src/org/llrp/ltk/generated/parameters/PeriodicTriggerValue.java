@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -73,7 +74,7 @@ import java.util.List;
 public class PeriodicTriggerValue extends TLVParameter {
 
   public static final SignedShort TYPENUM = new SignedShort(180);
-  private static final Logger LOGGER = Logger.getLogger(PeriodicTriggerValue.class);
+  private static final Logger LOGGER = LogManager.getLogger(PeriodicTriggerValue.class);
   protected UnsignedInteger offset;
   protected UnsignedInteger period;
   protected UTCTimestamp uTCTimestamp;

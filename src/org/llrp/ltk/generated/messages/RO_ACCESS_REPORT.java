@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.messages;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -60,7 +61,7 @@ import java.util.List;
 public class RO_ACCESS_REPORT extends LLRPMessage {
 
   public static final SignedShort TYPENUM = new SignedShort(61);
-  private static final Logger LOGGER = Logger.getLogger(RO_ACCESS_REPORT.class);
+  private static final Logger LOGGER = LogManager.getLogger(RO_ACCESS_REPORT.class);
   public static final String RESPONSETYPE = "";
   protected List<TagReportData> tagReportDataList = new LinkedList<TagReportData>();
   protected List<RFSurveyReportData> rFSurveyReportDataList = new LinkedList<RFSurveyReportData>();

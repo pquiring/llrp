@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -60,7 +61,7 @@ public class C1G2StateAwareAction extends UnsignedByte
   public static final int DeassertSLOrB_Noop = 5;
   public static final int Noop_AssertSLOrA = 6;
   public static final int Noop_NegateSLOrABBA = 7;
-  Logger logger = Logger.getLogger(C1G2StateAwareAction.class);
+  Logger logger = LogManager.getLogger(C1G2StateAwareAction.class);
 
   public C1G2StateAwareAction() {
     super(0);

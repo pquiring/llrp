@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.messages;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -59,7 +60,7 @@ import java.util.List;
 public class DISABLE_ACCESSSPEC extends LLRPMessage {
 
   public static final SignedShort TYPENUM = new SignedShort(43);
-  private static final Logger LOGGER = Logger.getLogger(DISABLE_ACCESSSPEC.class);
+  private static final Logger LOGGER = LogManager.getLogger(DISABLE_ACCESSSPEC.class);
   public static final String RESPONSETYPE = "DISABLE_ACCESSSPEC_RESPONSE";
   protected UnsignedInteger accessSpecID;
 

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -78,7 +79,7 @@ import java.util.List;
 public class C1G2BlockWrite extends TLVParameter implements AccessCommandOpSpec {
 
   public static final SignedShort TYPENUM = new SignedShort(347);
-  private static final Logger LOGGER = Logger.getLogger(C1G2BlockWrite.class);
+  private static final Logger LOGGER = LogManager.getLogger(C1G2BlockWrite.class);
   protected UnsignedShort opSpecID;
   protected UnsignedInteger accessPassword;
   protected TwoBitField mB;

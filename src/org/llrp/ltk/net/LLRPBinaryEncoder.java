@@ -16,7 +16,8 @@
  */
 package org.llrp.ltk.net;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoder;
@@ -29,7 +30,7 @@ import org.llrp.ltk.types.LLRPMessage;
  */
 public class LLRPBinaryEncoder implements ProtocolEncoder {
 
-  Logger log = Logger.getLogger(LLRPBinaryEncoder.class);
+  Logger log = LogManager.getLogger(LLRPBinaryEncoder.class);
 
   public void dispose(IoSession session) throws Exception {
     // nothing to dispose

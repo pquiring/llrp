@@ -24,7 +24,8 @@
  */
 package org.llrp.ltk.generated;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -58,7 +59,7 @@ import java.util.HashMap;
 public class LLRPMessageFactory {
 
   /* logger for LLRPMessageFactory */
-  private static final Logger logger = Logger.getLogger("LLRPMessageFactory");
+  private static final Logger logger = LogManager.getLogger("LLRPMessageFactory");
   public static final int reservedLength = 3;
   public static final int versionLength = 3;
 

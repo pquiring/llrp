@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -57,7 +58,7 @@ public class C1G2StateAwareTarget extends UnsignedByte
   public static final int Inventoried_State_For_Session_S1 = 2;
   public static final int Inventoried_State_For_Session_S2 = 3;
   public static final int Inventoried_State_For_Session_S3 = 4;
-  Logger logger = Logger.getLogger(C1G2StateAwareTarget.class);
+  Logger logger = LogManager.getLogger(C1G2StateAwareTarget.class);
 
   public C1G2StateAwareTarget() {
     super(0);

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -71,7 +72,7 @@ import java.util.List;
 public class ReceiveSensitivityTableEntry extends TLVParameter {
 
   public static final SignedShort TYPENUM = new SignedShort(139);
-  private static final Logger LOGGER = Logger.getLogger(ReceiveSensitivityTableEntry.class);
+  private static final Logger LOGGER = LogManager.getLogger(ReceiveSensitivityTableEntry.class);
   protected UnsignedShort index;
   protected SignedShort receiveSensitivityValue;
 

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -54,7 +55,7 @@ public class KeepaliveTriggerType extends UnsignedByte
 
   public static final int Null = 0;
   public static final int Periodic = 1;
-  Logger logger = Logger.getLogger(KeepaliveTriggerType.class);
+  Logger logger = LogManager.getLogger(KeepaliveTriggerType.class);
 
   public KeepaliveTriggerType() {
     super(0);

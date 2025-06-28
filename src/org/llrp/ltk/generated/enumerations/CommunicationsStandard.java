@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -62,7 +63,7 @@ public class CommunicationsStandard extends UnsignedShort
   public static final int Hong_Kong_OFTA_1049 = 7;
   public static final int Taiwan_DGT_LP0002 = 8;
   public static final int Korea_MIC_Article_5_2 = 9;
-  Logger logger = Logger.getLogger(CommunicationsStandard.class);
+  Logger logger = LogManager.getLogger(CommunicationsStandard.class);
 
   public CommunicationsStandard() {
     super(0);

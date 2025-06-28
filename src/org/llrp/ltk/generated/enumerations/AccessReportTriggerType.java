@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -54,7 +55,7 @@ public class AccessReportTriggerType extends UnsignedByte
 
   public static final int Whenever_ROReport_Is_Generated = 0;
   public static final int End_Of_AccessSpec = 1;
-  Logger logger = Logger.getLogger(AccessReportTriggerType.class);
+  Logger logger = LogManager.getLogger(AccessReportTriggerType.class);
 
   public AccessReportTriggerType() {
     super(0);

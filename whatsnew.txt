@@ -1,3 +1,7 @@
+2025/6/28 : 2.1
+  - upgraded log4j 1.x to 2.x
+    - removes need for log4j 1.2 api bridge
+
 2024/6/10 : 2.0
   - formatted source
   - fixed deprecated code

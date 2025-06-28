@@ -28,10 +28,12 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
+
 import org.jdom2.JDOMException;
 import org.llrp.ltk.exceptions.InvalidLLRPMessageException;
 import org.llrp.ltk.types.LLRPMessage;
@@ -57,7 +59,7 @@ public class LLRPConverter {
 
   LLRPMessage message;
 
-  static final Logger LOGGER = Logger.getLogger("LLRPConverter.class");
+  static final Logger LOGGER = LogManager.getLogger("LLRPConverter.class");
 
   public LLRPConverter() {
     super();
@@ -199,9 +201,8 @@ public class LLRPConverter {
 
     // First, you must create a CmdLineParser, and add to it the
     // appropriate Options.
-    BasicConfigurator.configure();
-    Logger rootLogger = LogManager.getRootLogger();
-    rootLogger.setLevel(Level.WARN);
+    Configurator.initialize(new DefaultConfiguration());
+    Configurator.setRootLevel(Level.WARN);
 
     CmdLineParser parser = new CmdLineParser();
     CmdLineParser.Option verbose = parser.addBooleanOption('v', "verbose");

@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -55,7 +56,7 @@ public class C1G2ForwardLinkModulation extends UnsignedByte
   public static final int PR_ASK = 0;
   public static final int SSB_ASK = 1;
   public static final int DSB_ASK = 2;
-  Logger logger = Logger.getLogger(C1G2ForwardLinkModulation.class);
+  Logger logger = LogManager.getLogger(C1G2ForwardLinkModulation.class);
 
   public C1G2ForwardLinkModulation() {
     super(0);

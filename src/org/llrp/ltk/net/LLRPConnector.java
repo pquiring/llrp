@@ -18,7 +18,8 @@ package org.llrp.ltk.net;
 
 import java.net.InetSocketAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
@@ -51,7 +52,7 @@ import org.apache.mina.transport.socket.nio.NioSocketConnector;
  */
 public class LLRPConnector extends LLRPConnection {
 
-  private Logger log = Logger.getLogger(LLRPConnector.class);
+  private Logger log = LogManager.getLogger(LLRPConnector.class);
   private String host;
   private int port = 5084;
   private org.apache.mina.transport.socket.SocketConnector connector;

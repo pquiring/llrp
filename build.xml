@@ -5,7 +5,7 @@
   <property name="home" location="../.."/>
   <property name="src" location="src"/>
   <property name="build" location="classes"/>
-  <property name="version" value="2.0"/>
+  <property name="version" value="2.1"/>
   <property name="maven" value="io/github/pquiring"/>
 
   <fileset dir="." id="classpath">
@@ -15,7 +15,6 @@
     <include name="jargs.jar"/>
     <include name="log4j-core.jar"/>
     <include name="log4j-api.jar"/>
-    <include name="log4j-1.2-api.jar"/>
     <include name="slf4j-api.jar"/>
     <include name="slf4j-reload4j.jar"/>
     <include name="xerces.jar"/>
@@ -23,7 +22,7 @@
 
   <import file="${home}/base.xml"/>
 
-  <target name="depjars" depends="jar-mina-core,jar-jdom,jar-jargs,jar-log4j-core,jar-log4j-api,jar-log4j-1.2-api,jar-slf4j-api,jar-slf4j-reload4j,jar-xerces">
+  <target name="depjars" depends="jar-mina-core,jar-jdom,jar-jargs,jar-log4j-core,jar-log4j-api,jar-slf4j-api,jar-slf4j-reload4j,jar-xerces">
   </target>
 
   <target name="compile" depends="depjars" description="compile the source">

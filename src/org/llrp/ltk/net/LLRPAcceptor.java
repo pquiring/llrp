@@ -19,7 +19,8 @@ package org.llrp.ltk.net;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
@@ -56,7 +57,7 @@ public class LLRPAcceptor extends LLRPConnection {
 
   public static final int IDLE_TIME = 20;
 
-  private static final Logger log = Logger.getLogger(LLRPAcceptor.class);
+  private static final Logger log = LogManager.getLogger(LLRPAcceptor.class);
   private int port = 5084;
   private IoAcceptor acceptor;
   private InetSocketAddress socketAddress;

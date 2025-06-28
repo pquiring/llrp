@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -58,7 +59,7 @@ public class ConnectionAttemptStatusType extends UnsignedShort
   public static final int Failed_Reason_Other_Than_A_Connection_Already_Exists
     = 3;
   public static final int Another_Connection_Attempted = 4;
-  Logger logger = Logger.getLogger(ConnectionAttemptStatusType.class);
+  Logger logger = LogManager.getLogger(ConnectionAttemptStatusType.class);
 
   public ConnectionAttemptStatusType() {
     super(0);

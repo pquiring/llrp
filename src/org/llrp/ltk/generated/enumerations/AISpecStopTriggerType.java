@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -56,7 +57,7 @@ public class AISpecStopTriggerType extends UnsignedByte
   public static final int Duration = 1;
   public static final int GPI_With_Timeout = 2;
   public static final int Tag_Observation = 3;
-  Logger logger = Logger.getLogger(AISpecStopTriggerType.class);
+  Logger logger = LogManager.getLogger(AISpecStopTriggerType.class);
 
   public AISpecStopTriggerType() {
     super(0);

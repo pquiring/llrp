@@ -15,7 +15,8 @@
  */
 package org.llrp.ltk.types;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * TLVParameter have type values from 128 to 1024 TLVParameters encode the length of a parameter when encoded. The binary encoding Is always: Reserved(6 Bits) | Parameter Type (10
@@ -25,7 +26,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class TLVParameter extends LLRPParameter {
 
-  private static Logger logging = Logger.getLogger(TLVParameter.class);
+  private static Logger logging = LogManager.getLogger(TLVParameter.class);
   protected final int RESERVEDLENGTH = 6;
   protected final int TYPENUMBERLENGTH = 10;
   private BitList reserved = new BitList(RESERVEDLENGTH);

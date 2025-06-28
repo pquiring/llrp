@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.messages;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -57,7 +58,7 @@ import java.util.List;
 public class KEEPALIVE_ACK extends LLRPMessage {
 
   public static final SignedShort TYPENUM = new SignedShort(72);
-  private static final Logger LOGGER = Logger.getLogger(KEEPALIVE_ACK.class);
+  private static final Logger LOGGER = LogManager.getLogger(KEEPALIVE_ACK.class);
   public static final String RESPONSETYPE = "";
 
   /**

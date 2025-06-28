@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -85,7 +86,7 @@ public class C1G2InventoryCommand extends TLVParameter
   implements AirProtocolInventoryCommandSettings {
 
   public static final SignedShort TYPENUM = new SignedShort(330);
-  private static final Logger LOGGER = Logger.getLogger(C1G2InventoryCommand.class);
+  private static final Logger LOGGER = LogManager.getLogger(C1G2InventoryCommand.class);
   protected Bit tagInventoryStateAware;
   protected BitList reserved0 = new BitList(7);
   protected List<C1G2Filter> c1G2FilterList = new LinkedList<C1G2Filter>();

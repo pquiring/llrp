@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.parameters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -68,7 +69,7 @@ import java.util.List;
 public class FirstSeenTimestampUptime extends TVParameter {
 
   public static final SignedShort TYPENUM = new SignedShort(3);
-  private static final Logger LOGGER = Logger.getLogger(FirstSeenTimestampUptime.class);
+  private static final Logger LOGGER = LogManager.getLogger(FirstSeenTimestampUptime.class);
   protected UnsignedLong microseconds;
 
   /**

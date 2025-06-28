@@ -26,7 +26,8 @@
  */
 package org.llrp.ltk.generated.enumerations;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -57,7 +58,7 @@ public class GetReaderCapabilitiesRequestedData extends UnsignedByte
   public static final int LLRP_Capabilities = 2;
   public static final int Regulatory_Capabilities = 3;
   public static final int LLRP_Air_Protocol_Capabilities = 4;
-  Logger logger = Logger.getLogger(GetReaderCapabilitiesRequestedData.class);
+  Logger logger = LogManager.getLogger(GetReaderCapabilitiesRequestedData.class);
 
   public GetReaderCapabilitiesRequestedData() {
     super(0);
