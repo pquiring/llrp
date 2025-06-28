@@ -12,17 +12,15 @@
     <include name="jargs.jar"/>
     <include name="mina-core.jar"/>
     <include name="jdom.jar"/>
-    <include name="jargs.jar"/>
     <include name="log4j-core.jar"/>
     <include name="log4j-api.jar"/>
     <include name="slf4j-api.jar"/>
-    <include name="slf4j-reload4j.jar"/>
     <include name="xerces.jar"/>
   </fileset>
 
   <import file="${home}/base.xml"/>
 
-  <target name="depjars" depends="jar-mina-core,jar-jdom,jar-jargs,jar-log4j-core,jar-log4j-api,jar-slf4j-api,jar-slf4j-reload4j,jar-xerces">
+  <target name="depjars" depends="jar-mina-core,jar-jdom,jar-jargs,jar-log4j-core,jar-log4j-api,jar-slf4j-api,jar-xerces">
   </target>
 
   <target name="compile" depends="depjars" description="compile the source">
