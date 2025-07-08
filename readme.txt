@@ -21,5 +21,3 @@ Major changes:
 
 Notes:
   - JavaForce is only used for build scripts to download dependancies and build deployment artifacts
-  - deadlocking issue seems to be resolved
-  - ping method should be used to ensure a valid connection, mina 2.x does not seem to be as reliable as 1.x was
