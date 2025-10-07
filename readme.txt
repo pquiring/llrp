@@ -21,3 +21,6 @@ Major changes:
 
 Notes:
   - JavaForce is only used for build scripts to download dependancies and build deployment artifacts
+
+Maven:
+  - LLRP is available on Maven : https://repo1.maven.org/maven2/io/github/pquiring/llrp/
