@@ -21,6 +21,7 @@ Major changes:
 
 Notes:
   - JavaForce is only used for build scripts to download dependancies and build deployment artifacts
+  - LLRP deps on some java.desktop classes so you should use the jre_base_desktop option
 
 Maven:
-  - LLRP is available on Maven : https://repo1.maven.org/maven2/io/github/pquiring/llrp/
+  - This modified LLRP is available on Maven : https://repo1.maven.org/maven2/io/github/pquiring/llrp/
