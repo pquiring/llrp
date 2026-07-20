@@ -127,6 +127,7 @@ public class LLRPConnector extends LLRPConnection {
     // MINA 2.0 method
     connector.setHandler(handler);
     connector.setConnectTimeoutMillis(timeout);
+    connector.getSessionConfig().setTcpNoDelay(true);
     remoteAddress = new InetSocketAddress(host, port);
     System.out.println("LLRP Connect:" + host + ":" + port);
     ConnectFuture future = connector.connect(remoteAddress);
