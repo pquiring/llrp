@@ -1,3 +1,6 @@
+2026/7/31 : 2.2
+  - enable TCP no delay
+
 2025/6/28 : 2.1
   - upgraded log4j 1.x to 2.x
     - removes need for log4j 1.2 api bridge
